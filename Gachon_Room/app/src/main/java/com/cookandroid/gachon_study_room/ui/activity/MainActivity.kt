@@ -22,7 +22,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override fun init() {
         super.init()
-        splash()
         initToolbar()
     }
 
