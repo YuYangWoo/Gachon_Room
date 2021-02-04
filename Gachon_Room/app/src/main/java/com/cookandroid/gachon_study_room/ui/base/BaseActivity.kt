@@ -1,4 +1,4 @@
-package com.cookandroid.social_distance.base
+package com.cookandroid.gachon_study_room.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
