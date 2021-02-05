@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.ui.activity
 
 import android.content.Intent
+import android.util.Log
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
@@ -19,21 +20,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     override fun init() {
         super.init()
         que = Volley.newRequestQueue(this)
+        btnLogin()
+    }
 
-        // 네트워크 연결이 안될 때
+    // 로그인 버튼 클릭
+    private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
             LoginVolly.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
             message = LoginVolly.getResult()
             loginInformation = LoginVolly.getUser()
-           if(!isNetworkConnected(this)) {
-               toast("인터넷 연결을 확인해주세요")
-           }
+            Log.d("test", message)
+            Log.d("test", loginInformation.type)
+            if(!isNetworkConnected(this)) {
+                toast("인터넷 연결을 확인해주세요")
+            }
             else if(binding.edtId.text.toString().isBlank() || binding.edtPassword.text.toString().isBlank()) {
                 toast("계정을 확인해주세요")
-           }
+            }
             else if(loginInformation.type == "STUDENT" && message == "SUCCESS" ){
                 startActivity(Intent(this,MainActivity::class.java))
-           }
+            }
         }
     }
 
