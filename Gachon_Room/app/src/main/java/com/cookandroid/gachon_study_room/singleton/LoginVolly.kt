@@ -11,7 +11,7 @@ import kotlinx.coroutines.*
 import org.json.JSONObject
 
 object LoginVolly {
-    private var loginInformation = LoginInformation("", "", "")
+    private var loginInformation = LoginInformation("", "", "","","","")
     private var msg: String = ""
     private lateinit var que: RequestQueue
     private lateinit var connect: Job
@@ -26,9 +26,13 @@ object LoginVolly {
                         var account = jsonObject.getJSONObject("account")
 
                         msg = jsonObject.getString("message")
+
                         loginInformation.id = account.getString("id")
                         loginInformation.password = account.getString("password")
                         loginInformation.type = account.getString("type")
+                        loginInformation.department = account.getString("department")
+                        loginInformation.studentId = account.getString("studentId")
+                        loginInformation.name = account.getString("name")
                     },
                     Response.ErrorListener { error -> }) {
 
