@@ -1,12 +1,13 @@
 package com.cookandroid.gachon_study_room.ui.base
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.cookandroid.gachon_study_room.R
 
-abstract class BaseActivity<VB: ViewDataBinding>(private val layoutId: Int) : AppCompatActivity() {
+abstract class BaseActivity<VB : ViewDataBinding>(private val layoutId: Int) : AppCompatActivity() {
     protected lateinit var binding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,10 +21,14 @@ abstract class BaseActivity<VB: ViewDataBinding>(private val layoutId: Int) : Ap
     }
 
     protected open fun splash() {
-      setTheme(R.style.Theme_Gachon_Study_Room)
+        setTheme(R.style.Theme_Gachon_Study_Room)
     }
 
     protected open fun initViewDataBinding() {
         binding = DataBindingUtil.setContentView(this, layoutId)
+    }
+
+    protected open fun toast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.data.LoginInformation
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.*
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -19,51 +20,48 @@ object LoginVolly {
     private var loginInformation = LoginInformation("", "", "")
     private var msg: String = ""
     private lateinit var que: RequestQueue
+    private lateinit var connect: Job
 
-    fun loginResult(context: Context, url: String, userId: String, password: String): String {
+    fun login(context: Context, url: String, userId: String, password: String) = runBlocking {
         que = Volley.newRequestQueue(context)
-        val stringRequest: StringRequest = object : StringRequest(
-                Method.POST, url,
-                Response.Listener { response ->
-                    var jsonObject = JSONObject(response)
-                    msg = jsonObject.getString("message")
-                },
-                Response.ErrorListener {error -> }) {
+        connect = launch {
+            val stringRequest: StringRequest = object : StringRequest(
+                    Method.POST, url,
+                    Response.Listener { response ->
+                        var jsonObject = JSONObject(response)
+                        var account = jsonObject.getJSONObject("account")
 
-            @Throws(AuthFailureError::class)
-            override fun getParams(): Map<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["id"] = userId
-                params["password"] = password
-                return params
+                        msg = jsonObject.getString("message")
+                        loginInformation.id = account.getString("id")
+                        loginInformation.password = account.getString("password")
+                        loginInformation.type = account.getString("type")
+                    },
+                    Response.ErrorListener { error -> }) {
+
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String> {
+                    val params: MutableMap<String, String> = HashMap()
+                    params["id"] = userId
+                    params["password"] = password
+                    return params
+                }
             }
+            que.add(stringRequest)
         }
-        que.add(stringRequest)
-        return msg
     }
 
-    fun loginAccount(context: Context, url: String, userId: String, password: String): LoginInformation {
-        que = Volley.newRequestQueue(context)
-        val stringRequest: StringRequest = object : StringRequest(
-                Method.POST, url,
-                Response.Listener { response ->
-                    var jsonObject = JSONObject(response)
-                    var account = jsonObject.getJSONObject("account")
-                    loginInformation.id = account.getString("id")
-                    loginInformation.password = account.getString("password")
-                    loginInformation.type = account.getString("type")
-                },
-                Response.ErrorListener { }) {
-
-            @Throws(AuthFailureError::class)
-            override fun getParams(): Map<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["id"] = userId
-                params["password"] = password
-                return params
-            }
+    fun getResult(): String {
+        return runBlocking {
+            connect.join()
+            msg
         }
-        que.add(stringRequest)
-        return loginInformation
     }
+
+    fun getUser(): LoginInformation {
+        return runBlocking {
+            connect.join()
+            loginInformation
+        }
+    }
+
 }
