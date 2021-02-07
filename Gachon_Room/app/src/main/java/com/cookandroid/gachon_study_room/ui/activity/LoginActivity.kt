@@ -1,9 +1,9 @@
 package com.cookandroid.gachon_study_room.ui.activity
 
 import android.content.Intent
-import android.preference.PreferenceManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
-import android.widget.CompoundButton
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
@@ -12,7 +12,9 @@ import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
 import com.cookandroid.gachon_study_room.isNetworkConnected
 import com.cookandroid.gachon_study_room.singleton.LoginVolly
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
+import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
+import kotlinx.coroutines.runBlocking
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -33,8 +35,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
             binding.checkBox.isChecked = true
             startActivity(Intent(this, MainActivity::class.java))
-        }
-        else {
+        } else {
         }
 
         // 체크박스가 체크되어있는지 체크되어 있지 않은지
@@ -79,9 +80,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            message = LoginVolly.getResult(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
-            loginInformation = LoginVolly.getUser(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
+            with(ProgressDialog(this)) {
+                window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                show()
+            }
 
+                message = LoginVolly.getResult(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
+                loginInformation = LoginVolly.getUser(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
             Log.d("test", message)
             Log.d("test", loginInformation.studentId)
             if (!isNetworkConnected(this)) {
@@ -94,6 +99,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 toast("서버 에러입니다.")
             } else if (loginInformation.type == "STUDENT" && message == "SUCCESS") {
                 toast("${MySharedPreferences.getUserId(this)}님 로그인 되었습니다.")
+                ProgressDialog(this).dismiss()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
@@ -101,11 +107,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (que != null) {
-            que.cancelAll(TAG)
-        }
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        if (que != null) {
+//            que.cancelAll(TAG)
+//        }
+//    }
 
 }
