@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.content.Intent
+import android.util.Log
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
@@ -11,6 +12,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun init() {
         super.init()
         logout()
+
+        Log.d("test", MySharedPreferences.getUserId(requireContext()))
     }
 
     private fun logout() {

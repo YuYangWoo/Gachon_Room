@@ -48,15 +48,17 @@ object LoginVolly {
         }
     }
 
-    fun getResult(): String {
+    fun getResult(context: Context, url: String, userId: String, password: String): String {
         return runBlocking {
+            login(context, url, userId, password)
             connect.join()
             msg
         }
     }
 
-    fun getUser(): LoginInformation {
+    fun getUser(context: Context, url: String, userId: String, password: String): LoginInformation {
         return runBlocking {
+            login(context, url, userId, password)
             connect.join()
             loginInformation
         }
