@@ -12,8 +12,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun init() {
         super.init()
         logout()
+        var department = MySharedPreferences.getInformation(requireContext()).department
+        Log.d("test", MySharedPreferences.getInformation(requireContext()).department)
+        Log.d("test", MySharedPreferences.getInformation(requireContext()).studentId)
 
-        Log.d("test", MySharedPreferences.getUserId(requireContext()))
+        Log.d("test", MySharedPreferences.getInformation(requireContext()).name)
+        toast( MySharedPreferences.getInformation(requireContext()).name)
+
+
     }
 
     private fun logout() {

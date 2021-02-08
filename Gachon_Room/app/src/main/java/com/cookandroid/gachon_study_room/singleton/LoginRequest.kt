@@ -6,9 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
-import com.android.volley.AuthFailureError
-import com.android.volley.RequestQueue
-import com.android.volley.Response
+import com.android.volley.*
+import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.data.LoginInformation
@@ -16,8 +15,10 @@ import com.cookandroid.gachon_study_room.isNetworkConnected
 import com.cookandroid.gachon_study_room.ui.activity.MainActivity
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import org.json.JSONObject
+import java.io.UnsupportedEncodingException
 
-object LoginVolly {
+
+object LoginRequest {
     private var loginInformation = LoginInformation("", "", "", "", "", "")
     private var msg: String = ""
     private lateinit var que: RequestQueue
@@ -41,8 +42,9 @@ object LoginVolly {
                     loginInformation.department = account.getString("department")
                     loginInformation.studentId = account.getString("studentId")
                     loginInformation.name = account.getString("name")
+                    toast(context, loginInformation.department)
+                    MySharedPreferences.setInformation(context, loginInformation.department, loginInformation.studentId, loginInformation.name)
                     ProgressDialog(context).dismiss()
-
                     if (!isNetworkConnected(context)) {
                         toast(context, "인터넷 연결을 확인해주세요")
                     } else if (userId.isBlank() || password.isBlank()) {
@@ -58,6 +60,20 @@ object LoginVolly {
 
                 },
                 Response.ErrorListener { error -> error.printStackTrace() }) {
+
+            //response를 UTF8로 변경해주는 소스코드
+            override fun parseNetworkResponse(response: NetworkResponse): Response<String?>? {
+                return try {
+                    val utf8String = String(response.data, charset("UTF-8"))
+                    Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response))
+                } catch (e: UnsupportedEncodingException) {
+                    // log error
+                    Response.error(ParseError(e))
+                } catch (e: Exception) {
+                    // log error
+                    Response.error(ParseError(e))
+                }
+            }
 
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {

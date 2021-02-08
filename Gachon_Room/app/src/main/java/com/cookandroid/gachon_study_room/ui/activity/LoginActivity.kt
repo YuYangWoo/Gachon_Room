@@ -1,20 +1,13 @@
 package com.cookandroid.gachon_study_room.ui.activity
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.LoginInformation
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
-import com.cookandroid.gachon_study_room.isNetworkConnected
-import com.cookandroid.gachon_study_room.singleton.LoginVolly
+import com.cookandroid.gachon_study_room.singleton.LoginRequest
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
-import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
-import kotlinx.coroutines.runBlocking
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -50,7 +43,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            LoginVolly.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
+            LoginRequest.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
+
         }
     }
 
