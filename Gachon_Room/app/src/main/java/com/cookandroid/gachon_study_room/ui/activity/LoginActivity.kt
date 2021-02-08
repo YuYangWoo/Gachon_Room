@@ -8,7 +8,7 @@ import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
 import com.cookandroid.gachon_study_room.singleton.LoginRequest
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
-
+import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private lateinit var que: RequestQueue
@@ -22,6 +22,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
         // 체크되어있다면 메인화면으로
         if (MySharedPreferences.getCheck(this)) {
+            binding.edtId.setText(MySharedPreferences.getUserId(this))
+            binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
+            MySharedPreferences.setUserId(this, binding.edtId.text.toString())
+            MySharedPreferences.setUserPass(this, binding.edtPassword.text.toString())
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
@@ -44,10 +48,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
             LoginRequest.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
-
         }
     }
 
+    // 큐 비우고 액티비티 종료
     override fun onStop() {
         super.onStop()
         if (que != null) {

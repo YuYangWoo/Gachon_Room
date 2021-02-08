@@ -16,22 +16,22 @@
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="367dp"
-        android:layout_marginEnd="128dp"
+        android:layout_marginTop="36dp"
         android:text="LogOut"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imgUser"
-        android:layout_width="403dp"
-        android:layout_height="265dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

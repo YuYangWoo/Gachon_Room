@@ -7,6 +7,7 @@ import com.cookandroid.gachon_study_room.data.StudentInformation
 object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"
     private var student: StudentInformation = StudentInformation("","","")
+
     fun setInformation(context: Context, department: String, studentId: String, name: String) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         val editor : SharedPreferences.Editor = prefs.edit()

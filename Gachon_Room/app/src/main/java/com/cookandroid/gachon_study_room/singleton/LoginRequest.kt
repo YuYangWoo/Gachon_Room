@@ -22,17 +22,20 @@ object LoginRequest {
     private var loginInformation = LoginInformation("", "", "", "", "", "")
     private var msg: String = ""
     private lateinit var que: RequestQueue
-
     fun login(context: Context, url: String, userId: String, password: String) {
-        with(ProgressDialog(context)) {
+     val dialog = ProgressDialog(context)
+        with(dialog) {
             window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()
         }
 
         que = Volley.newRequestQueue(context)
+
+        // 연결 성공, 실패 Listener
         val stringRequest: StringRequest = object : StringRequest(
                 Method.POST, url,
                 Response.Listener { response ->
+
                     var jsonObject = JSONObject(response)
                     var account = jsonObject.getJSONObject("account")
                     msg = jsonObject.getString("message")
@@ -42,9 +45,10 @@ object LoginRequest {
                     loginInformation.department = account.getString("department")
                     loginInformation.studentId = account.getString("studentId")
                     loginInformation.name = account.getString("name")
-                    toast(context, loginInformation.department)
                     MySharedPreferences.setInformation(context, loginInformation.department, loginInformation.studentId, loginInformation.name)
-                    ProgressDialog(context).dismiss()
+
+                    dialog.dismiss()
+
                     if (!isNetworkConnected(context)) {
                         toast(context, "인터넷 연결을 확인해주세요")
                     } else if (userId.isBlank() || password.isBlank()) {
@@ -61,7 +65,7 @@ object LoginRequest {
                 },
                 Response.ErrorListener { error -> error.printStackTrace() }) {
 
-            //response를 UTF8로 변경해주는 소스코드
+            // response를 UTF8로 변경해주는 소스코드
             override fun parseNetworkResponse(response: NetworkResponse): Response<String?>? {
                 return try {
                     val utf8String = String(response.data, charset("UTF-8"))
