@@ -21,24 +21,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private lateinit var que: RequestQueue
     private val url = "http://3.34.174.56:8080/login"
     private val TAG = "MAIN"
-    private lateinit var message: String
-    private lateinit var loginInformation: LoginInformation
     override fun init() {
         super.init()
         que = Volley.newRequestQueue(this)
-//        checkAutoLogin()
-
         btnLogin()
-        // 체크되어있다면
-        if (MySharedPreferences.getCheck(this)) {
-            binding.edtId.setText(MySharedPreferences.getUserId(this))
-            binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
-            binding.checkBox.isChecked = true
-            startActivity(Intent(this, MainActivity::class.java))
-        } else {
-        }
+        checkBox()
 
-        // 체크박스가 체크되어있는지 체크되어 있지 않은지
+        // 체크되어있다면 메인화면으로
+        if (MySharedPreferences.getCheck(this)) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
+    // 체크박스가 체크되어있는지 체크되어 있지 않은지
+    private fun checkBox() {
         binding.checkBox.setOnCheckedChangeListener { compoundButton, checked ->
             if (checked) {
                 MySharedPreferences.setUserId(this, binding.edtId.text.toString())
@@ -50,68 +46,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             }
         }
     }
-//
-//    // 자동로그인 체크
-//    private fun checkAutoLogin() {
-//        // SharedPreferences 안에 값이 저장되어 있지 않을 때 -> Login
-//        if (MySharedPreferences.getUserId(this).isNullOrBlank()
-//                || MySharedPreferences.getUserPass(this).isNullOrBlank()) {
-//            btnLogin()
-//        } else { // SharedPreferences 안에 값이 저장되어 있을 때 -> MainActivity로 이동
-//            toast("${MySharedPreferences.getUserId(this)}님 자동 로그인 되었습니다.")
-//            MySharedPreferences.setUserId(this, binding.edtId.text.toString())
-//            MySharedPreferences.setUserPass(this, binding.edtPassword.text.toString())
-//            MySharedPreferences.setMyInformation(this,
-//                    LoginVolly.loginInformation.id,
-//                    LoginVolly.loginInformation.password,
-//                    LoginVolly.loginInformation.department,
-//                    LoginVolly.loginInformation.studentId,
-//                    LoginVolly.loginInformation.type,
-//                    LoginVolly.loginInformation.name,
-//                    LoginVolly.loginInformation.imageURL
-//            )
-//
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
-//    }
 
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            with(ProgressDialog(this)) {
-                window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                show()
-            }
-
-                message = LoginVolly.getResult(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
-                loginInformation = LoginVolly.getUser(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
-            Log.d("test", message)
-            Log.d("test", loginInformation.studentId)
-            if (!isNetworkConnected(this)) {
-                toast("인터넷 연결을 확인해주세요")
-            } else if (binding.edtId.text.toString().isBlank() || binding.edtPassword.text.toString().isBlank()) {
-                toast("계정을 확인해주세요")
-            } else if (message == "INVALID_ACCOUNT") {
-                toast("아이디와 비밀번호를 확인하세요")
-            } else if (message == "SMART_GACHON_ERROR" || message == "ERROR") {
-                toast("서버 에러입니다.")
-            } else if (loginInformation.type == "STUDENT" && message == "SUCCESS") {
-                toast("${MySharedPreferences.getUserId(this)}님 로그인 되었습니다.")
-                ProgressDialog(this).dismiss()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
-
+            LoginVolly.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
         }
     }
 
-//    override fun onStop() {
-//        super.onStop()
-//        if (que != null) {
-//            que.cancelAll(TAG)
-//        }
-//    }
+    override fun onStop() {
+        super.onStop()
+        if (que != null) {
+            que.cancelAll(TAG)
+        }
+        finish()
+    }
 
 }
