@@ -6,12 +6,10 @@ import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.singleton.PhotoRequest
+import com.cookandroid.gachon_study_room.singleton.SessionRequest
 import com.cookandroid.gachon_study_room.ui.activity.LoginActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -19,6 +17,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
+    private lateinit var login: Job
+    private lateinit var job: Job
     override fun init() {
         super.init()
         Log.d("test", MySharedPreferences.getUserId(requireContext()))
@@ -26,8 +26,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         http()
     }
 
-    private fun http() {
-        PhotoRequest(requireContext()).requestLogin()
+    private fun http() = runBlocking {
+       login = CoroutineScope(Dispatchers.IO).launch { PhotoRequest(requireContext()).requestLogin() }
+        login.join()
+        job = CoroutineScope(Dispatchers.Default).launch{SessionRequest().request()}
     }
 
     private fun logout() {
