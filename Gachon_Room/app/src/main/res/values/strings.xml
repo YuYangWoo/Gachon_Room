@@ -4,7 +4,12 @@
     <string name="option_name">옵션</string>
     <string name="login">로그인</string>
     <string name="auto_login">자동로그인</string>
-    <string name="Confirm_my_seat">나의 자리 확인</string>
-    <string name="ChooseOrReservation">자리 선택/예약</string>
-    <string name="ConfirmSeat">자리 확정</string>
+    <string name="choose_or_reservation">자리 선택/예약</string>
+    <string name="confirm_seat">자리 확정</string>
+    <string name="confirm_my_seat">나의 자리 확인</string>
+    <string name="confirm_internet">인터넷 연결을 확인해주세요.</string>
+    <string name="confirm_account">계정을 확인해주세요.</string>
+    <string name="confirm_id">아이디와 비밀번호를 확인하세요.</string>
+    <string name="server_error">서버 에러입니다.</string>
+    <string name="confirm_login">님 로그인 되었습니다.</string>
 </resources>

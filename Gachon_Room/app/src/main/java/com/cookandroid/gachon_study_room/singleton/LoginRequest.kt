@@ -10,6 +10,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.LoginInformation
 import com.cookandroid.gachon_study_room.isNetworkConnected
 import com.cookandroid.gachon_study_room.ui.activity.MainActivity
@@ -49,15 +50,15 @@ object LoginRequest {
                     dialog.dismiss()
 
                     if (!isNetworkConnected(context)) {
-                        toast(context, "인터넷 연결을 확인해주세요")
+                        toast(context, context.resources.getString(R.string.confirm_internet))
                     } else if (userId.isBlank() || password.isBlank()) {
-                        toast(context, "계정을 확인해주세요")
+                        toast(context, context.resources.getString(R.string.confirm_account))
                     } else if (msg == "INVALID_ACCOUNT") {
-                        toast(context, "아이디와 비밀번호를 확인하세요")
+                        toast(context, context.resources.getString(R.string.confirm_id))
                     } else if (msg == "SMART_GACHON_ERROR" || msg == "ERROR") {
-                        toast(context, "서버 에러입니다.")
+                        toast(context, context.resources.getString(R.string.server_error))
                     } else if (loginInformation.type == "STUDENT" && msg == "SUCCESS") {
-                        toast(context, "${loginInformation.id}님 로그인 되었습니다.")
+                        toast(context, loginInformation.id + context.resources.getString(R.string.confirm_login))
                         startActivity(context, Intent(context, MainActivity::class.java), null)
                     }
 

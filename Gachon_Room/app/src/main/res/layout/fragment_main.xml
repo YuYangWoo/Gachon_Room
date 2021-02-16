@@ -16,7 +16,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#d1b2ff">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
@@ -98,8 +99,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerMain"
             android:layout_width="0dp"
-            android:layout_height="400dp"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_view" />
 

@@ -11,7 +11,7 @@ import com.cookandroid.gachon_study_room.databinding.HolderSeatListBinding
 
 class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
     private val data: ArrayList<String> by lazy {
-        arrayListOf(context.resources.getString(R.string.Confirm_my_seat), context.resources.getString(R.string.ChooseOrReservation), context.resources.getString(R.string.Confirm_my_seat))
+        arrayListOf(context.resources.getString(R.string.confirm_my_seat), context.resources.getString(R.string.choose_or_reservation), context.resources.getString(R.string.confirm_seat))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
