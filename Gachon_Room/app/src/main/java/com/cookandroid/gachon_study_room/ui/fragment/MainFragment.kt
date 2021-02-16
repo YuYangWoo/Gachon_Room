@@ -2,6 +2,7 @@ package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.content.Intent
 import android.util.Log
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.StudentInformation
@@ -21,10 +22,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun init() {
         super.init()
         Log.d("test", MySharedPreferences.getUserId(requireContext()))
-        logout()
 
+        binding.btnOption.setOnClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToOptionFragment())
+        }
        binding.student = info
     }
+
 
 //    private fun http() = runBlocking {
 //       login = CoroutineScope(Dispatchers.IO).launch { PhotoRequest(requireContext()).requestLogin() }
@@ -36,13 +40,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 //    }
 
 
-    private fun logout() {
-        binding.btnLogout.setOnClickListener {
-            MySharedPreferences.clearUser(requireContext())
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
-            toast("로그아웃 되었습니다.")
-            requireActivity().finish()
-        }
-    }
+
 
 }

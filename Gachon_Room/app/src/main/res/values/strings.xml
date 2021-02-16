@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Gachon_Study_Room</string>
+    <string name="main_name">가천열람실</string>
+    <string name="option_name">옵션</string>
+    <string name="login">로그인</string>
+    <string name="auto_login">자동로그인</string>
 </resources>

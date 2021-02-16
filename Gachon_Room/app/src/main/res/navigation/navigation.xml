@@ -6,5 +6,13 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.cookandroid.gachon_study_room.ui.fragment.MainFragment"
-        android:label="가천열람실" />
+        android:label="@string/main_name">
+        <action
+            android:id="@+id/action_mainFragment_to_optionFragment"
+            app:destination="@id/optionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/optionFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.fragment.OptionFragment"
+        android:label="@string/option_name" />
 </navigation>
