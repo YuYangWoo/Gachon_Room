@@ -5,4 +5,8 @@
     <string name="option_name">Option</string>
     <string name="login">Login</string>
     <string name="auto_login">AutoLogin</string>
+    <string name="confirm_my_seat">Confirm My Seat</string>
+    <string name="ChooseOrReservation">Choose or reservation Seat</string>
+    <string name="ConfirmSeat">Confirm seat</string>
+    <string name="Confirm_my_seat">Confirm my seat</string>
 </resources>

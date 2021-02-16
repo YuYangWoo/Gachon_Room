@@ -4,4 +4,7 @@
     <string name="option_name">옵션</string>
     <string name="login">로그인</string>
     <string name="auto_login">자동로그인</string>
+    <string name="Confirm_my_seat">나의 자리 확인</string>
+    <string name="ChooseOrReservation">자리 선택/예약</string>
+    <string name="ConfirmSeat">자리 확정</string>
 </resources>
