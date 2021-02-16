@@ -31,6 +31,8 @@ class PhotoRequest(context: Context) {
                         "Content_Type",
                         "application/x-www-form-urlencoded"
                 )
+                urlConn.doOutput = true
+
                 val osw = OutputStreamWriter(urlConn.outputStream)
                 var sendMsg = "user_id=$id&user_password=$pw&id=www"
                 osw.write(sendMsg)

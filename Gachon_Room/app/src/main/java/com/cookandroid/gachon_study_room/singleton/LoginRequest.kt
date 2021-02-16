@@ -23,8 +23,7 @@ object LoginRequest {
     private var msg: String = ""
     private lateinit var que: RequestQueue
     fun login(context: Context, url: String, userId: String, password: String) {
-     val dialog = ProgressDialog(context)
-        with(dialog) {
+        val dialog = ProgressDialog(context).apply{
             window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()
         }
@@ -58,7 +57,7 @@ object LoginRequest {
                     } else if (msg == "SMART_GACHON_ERROR" || msg == "ERROR") {
                         toast(context, "서버 에러입니다.")
                     } else if (loginInformation.type == "STUDENT" && msg == "SUCCESS") {
-                        toast(context, "${MySharedPreferences.getUserId(context)}님 로그인 되었습니다.")
+                        toast(context, "${loginInformation.id}님 로그인 되었습니다.")
                         startActivity(context, Intent(context, MainActivity::class.java), null)
                     }
 
@@ -79,6 +78,7 @@ object LoginRequest {
                 }
             }
 
+            // 서버로 넘길 값
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()

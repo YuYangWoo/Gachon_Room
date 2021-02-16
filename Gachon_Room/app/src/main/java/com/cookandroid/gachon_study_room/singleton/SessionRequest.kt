@@ -23,6 +23,8 @@ class SessionRequest {
                         "Content_Type",
                         "application/x-www-form-urlencoded"
                 )
+                urlConn.doOutput = true
+
                 if (urlConn.responseCode == HttpURLConnection.HTTP_OK) {
                     Log.d("test", "session 연결성공")
                     val streamReader = InputStreamReader(urlConn.inputStream)
