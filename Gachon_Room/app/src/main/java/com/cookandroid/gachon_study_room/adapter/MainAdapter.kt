@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.HolderSeatListBinding
 
-class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
-    private val data: ArrayList<String> by lazy {
-        arrayListOf(context.resources.getString(R.string.confirm_my_seat), context.resources.getString(R.string.choose_or_reservation), context.resources.getString(R.string.confirm_seat))
-    }
+class MainAdapter : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
+    var data = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding = HolderSeatListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,6 +28,12 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewH
     class ListViewHolder(private var binding: HolderSeatListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: String) {
             binding.list = data
+            Log.d("test", data)
+        }
+        init {
+          binding.root.setOnClickListener {
+              Log.d("test", binding.list.toString())
+          }
         }
     }
 }

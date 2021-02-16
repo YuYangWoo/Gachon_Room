@@ -15,19 +15,22 @@ import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import kotlinx.coroutines.*
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
-//    private lateinit var login: Job
+    //    private lateinit var login: Job
 //    private lateinit var job: Job
+    val list: ArrayList<String> by lazy {
+        arrayListOf(resources.getString(R.string.confirm_my_seat), resources.getString(R.string.choose_or_reservation), resources.getString(R.string.confirm_seat))
+    }
+
     private val info: StudentInformation by lazy {
         MySharedPreferences.getInformation(requireContext())
     }
 
     override fun init() {
         super.init()
-        Log.d("test", MySharedPreferences.getUserId(requireContext()))
 
         btnOption()
 
-       binding.student = info
+        binding.student = info
         setRecyclerView()
     }
 
@@ -39,10 +42,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setRecyclerView() {
         with(binding.recyclerMain) {
-            adapter = MainAdapter(requireContext()).apply {
+            adapter = MainAdapter().apply {
+                data = list
                 notifyDataSetChanged()
             }
-            layoutManager =  LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
     }
@@ -54,8 +58,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 //        Glide.with(requireContext()).load("https://info.gachon.ac.kr/StuCommonInfo/doGetPhoto.do?CALL_PAGE=STASTA_SHJSHJ09shj0901e&STUDENT_NO=201636010&p=826").into(binding.img)
 //
 //    }
-
-
 
 
 }
