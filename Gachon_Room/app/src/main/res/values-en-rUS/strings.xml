@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gachon_Study_Room</string>
+    <string name="main_name">Gachon_Study_Room</string>
+    <string name="option_name">Option</string>
+    <string name="login">Login</string>
+    <string name="auto_login">AutoLogin</string>
+    <string name="confirm_my_seat">Confirm My Seat</string>
+    <string name="choose_or_reservation">Choose or reservation Seat</string>
+    <string name="confirm_seat">Confirm seat</string>
+    <string name="confirm_internet">Please confirm internet</string>
+    <string name="confirm_account">Please confirm your account</string>
+    <string name="confirm_id">Please confirm you id or password</string>
+    <string name="server_error">Server Error!!</string>
+    <string name="confirm_login">logined</string>
+</resources>

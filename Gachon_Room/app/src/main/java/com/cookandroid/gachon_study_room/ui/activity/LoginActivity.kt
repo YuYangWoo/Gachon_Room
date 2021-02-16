@@ -1,21 +1,14 @@
 package com.cookandroid.gachon_study_room.ui.activity
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.LoginInformation
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
-import com.cookandroid.gachon_study_room.isNetworkConnected
-import com.cookandroid.gachon_study_room.singleton.LoginVolly
+import com.cookandroid.gachon_study_room.singleton.LoginRequest
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
-import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
-import kotlinx.coroutines.runBlocking
-
+import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private lateinit var que: RequestQueue
@@ -29,6 +22,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
         // 체크되어있다면 메인화면으로
         if (MySharedPreferences.getCheck(this)) {
+            binding.edtId.setText(MySharedPreferences.getUserId(this))
+            binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
+            MySharedPreferences.setUserId(this, binding.edtId.text.toString())
+            MySharedPreferences.setUserPass(this, binding.edtPassword.text.toString())
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
@@ -50,10 +47,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            LoginVolly.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
+            LoginRequest.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
         }
     }
 
+    // 큐 비우고 액티비티 종료
     override fun onStop() {
         super.onStop()
         if (que != null) {
