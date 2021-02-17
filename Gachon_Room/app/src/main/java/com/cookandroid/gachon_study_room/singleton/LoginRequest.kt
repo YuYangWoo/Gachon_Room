@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.android.volley.*
@@ -22,6 +23,7 @@ import java.io.UnsupportedEncodingException
 object LoginRequest {
     private var loginInformation = LoginInformation("", "", "", "", "", "")
     private var msg: String = ""
+    private var result: Boolean = false
     private lateinit var que: RequestQueue
     fun login(context: Context, url: String, userId: String, password: String) {
         val dialog = ProgressDialog(context).apply{
@@ -36,9 +38,11 @@ object LoginRequest {
                 Method.POST, url,
                 Response.Listener { response ->
 
+                    Log.d("test", response)
                     var jsonObject = JSONObject(response)
                     var account = jsonObject.getJSONObject("account")
                     msg = jsonObject.getString("message")
+                    result = jsonObject.getBoolean("result")
                     loginInformation.id = account.getString("id")
                     loginInformation.password = account.getString("password")
                     loginInformation.type = account.getString("type")
@@ -57,7 +61,7 @@ object LoginRequest {
                         toast(context, context.resources.getString(R.string.confirm_id))
                     } else if (msg == "SMART_GACHON_ERROR" || msg == "ERROR") {
                         toast(context, context.resources.getString(R.string.server_error))
-                    } else if (loginInformation.type == "STUDENT" && msg == "SUCCESS") {
+                    } else if (loginInformation.type == "STUDENT" && result) {
                         toast(context, loginInformation.id + context.resources.getString(R.string.confirm_login))
                         startActivity(context, Intent(context, MainActivity::class.java), null)
                     }
