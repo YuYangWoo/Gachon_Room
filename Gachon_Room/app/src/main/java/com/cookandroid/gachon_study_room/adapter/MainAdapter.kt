@@ -37,10 +37,10 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToMySeatDialog())
                     }
                     binding.root.resources.getString(R.string.choose_or_reservation) -> {
-
+                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToReservationFragment())
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {
-
+                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
                     }
                 }
             }

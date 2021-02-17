@@ -13,4 +13,6 @@
     <string name="confirm_id">Please confirm you id or password</string>
     <string name="server_error">Server Error!!</string>
     <string name="confirm_login">logined</string>
+    <string name="reservation_seat">Reserve Seat</string>
+    <string name="qr">qr Reader</string>
 </resources>
