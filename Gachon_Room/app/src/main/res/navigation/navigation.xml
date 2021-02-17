@@ -10,9 +10,16 @@
         <action
             android:id="@+id/action_mainFragment_to_optionFragment"
             app:destination="@id/optionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mySeatDialog"
+            app:destination="@id/mySeatDialog" />
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
         android:name="com.cookandroid.gachon_study_room.ui.fragment.OptionFragment"
         android:label="@string/option_name" />
+    <dialog
+        android:id="@+id/mySeatDialog"
+        android:name="com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog"
+        android:label="MySeatDialog" />
 </navigation>
