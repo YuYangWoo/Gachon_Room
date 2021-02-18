@@ -10,13 +10,13 @@ import com.cookandroid.gachon_study_room.adapter.MainAdapter
 import com.cookandroid.gachon_study_room.data.StudentInformation
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
+import com.cookandroid.gachon_study_room.singleton.RoomRequest
 import com.cookandroid.gachon_study_room.ui.activity.LoginActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import kotlinx.coroutines.*
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
-    //    private lateinit var login: Job
-//    private lateinit var job: Job
+
     val list: ArrayList<String> by lazy {
         arrayListOf(resources.getString(R.string.confirm_my_seat), resources.getString(R.string.choose_or_reservation), resources.getString(R.string.confirm_seat))
     }
