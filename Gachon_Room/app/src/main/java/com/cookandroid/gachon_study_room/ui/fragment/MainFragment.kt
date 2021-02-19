@@ -11,6 +11,7 @@ import com.cookandroid.gachon_study_room.data.StudentInformation
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.singleton.RoomRequest
+import com.cookandroid.gachon_study_room.singleton.SessionRequest
 import com.cookandroid.gachon_study_room.ui.activity.LoginActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import kotlinx.coroutines.*
@@ -30,6 +31,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
         btnOption()
 
+        SessionRequest.request(requireContext(), binding.img)
         binding.student = info
         setRecyclerView()
     }

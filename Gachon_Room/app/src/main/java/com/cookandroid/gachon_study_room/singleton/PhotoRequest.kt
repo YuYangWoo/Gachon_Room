@@ -2,9 +2,6 @@
 //
 //import android.content.Context
 //import android.util.Log
-//import androidx.core.content.ContentProviderCompat.requireContext
-//import com.bumptech.glide.Glide
-//import com.cookandroid.gachon_study_room.ui.fragment.MainFragment
 //import kotlinx.coroutines.*
 //import java.io.BufferedReader
 //import java.io.InputStreamReader
@@ -17,13 +14,22 @@
 // //   private lateinit var session: Job
 //    private val id by lazy { MySharedPreferences.getUserId(context) }
 //    private val pw by lazy { MySharedPreferences.getUserPass(context) }
-//
+//    private var cookies: String = ""
 //    fun requestLogin() = runBlocking {
 //        login = CoroutineScope(Dispatchers.IO).launch {
 //            try {
+//                Log.d("test", "시작")
 //                val url = URL("https://sso.gachon.ac.kr/svc/tk/Login.do")
 //                var urlConn = url.openConnection() as HttpURLConnection
-//
+//                val m: Map<*, *> = urlConn.headerFields
+//                if (m.containsKey("Set-Cookie")) {
+//                    val c = m["Set-Cookie"] as Collection<*>?
+//                    val i = c!!.iterator()
+//                    while (i.hasNext()) {
+//                        cookies += i.next() as String
+//                    }
+//                }
+//                Log.d("test", cookies)
 //                // urlConn 설정
 //                urlConn.requestMethod = "POST"
 //                urlConn.setRequestProperty("Accept-Charset", "UTF-8")
@@ -50,9 +56,6 @@
 //                        content.append(line)
 //                    }
 //
-//                    Log.d("test", "content $content")
-//                    // 스트림과 커넥션 해제
-////                    Log.d("test", "receiveMsg $receiveMsg")
 //                    buffered.close()
 //
 //                } else {    // 통신이 실패한 이유를 찍기위한 로그

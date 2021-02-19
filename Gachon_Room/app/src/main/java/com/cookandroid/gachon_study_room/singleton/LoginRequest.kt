@@ -38,7 +38,6 @@ object LoginRequest {
                 Method.POST, url,
                 Response.Listener { response ->
 
-                    Log.d("test", response)
                     var jsonObject = JSONObject(response)
                     var account = jsonObject.getJSONObject("account")
                     msg = jsonObject.getString("message")

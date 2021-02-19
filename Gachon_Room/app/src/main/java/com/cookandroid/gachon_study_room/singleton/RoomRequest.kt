@@ -53,11 +53,11 @@ object RoomRequest {
 
                         // 그냥 스트링은 getString으로 받고
                         var result = jsonObject.getString("result")
-                        Log.d("test", room.toString())
-                        Log.d("test", result)
-                        Log.d("test", roomInfo.college)
-                        Log.d("test", roomInfo.seat.toString())
-                        Log.d("test", roomInfo.reserved.toString())
+//                        Log.d("test", room.toString())
+//                        Log.d("test", result)
+//                        Log.d("test", roomInfo.college)
+//                        Log.d("test", roomInfo.seat.toString())
+//                        Log.d("test", roomInfo.reserved.toString())
 
                     }
                     ,Response.ErrorListener {

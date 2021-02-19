@@ -28,7 +28,6 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
   class ListViewHolder(private var binding: HolderSeatListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: String) {
             binding.list = data
-            Log.d("test", data)
         }
         init {
             binding.root.setOnClickListener {
