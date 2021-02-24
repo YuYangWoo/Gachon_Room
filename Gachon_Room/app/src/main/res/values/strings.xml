@@ -12,4 +12,12 @@
     <string name="confirm_id">아이디와 비밀번호를 확인하세요.</string>
     <string name="server_error">서버 에러입니다.</string>
     <string name="confirm_login">님 로그인 되었습니다.</string>
+    <string name="reservation_seat">자리예약</string>
+    <string name="qr">QR리더</string>
+    <string name="my_seat">나의 자리</string>
+    <string name="seat_location">장소 :</string>
+    <string name="seat_number">자리 번호:</string>
+    <string name="seat_time">예약 시간:</string>
+    <string name="extend">연장</string>
+    <string name="return_seat">반납</string>
 </resources>

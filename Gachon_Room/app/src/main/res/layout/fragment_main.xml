@@ -81,6 +81,18 @@
                     app:layout_constraintStart_toEndOf="@+id/img"
                     app:layout_constraintTop_toBottomOf="@+id/txtStudentId" />
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
+                    android:text="@{student.college, default = 단대}"
+                    app:layout_constraintStart_toEndOf="@+id/img"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDepartment" />
+
                 <android.widget.Button
                     android:id="@+id/btnOption"
                     android:layout_width="30dp"

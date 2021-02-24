@@ -10,9 +10,30 @@
         <action
             android:id="@+id/action_mainFragment_to_optionFragment"
             app:destination="@id/optionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mySeatDialog"
+            app:destination="@id/mySeatDialog" />
+        <action
+            android:id="@+id/action_mainFragment_to_qrCodeFragment"
+            app:destination="@id/qrCodeFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_reservationFragment"
+            app:destination="@id/reservationFragment" />
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
         android:name="com.cookandroid.gachon_study_room.ui.fragment.OptionFragment"
         android:label="@string/option_name" />
+    <dialog
+        android:id="@+id/mySeatDialog"
+        android:name="com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog"
+        android:label="MySeatDialog" />
+    <fragment
+        android:id="@+id/qrCodeFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.fragment.QrCodeFragment"
+        android:label="@string/qr" />
+    <fragment
+        android:id="@+id/reservationFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.fragment.ReservationFragment"
+        android:label="@string/reservation_seat" />
 </navigation>

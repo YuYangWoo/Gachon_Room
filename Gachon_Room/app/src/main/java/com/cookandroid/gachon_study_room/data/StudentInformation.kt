@@ -4,8 +4,9 @@ data class StudentInformation
 (
         var name: String,
         var studentId: String,
-        var department: String
+        var department: String,
+        var college: String
 )
 {
-    constructor(): this("","","")
+    constructor(): this("","","", "")
 }
