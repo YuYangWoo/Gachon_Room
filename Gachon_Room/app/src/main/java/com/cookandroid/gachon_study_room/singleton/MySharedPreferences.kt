@@ -6,22 +6,27 @@ import com.cookandroid.gachon_study_room.data.StudentInformation
 
 object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"
-    private var student: StudentInformation = StudentInformation("","","")
+    private var student: StudentInformation = StudentInformation("", "", "", "")
 
-    fun setInformation(context: Context, department: String, studentId: String, name: String) {
+    fun setInformation(context: Context, department: String, studentId: String, name: String, college: String) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        val editor : SharedPreferences.Editor = prefs.edit()
-        editor.putString("MY_DEPARTMENT", department)
-        editor.putString("MY_STUDENT_ID", studentId)
-        editor.putString("MY_NAME", name)
+        val editor : SharedPreferences.Editor = prefs.edit().apply{
+            putString("MY_DEPARTMENT", department)
+            putString("MY_STUDENT_ID", studentId)
+            putString("MY_NAME", name)
+            putString("MY_COLLEGE", college)
+        }
         editor.commit()
     }
 
     fun getInformation(context: Context): StudentInformation{
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        student.department = prefs.getString("MY_DEPARTMENT", "").toString()
-        student.studentId = prefs.getString("MY_STUDENT_ID", "").toString()
-        student.name = prefs.getString("MY_NAME", "").toString()
+        with(student) {
+            department = prefs.getString("MY_DEPARTMENT", "").toString()
+            studentId = prefs.getString("MY_STUDENT_ID", "").toString()
+            name = prefs.getString("MY_NAME", "").toString()
+            college = prefs.getString("MY_COLLEGE", "").toString()
+        }
         return student
     }
 

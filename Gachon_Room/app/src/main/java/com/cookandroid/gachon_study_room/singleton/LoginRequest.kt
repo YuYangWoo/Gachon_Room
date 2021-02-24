@@ -21,7 +21,7 @@ import java.io.UnsupportedEncodingException
 
 
 object LoginRequest {
-    private var loginInformation = LoginInformation("", "", "", "", "", "")
+    private var loginInformation = LoginInformation("", "", "", "", "", "", "")
     private var msg: String = ""
     private var result: Boolean = false
     private lateinit var que: RequestQueue
@@ -42,13 +42,18 @@ object LoginRequest {
                     var account = jsonObject.getJSONObject("account")
                     msg = jsonObject.getString("message")
                     result = jsonObject.getBoolean("result")
-                    loginInformation.id = account.getString("id")
-                    loginInformation.password = account.getString("password")
-                    loginInformation.type = account.getString("type")
-                    loginInformation.department = account.getString("department")
-                    loginInformation.studentId = account.getString("studentId")
-                    loginInformation.name = account.getString("name")
-                    MySharedPreferences.setInformation(context, loginInformation.department, loginInformation.studentId, loginInformation.name)
+
+                    with(loginInformation) {
+                        id = account.getString("id")
+                        password = account.getString("password")
+                        type = account.getString("type")
+                        department = account.getString("department")
+                        studentId = account.getString("studentId")
+                        name = account.getString("name")
+                        college = account.getString("college")
+                    }
+
+                    MySharedPreferences.setInformation(context, loginInformation.department, loginInformation.studentId, loginInformation.name, loginInformation.college)
 
                     dialog.dismiss()
 
