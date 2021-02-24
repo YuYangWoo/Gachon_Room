@@ -54,7 +54,6 @@ object LoginRequest {
                     }
 
                     MySharedPreferences.setInformation(context, loginInformation.department, loginInformation.studentId, loginInformation.name, loginInformation.college)
-
                     dialog.dismiss()
 
                     if (!isNetworkConnected(context)) {

@@ -41,24 +41,14 @@ object RoomRequest {
                 Response.Listener {
                     var jsonObject = JSONObject(it)
 
-                    // 보면 room자체가 jsonObject이기 때문에 jsonobject로 초기화
                     var room = jsonObject.getJSONObject("room")
                     roomInfo.college = room.getString("college")
                     roomInfo.name = room.getString("name")
-
-                    // seat하고 reserved같은거는 jsonArray야 jsonArray타입 으로 받으면되
                     roomInfo.seat = room.getJSONArray("seat")
                     roomInfo.reserved = room.getJSONArray("reserved")
                     roomInfo.available = room.getJSONArray("available")
-
-                    // 그냥 스트링은 getString으로 받고
+                    Log.d("test", roomInfo.seat.length().toString())
                     var result = jsonObject.getString("result")
-                    Log.d("test", room.toString())
-                    Log.d("test", result)
-                    Log.d("test", roomInfo.college)
-                    Log.d("test", roomInfo.seat.toString())
-                    Log.d("test", roomInfo.reserved.toString())
-
                 }, Response.ErrorListener {
             Log.d("Error", it.toString())
         }) {
