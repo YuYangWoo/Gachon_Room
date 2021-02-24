@@ -45,7 +45,7 @@ object LoginRequest {
 
                     with(loginInformation) {
                         id = account.getString("id")
-                        password = account.getString("password")
+                        this.password = account.getString("password")
                         type = account.getString("type")
                         department = account.getString("department")
                         studentId = account.getString("studentId")
