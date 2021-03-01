@@ -4,6 +4,8 @@ import android.content.Intent
 import android.util.Log
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.MainAdapter
@@ -17,6 +19,8 @@ import kotlinx.coroutines.*
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
+    private val TAG = "MAIN"
+    private lateinit var queue: RequestQueue
     val list: ArrayList<String> by lazy {
         arrayListOf(resources.getString(R.string.confirm_my_seat), resources.getString(R.string.choose_or_reservation), resources.getString(R.string.confirm_seat))
     }
@@ -27,12 +31,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun init() {
         super.init()
-
-        btnOption()
-
 //        SessionRequest.request(requireContext(), binding.img)
+        btnOption()
         binding.student = info
         setRecyclerView()
+        roomInfo()
+    }
+
+    private fun roomInfo() {
+        queue = Volley.newRequestQueue(context)
+        RoomRequest.request(requireContext())
     }
 
     private fun btnOption() {
@@ -51,14 +59,5 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             setHasFixedSize(true)
         }
     }
-//    private fun http() = runBlocking {
-//       login = CoroutineScope(Dispatchers.IO).launch { PhotoRequest(requireContext()).requestLogin() }
-//        login.join()
-//        job = CoroutineScope(Dispatchers.Default).launch{SessionRequest().request()}
-//        job.join()
-//        Glide.with(requireContext()).load("https://info.gachon.ac.kr/StuCommonInfo/doGetPhoto.do?CALL_PAGE=STASTA_SHJSHJ09shj0901e&STUDENT_NO=201636010&p=826").into(binding.img)
-//
-//    }
-
 
 }

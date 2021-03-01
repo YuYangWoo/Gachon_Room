@@ -12,7 +12,6 @@ import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private lateinit var que: RequestQueue
-    private val url = "http://3.34.174.56:8080/login"
     private val TAG = "MAIN"
     override fun init() {
         super.init()
@@ -47,7 +46,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            LoginRequest.login(this, url, binding.edtId.text.toString(), binding.edtPassword.text.toString())
+            LoginRequest.login(this, binding.edtId.text.toString(), binding.edtPassword.text.toString())
         }
     }
 

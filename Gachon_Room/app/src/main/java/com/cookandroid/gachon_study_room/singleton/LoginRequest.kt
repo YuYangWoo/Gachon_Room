@@ -25,7 +25,9 @@ object LoginRequest {
     private var msg: String = ""
     private var result: Boolean = false
     private lateinit var que: RequestQueue
-    fun login(context: Context, url: String, userId: String, password: String) {
+    private val url = "http://3.34.174.56:8080/login"
+
+    fun login(context: Context, userId: String, password: String) {
         val dialog = ProgressDialog(context).apply{
             window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()

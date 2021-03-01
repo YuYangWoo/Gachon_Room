@@ -33,26 +33,47 @@ import java.net.URL
 object RoomRequest {
     private lateinit var queue: RequestQueue
     private var roomInfo = RoomData("", "", JSONArray(), JSONArray(), JSONArray())
-
-    fun request(context: Context, url: String) {
+    private val url = "http://3.34.174.56:8080/room"
+    fun request(context: Context) {
         queue = Volley.newRequestQueue(context)
 
-        val stringRequest: StringRequest = object : StringRequest(Method.GET, url,
+        val stringRequest: StringRequest = object : StringRequest(Method.POST, url,
                 Response.Listener {
                     var jsonObject = JSONObject(it)
-
-                    var room = jsonObject.getJSONObject("room")
-                    roomInfo.college = room.getString("college")
-                    roomInfo.name = room.getString("name")
-                    roomInfo.seat = room.getJSONArray("seat")
-                    roomInfo.reserved = room.getJSONArray("reserved")
-                    roomInfo.available = room.getJSONArray("available")
-                    Log.d("test", roomInfo.seat.length().toString())
-                    var result = jsonObject.getString("result")
+                    Log.d("test", jsonObject.toString())
+//                    var room = jsonObject.getJSONObject("room")
+//                    with(roomInfo) {
+//                        college = room.getString("college")
+//                        name = room.getString("name")
+//                        seat = room.getJSONArray("seat")
+//                        reserved = room.getJSONArray("reserved")
+//                        available = room.getJSONArray("available")
+//                    }
                 }, Response.ErrorListener {
             Log.d("Error", it.toString())
         }) {
+            // 서버로 넘길 값
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val params: MutableMap<String, String> = HashMap()
+                params["college"] = "TEST"
+                params["name"] = "Test"
+                return params
+            }
 
+            // response를 UTF8로 변경해주는 소스코드
+            override fun parseNetworkResponse(response: NetworkResponse): Response<String?>? {
+                return try {
+                    val utf8String = String(response.data, charset("UTF-8"))
+                    Response.success(utf8String, HttpHeaderParser.parseCacheHeaders(response))
+                } catch (e: UnsupportedEncodingException) {
+                    // log error
+                    Response.error(ParseError(e))
+                } catch (e: Exception) {
+                    // log error
+                    Response.error(ParseError(e))
+                }
+            }
 
         }
         queue.add(stringRequest)
