@@ -35,5 +35,9 @@
     <fragment
         android:id="@+id/reservationFragment"
         android:name="com.cookandroid.gachon_study_room.ui.fragment.ReservationFragment"
-        android:label="@string/reservation_seat" />
+        android:label="@string/reservation_seat" >
+        <argument
+            android:name="room"
+            app:argType="com.cookandroid.gachon_study_room.data.RoomData"/>
+    </fragment>
 </navigation>

@@ -1,6 +1,5 @@
 package com.cookandroid.gachon_study_room.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -8,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 
 import com.cookandroid.gachon_study_room.databinding.HolderSeatListBinding
+import com.cookandroid.gachon_study_room.singleton.RoomRequest
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 
  class MainAdapter : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
@@ -36,7 +36,8 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToMySeatDialog())
                     }
                     binding.root.resources.getString(R.string.choose_or_reservation) -> {
-                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToReservationFragment())
+                        var room = RoomRequest.room
+                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToReservationFragment(room))
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
