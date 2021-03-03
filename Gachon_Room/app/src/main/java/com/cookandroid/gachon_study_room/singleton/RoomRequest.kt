@@ -21,8 +21,6 @@ object RoomRequest {
         val stringRequest: StringRequest = object : StringRequest(Method.POST, url,
                 Response.Listener {
                   room = Gson().fromJson(it, RoomData::class.java)
-
-
                 }, Response.ErrorListener {
             Log.d("Error", it.toString())
         }) {
