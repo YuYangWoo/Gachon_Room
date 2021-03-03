@@ -1,14 +1,9 @@
 package com.cookandroid.gachon_study_room.data
 
-import org.json.JSONArray
-import org.json.JSONObject
-
 data class RoomData(
-        var college: String,
-        var name: String,
-        var seat: JSONArray,
-        var available:JSONArray,
-        var reserved: JSONArray
+        var result: Boolean,
+        var room : Room,
+        var message: String
 ) {
-    constructor(): this("", "", JSONArray(), JSONArray(), JSONArray())
+    constructor(): this(false, Room(),"")
 }

@@ -12,10 +12,12 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
+import com.cookandroid.gachon_study_room.data.GsonLogin
 import com.cookandroid.gachon_study_room.data.LoginInformation
 import com.cookandroid.gachon_study_room.isNetworkConnected
 import com.cookandroid.gachon_study_room.ui.activity.MainActivity
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
+import com.google.gson.Gson
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 
