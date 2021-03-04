@@ -4,17 +4,18 @@ import android.graphics.Color
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.Room
 import com.cookandroid.gachon_study_room.data.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,10 +31,14 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private var collegeRoom = ArrayList<Room>()
     override fun init() {
         super.init()
-
         layout = binding.layoutSeat
         rooms = args.rooms
         name = args.name
+//        val prev: Fragment = (context as AppCompatActivity).supportFragmentManager.findFragmentByTag("Modal")!!
+//        if (prev != null) {
+//            val df: BottomSheetDialogFragment = prev as BottomSheetDialogFragment
+//            df.dismiss()
+//        }
         Log.d("test", name)
         Log.d("test", rooms.rooms[0].seat.toString())
 //        queue = Volley.newRequestQueue(context)
@@ -147,7 +152,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     view.setBackgroundResource(R.drawable.ic_seats_book)
                     view.setTextColor(Color.BLACK)
                     view.text = seats[i][j].toString()
-                    view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
+                    view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
                     layout.addView(view)
                     seatViewList.add(view)
                 }
@@ -164,6 +169,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         var seatGaping = 10
         var count = 0
     }
+
+
 
 
 }

@@ -17,7 +17,9 @@ import com.cookandroid.gachon_study_room.databinding.HolderRoomListBinding
 import com.cookandroid.gachon_study_room.singleton.RoomRequest
 import com.cookandroid.gachon_study_room.singleton.RoomsRequest
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
+import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment
 import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragmentDirections
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RoomAdapter : RecyclerView.Adapter<RoomAdapter.ListViewHolder>() {
     var data = ArrayList<Room>()
@@ -41,7 +43,8 @@ class RoomAdapter : RecyclerView.Adapter<RoomAdapter.ListViewHolder>() {
         }
         init {
             binding.root.setOnClickListener {
-
+//                RoomListFragment(context).dismiss()
+// 여기 그냥 액티비티 만들어서 붙혀버리는것도 방법일듯.
                 val navHostFragment = (context as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
                 val navController = navHostFragment.navController
                 navController.navigate(RoomListFragmentDirections.actionGlobalReservationFragment(rooms, binding.list.toString()))
