@@ -35,11 +35,11 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
         layout.addView(layoutSeat)
         lateinit var layout: LinearLayout
-
-        var garo = room.room.seat[0].size //행
-        var sero = room.room.seat.size // 열
-
         var seats = room.room.seat
+        var garo = seats[0].size //행
+        var sero = seats.size // 열
+
+
         for (i in 0 until garo) {
             for (j in 0 until sero) {
                 if (j == 0 || j == sero) {
@@ -51,8 +51,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                         val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                         layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                         view.layoutParams = layoutParams
-                        view.setBackgroundColor(Color.BLACK)
-                        view.text = ""
+                        view.setBackgroundColor(Color.TRANSPARENT)
                         layout.addView(view)
                     }
                 } else if (seats[i][j] == WALL) {
@@ -60,8 +59,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                     view.layoutParams = layoutParams
-                    view.setBackgroundColor(Color.BLACK)
-                    view.text = ""
+                    view.setBackgroundColor(Color.TRANSPARENT)
                     layout.addView(view)
                 } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
@@ -69,7 +67,6 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                     view.layoutParams = layoutParams
                     view.setBackgroundColor(Color.TRANSPARENT)
-                    view.text = ""
                     layout.addView(view)
                 } else if (seats[i][j] == DOOR) {
                     count++
@@ -77,9 +74,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                     view.layoutParams = layoutParams
-                    view.setPadding(0, 0, 0, 2 * seatGaping)
                     view.id = count
-                    view.gravity = Gravity.CENTER
                     view.setBackgroundResource(R.drawable.door)
                     layout.addView(view)
                     seatViewList.add(view)
