@@ -26,49 +26,57 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     var seatSize = 100
     private lateinit var queue: RequestQueue
     private lateinit var rooms: RoomsData
+    private lateinit var name: String
     private var collegeRoom = ArrayList<Room>()
     override fun init() {
         super.init()
 
         layout = binding.layoutSeat
-        var room = args.room
         rooms = args.rooms
-        queue = Volley.newRequestQueue(context)
-        seperateCollege(rooms)
-//        seatView(room)
-    }
+        name = args.name
+        Log.d("test", name)
+        Log.d("test", rooms.rooms[0].seat.toString())
+//        queue = Volley.newRequestQueue(context)
+//        seperateCollege(rooms)
+        for(i in 0 until rooms.rooms.size) {
+            if(name == rooms.rooms[i].name) {
+                seatView(rooms.rooms[i].seat)
 
-    private fun seperateCollege(rooms: RoomsData) {
-        var name = ArrayList<String>()
-        for (i in 0 until rooms.rooms.size) {
-            if (rooms.rooms[i].college == "TEST") {
-                collegeRoom.add(rooms.rooms[i])
-                name.add(rooms.rooms[i].name)
             }
         }
-        var arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, name)
-        binding.roomList.adapter = arrayAdapter
-        binding.roomList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                for (i in 0 until name.size) {
-                    if (name[position] == collegeRoom[i].name) {
-//                       for(intArray in collegeRoom[i].seat) {
-//                           for(int in intArray) {
-//                               print("$int")
-//                           }
-//                           println()
-//                       }
-                        seatView(collegeRoom[i].seat)
-                    }
-                }
-            }
-
-        }
     }
+
+//    private fun seperateCollege(rooms: RoomsData) {
+//        var name = ArrayList<String>()
+//        for (i in 0 until rooms.rooms.size) {
+//            if (rooms.rooms[i].college == "TEST") {
+//                collegeRoom.add(rooms.rooms[i])
+//                name.add(rooms.rooms[i].name)
+//            }
+//        }
+//        var arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, name)
+//        binding.roomList.adapter = arrayAdapter
+//        binding.roomList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {
+//
+//            }
+//
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                for (i in 0 until name.size) {
+//                    if (name[position] == collegeRoom[i].name) {
+////                       for(intArray in collegeRoom[i].seat) {
+////                           for(int in intArray) {
+////                               print("$int")
+////                           }
+////                           println()
+////                       }
+//                        seatView(collegeRoom[i].seat)
+//                    }
+//                }
+//            }
+//
+//        }
+//    }
 
     private fun seatView(room: ArrayList<Array<Int>>) {
         val layoutSeat = LinearLayout(requireContext())
@@ -83,15 +91,15 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         Log.d("test", "garo" + garo.toString())
         var sero = seats.size // 열
         Log.d("test", "sero" + sero.toString())
-        for(intArray in seats) {
-            for(int in intArray) {
-                print("$int")
-            }
-            println()
-        }
+//        for(intArray in seats) {
+//            for(int in intArray) {
+//                print("$int")
+//            }
+//            println()
+//        }
 
         for (i in 0 until garo) {
-            for (j in 0 until sero) {
+            for (j in 0 until sero-1) {
                 if (j == 0 || j == sero) {
                     layout = LinearLayout(requireContext())
                     layout.orientation = LinearLayout.HORIZONTAL

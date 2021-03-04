@@ -53,7 +53,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setRecyclerView() {
         with(binding.recyclerMain) {
-            adapter = MainAdapter().apply {
+            adapter = MainAdapter(requireContext()).apply {
                 data = list
                 notifyDataSetChanged()
             }
