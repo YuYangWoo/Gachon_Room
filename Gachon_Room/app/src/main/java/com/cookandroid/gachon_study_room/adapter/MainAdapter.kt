@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.RoomData
-
-import com.cookandroid.gachon_study_room.databinding.HolderSeatListBinding
+import com.cookandroid.gachon_study_room.databinding.HolderMainListBinding
 import com.cookandroid.gachon_study_room.singleton.RoomRequest
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 
@@ -15,7 +13,7 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
     var data = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = HolderSeatListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = HolderMainListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder(binding)
     }
 
@@ -26,7 +24,7 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
     override fun getItemCount(): Int {
         return data.size
     }
-  class ListViewHolder(private var binding: HolderSeatListBinding) : RecyclerView.ViewHolder(binding.root) {
+  class ListViewHolder(private var binding: HolderMainListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: String) {
             binding.list = data
         }

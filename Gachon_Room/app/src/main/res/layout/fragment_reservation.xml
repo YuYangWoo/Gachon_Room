@@ -23,26 +23,26 @@
             android:layout_marginEnd="15dp"
             app:cardCornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintHeight_percent="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerSeat"
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    app:layout_constraintBottom_toTopOf="@id/txtSelect"
+                    android:scrollbars = "vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/txtSelect">
+                    <HorizontalScrollView
+                        android:id="@+id/layoutSeat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </ScrollView>
                 <TextView
                     android:id="@+id/txtSelect"
                     android:layout_width="wrap_content"
@@ -54,6 +54,7 @@
                     android:text="@string/choose_seat"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
