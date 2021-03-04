@@ -13,16 +13,14 @@ import java.io.UnsupportedEncodingException
 
 object RoomRequest {
     private lateinit var queue: RequestQueue
-//    private var roomInfo = RoomData("", "", JSONArray(), JSONArray(), JSONArray())
+    var room = RoomData()
     private val url = "http://3.34.174.56:8080/room"
-    fun request(context: Context) {
+    fun request(context: Context) :RoomData {
         queue = Volley.newRequestQueue(context)
 
         val stringRequest: StringRequest = object : StringRequest(Method.POST, url,
                 Response.Listener {
-                    var room = Gson().fromJson(it, RoomData::class.java)
-
-
+                  room = Gson().fromJson(it, RoomData::class.java)
                 }, Response.ErrorListener {
             Log.d("Error", it.toString())
         }) {
@@ -51,6 +49,7 @@ object RoomRequest {
 
         }
         queue.add(stringRequest)
+        return room
     }
 
     fun toast(context: Context, msg: String) {
