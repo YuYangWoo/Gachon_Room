@@ -39,5 +39,8 @@
         <argument
             android:name="room"
             app:argType="com.cookandroid.gachon_study_room.data.RoomData"/>
+        <argument
+            android:name="rooms"
+            app:argType="com.cookandroid.gachon_study_room.data.RoomsData"/>
     </fragment>
 </navigation>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.HolderMainListBinding
 import com.cookandroid.gachon_study_room.singleton.RoomRequest
+import com.cookandroid.gachon_study_room.singleton.RoomsRequest
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 
  class MainAdapter : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
@@ -36,7 +37,8 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
                     }
                     binding.root.resources.getString(R.string.choose_or_reservation) -> {
                         var room = RoomRequest.room
-                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToReservationFragment(room))
+                        var rooms = RoomsRequest.room
+                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToReservationFragment(room, rooms))
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
