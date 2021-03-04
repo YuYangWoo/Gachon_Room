@@ -30,18 +30,20 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:scrollbars = "vertical"
+                    android:scrollbars="vertical"
+                    app:layout_constraintBottom_toTopOf="@+id/txtSelect"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/txtSelect">
+                    app:layout_constraintTop_toTopOf="parent">
+
                     <HorizontalScrollView
                         android:id="@+id/layoutSeat"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="wrap_content" />
                 </ScrollView>
                 <TextView
                     android:id="@+id/txtSelect"

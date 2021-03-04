@@ -1,20 +1,25 @@
 package com.cookandroid.gachon_study_room.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.HolderMainListBinding
-import com.cookandroid.gachon_study_room.singleton.RoomRequest
+import com.cookandroid.gachon_study_room.singleton.RoomsRequest
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
+import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment
 
- class MainAdapter : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
+
+class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewHolder>() {
+
     var data = ArrayList<String>()
-
+    private var context = context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding = HolderMainListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListViewHolder(binding)
+        return ListViewHolder(binding, context)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -24,7 +29,7 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
     override fun getItemCount(): Int {
         return data.size
     }
-  class ListViewHolder(private var binding: HolderMainListBinding) : RecyclerView.ViewHolder(binding.root) {
+  class ListViewHolder(private var binding: HolderMainListBinding, context: Context) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: String) {
             binding.list = data
         }
@@ -35,8 +40,9 @@ import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToMySeatDialog())
                     }
                     binding.root.resources.getString(R.string.choose_or_reservation) -> {
-                        var room = RoomRequest.room
-                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToReservationFragment(room))
+                        var rooms = RoomsRequest.room
+//                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToRoomListFragment(rooms))
+                        RoomListFragment().show((context as AppCompatActivity).supportFragmentManager,"Modal")
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())

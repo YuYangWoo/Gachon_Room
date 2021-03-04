@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_mainFragment_to_qrCodeFragment"
             app:destination="@id/qrCodeFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_reservationFragment"
-            app:destination="@id/reservationFragment" />
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
@@ -37,7 +34,22 @@
         android:name="com.cookandroid.gachon_study_room.ui.fragment.ReservationFragment"
         android:label="@string/reservation_seat" >
         <argument
-            android:name="room"
-            app:argType="com.cookandroid.gachon_study_room.data.RoomData"/>
+            android:name="rooms"
+            app:argType="com.cookandroid.gachon_study_room.data.RoomsData"/>
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue='""' />
     </fragment>
+    <fragment
+        android:id="@+id/roomListFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment"
+        android:label="RoomListFragment" >
+        <action
+            android:id="@+id/action_roomListFragment_to_reservationFragment"
+            app:destination="@id/reservationFragment" />
+        <argument
+            android:name="rooms"
+            app:argType="com.cookandroid.gachon_study_room.data.RoomsData"/>
+    </fragment><action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
 </navigation>

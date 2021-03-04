@@ -13,6 +13,7 @@ import com.cookandroid.gachon_study_room.data.StudentInformation
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.singleton.RoomRequest
+import com.cookandroid.gachon_study_room.singleton.RoomsRequest
 import com.cookandroid.gachon_study_room.ui.activity.LoginActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import kotlinx.coroutines.*
@@ -41,6 +42,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     private fun roomInfo() {
         queue = Volley.newRequestQueue(context)
         RoomRequest.request(requireContext())
+        RoomsRequest.request(requireContext())
     }
 
     private fun btnOption() {
@@ -51,7 +53,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun setRecyclerView() {
         with(binding.recyclerMain) {
-            adapter = MainAdapter().apply {
+            adapter = MainAdapter(requireContext()).apply {
                 data = list
                 notifyDataSetChanged()
             }
