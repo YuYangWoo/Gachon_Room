@@ -105,7 +105,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
         for (i in seats.indices) {
             for (j in seats[i].indices) {
-                if (j == 0 || j == sero) {
+                if (j == 0 || j == seats.size+1) {
                     layout = LinearLayout(requireContext())
                     layout.orientation = LinearLayout.HORIZONTAL
                     layoutSeat.addView(layout)
