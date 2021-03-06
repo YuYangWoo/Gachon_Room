@@ -103,28 +103,30 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 //            println()
 //        }
 
-        for (i in 0 until garo) {
-            for (j in 0 until sero-1) {
-                if (j == 0 || j == sero) {
+        for (i in seats.indices) {
+            for (j in seats[i].indices) {
+                if (j == 0 || j == seats.size+1) {
                     layout = LinearLayout(requireContext())
                     layout.orientation = LinearLayout.HORIZONTAL
                     layoutSeat.addView(layout)
-                    if (seats[i][j] == WALL) {
-                        val view = TextView(requireContext())
-                        val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
-                        layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                        view.layoutParams = layoutParams
-                        view.setBackgroundColor(Color.TRANSPARENT)
-                        layout.addView(view)
-                    }
-                } else if (seats[i][j] == WALL) {
-                    val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
-                    layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                    view.layoutParams = layoutParams
-                    view.setBackgroundColor(Color.TRANSPARENT)
-                    layout.addView(view)
-                } else if (seats[i][j] == EMPTY) {
+//                    if (seats[i][j] == WALL) {
+//                        val view = TextView(requireContext())
+//                        val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+//                        layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
+//                        view.layoutParams = layoutParams
+//                        view.setBackgroundColor(Color.TRANSPARENT)
+//                        layout.addView(view)
+//                    }
+                }
+                else if (seats[i][j] == WALL) {
+//                    val view = TextView(requireContext())
+//                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+//                    layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
+//                    view.layoutParams = layoutParams
+//                    view.setBackgroundColor(Color.TRANSPARENT)
+//                    layout.addView(view)
+                }
+                else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
                     val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
