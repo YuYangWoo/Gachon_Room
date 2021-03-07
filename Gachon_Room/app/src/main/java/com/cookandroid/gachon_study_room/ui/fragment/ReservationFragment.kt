@@ -1,18 +1,16 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.graphics.Color
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.fragment.navArgs
-import com.android.volley.RequestQueue
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.Room
 import com.cookandroid.gachon_study_room.data.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
-import kotlin.collections.ArrayList
 
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
@@ -31,13 +29,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].name) {
-                seatView(rooms.rooms[i].seat)
+                seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
 
     }
 
-    private fun seatView(room: ArrayList<Array<Int>>) {
+    private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         layoutSeat.orientation = LinearLayout.VERTICAL
@@ -76,11 +74,29 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     val view = TextView(requireContext())
                     val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
+
+                    // 빈좌석일 때
+                    if(roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
+                        view.setBackgroundResource(R.drawable.ic_seats_book)
+                        view.tag = STATUS_AVAILABLE
+                    }
+                    else{
+                        // 확정되었을 때
+                            Log.d("test", "빈좌석이아니다.")
+                    if (roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
+                        view.setBackgroundResource(R.drawable.ic_seats_booked)
+                        view.tag = STATUS_BOOKED
+                        // 예약만하고 확정 되지 않았을 때
+                    } else if (!roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
+                        Log.d("test", "예약좌석이다.")
+                        view.setBackgroundResource(R.drawable.ic_seats_reserved)
+                        view.tag = STATUS_RESERVED
+                    }
+                    }
                     view.layoutParams = layoutParams
                     view.setPadding(0, 0, 0, 2 * seatGaping)
                     view.id = seats[i][j]
                     view.gravity = Gravity.CENTER
-                    view.setBackgroundResource(R.drawable.ic_seats_book)
                     view.setTextColor(Color.BLACK)
                     view.text = seats[i][j].toString()
                     view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
@@ -98,6 +114,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         const val START = 0
         const val DOOR = -2
         const val WALL = -1
+        const val STATUS_AVAILABLE = 1
+        const val STATUS_BOOKED = 2
+        const val STATUS_RESERVED = 3
         var seatGaping = 10
         var count = 0
     }

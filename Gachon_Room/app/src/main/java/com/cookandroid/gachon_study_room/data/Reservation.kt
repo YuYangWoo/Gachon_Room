@@ -10,8 +10,7 @@ data class Reservation(
         var time: Long,
         var begin: Long,
         var end: Long,
-        var id: String,
-        var password: String
+        var confirmed: Boolean
 ): Serializable {
-    constructor():this("","","",0,0,0,0,"","")
+    constructor():this("","","",0,0,0,0,false)
 }

@@ -55,15 +55,4 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
        }
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("test", "onstop")
-        dismiss()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        dismiss()
-        Log.d("test", "onpause")
-    }
 }

@@ -22,7 +22,7 @@ object RoomsRequest {
         val stringRequest: StringRequest = object : StringRequest(Method.POST, url,
                 Response.Listener {
                     room = Gson().fromJson(it, RoomsData::class.java)
-
+                    Log.d("test", room.rooms[0].reserved[0].toString())
                 }, Response.ErrorListener {
             Log.d("Error", it.toString())
         }) {
@@ -30,7 +30,9 @@ object RoomsRequest {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params["college"] = MySharedPreferences.getInformation(context).college
+//                params["college"] = MySharedPreferences.getInformation(context).college
+                params["college"] = "TEST"
+
                 return params
             }
 
