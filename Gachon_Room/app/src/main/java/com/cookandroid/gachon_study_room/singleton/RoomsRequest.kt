@@ -30,7 +30,7 @@ object RoomsRequest {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params["college"] = "IT융합대학"
+                params["college"] = MySharedPreferences.getInformation(context).college
                 return params
             }
 

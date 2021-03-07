@@ -18,8 +18,6 @@ import com.cookandroid.gachon_study_room.ui.fragment.ReservationFragmentArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
-//    private val args: ReservationFragmentArgs by navArgs()
-
     private lateinit var conte: Context
 
     constructor(context: Context) : this() {
@@ -28,7 +26,6 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
 
     override fun init() {
         super.init()
-//        var rooms = args.rooms
         var rooms = RoomsRequest.room
         setRecyclerView(rooms.rooms, rooms)
         binding.room = this
@@ -36,7 +33,6 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState)
-
     }
 
     private fun setRecyclerView(list: ArrayList<Room>, roomsData: RoomsData) {
@@ -62,6 +58,5 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
         super.onPause()
         dismiss()
         Log.d("test", "onpause")
-
     }
 }
