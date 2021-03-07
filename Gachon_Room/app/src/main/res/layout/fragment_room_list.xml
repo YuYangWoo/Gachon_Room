@@ -14,12 +14,22 @@
         android:id="@+id/design_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/list_edge">
+        android:background="@drawable/list_edge"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerList"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="wrap_content"
         />
+        <android.widget.Button
+            android:id="@+id/cancel"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_edge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/BaseText"
+            android:text="닫기"
+            />
     </LinearLayout>
 </layout>

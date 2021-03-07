@@ -28,6 +28,7 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
         super.init()
         var rooms = RoomsRequest.room
         setRecyclerView(rooms.rooms, rooms)
+        cancel()
         binding.room = this
     }
 
@@ -46,6 +47,12 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
         }
+    }
+
+   private fun cancel() {
+       binding.cancel.setOnClickListener {
+           dismiss()
+       }
     }
 
     override fun onStop() {
