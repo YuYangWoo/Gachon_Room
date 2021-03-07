@@ -43,8 +43,6 @@ class RoomAdapter : RecyclerView.Adapter<RoomAdapter.ListViewHolder>() {
         }
         init {
             binding.root.setOnClickListener {
-//                RoomListFragment(context).dismiss()
-// 여기 그냥 액티비티 만들어서 붙혀버리는것도 방법일듯.
                 val navHostFragment = (context as AppCompatActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
                 val navController = navHostFragment.navController
                 navController.navigate(RoomListFragmentDirections.actionGlobalReservationFragment(rooms, binding.list.toString()))

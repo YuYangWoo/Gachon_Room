@@ -40,8 +40,6 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewH
                         binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToMySeatDialog())
                     }
                     binding.root.resources.getString(R.string.choose_or_reservation) -> {
-                        var rooms = RoomsRequest.room
-//                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToRoomListFragment(rooms))
                         RoomListFragment().show((context as AppCompatActivity).supportFragmentManager,"Modal")
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {

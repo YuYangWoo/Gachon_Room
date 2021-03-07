@@ -4,175 +4,154 @@ import android.graphics.Color
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.navArgs
-import com.android.volley.RequestQueue
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.Room
 import com.cookandroid.gachon_study_room.data.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.util.*
-import kotlin.collections.ArrayList
-
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
     private lateinit var layout: ViewGroup
     private var seatViewList = ArrayList<TextView>()
-    var seatSize = 100
-    private lateinit var queue: RequestQueue
+    private var seatSize = 100
     private lateinit var rooms: RoomsData
     private lateinit var name: String
-    private var collegeRoom = ArrayList<Room>()
+    private lateinit var table: LinearLayout
+    var selectedIds = ""
+
     override fun init() {
         super.init()
         layout = binding.layoutSeat
         rooms = args.rooms
         name = args.name
-//        val prev: Fragment = (context as AppCompatActivity).supportFragmentManager.findFragmentByTag("Modal")!!
-//        if (prev != null) {
-//            val df: BottomSheetDialogFragment = prev as BottomSheetDialogFragment
-//            df.dismiss()
-//        }
-        Log.d("test", name)
-        Log.d("test", rooms.rooms[0].seat.toString())
-//        queue = Volley.newRequestQueue(context)
-//        seperateCollege(rooms)
-        for(i in 0 until rooms.rooms.size) {
-            if(name == rooms.rooms[i].name) {
-                seatView(rooms.rooms[i].seat)
 
+        for (i in 0 until rooms.rooms.size) {
+            if (name == rooms.rooms[i].name) {
+                seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
+
     }
 
-//    private fun seperateCollege(rooms: RoomsData) {
-//        var name = ArrayList<String>()
-//        for (i in 0 until rooms.rooms.size) {
-//            if (rooms.rooms[i].college == "TEST") {
-//                collegeRoom.add(rooms.rooms[i])
-//                name.add(rooms.rooms[i].name)
-//            }
-//        }
-//        var arrayAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, name)
-//        binding.roomList.adapter = arrayAdapter
-//        binding.roomList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//            }
-//
-//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                for (i in 0 until name.size) {
-//                    if (name[position] == collegeRoom[i].name) {
-////                       for(intArray in collegeRoom[i].seat) {
-////                           for(int in intArray) {
-////                               print("$int")
-////                           }
-////                           println()
-////                       }
-//                        seatView(collegeRoom[i].seat)
-//                    }
-//                }
-//            }
-//
-//        }
-//    }
-
-    private fun seatView(room: ArrayList<Array<Int>>) {
+    private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        layoutSeat.orientation = LinearLayout.VERTICAL
-        layoutSeat.layoutParams = params
-        layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
+
+        with(layoutSeat) {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = params
+            setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
+        }
+
         layout.addView(layoutSeat)
-        lateinit var layout: LinearLayout
+
         var seats = room
-        var garo = seats[0].size //행
-        Log.d("test", "garo" + garo.toString())
-        var sero = seats.size // 열
-        Log.d("test", "sero" + sero.toString())
-//        for(intArray in seats) {
-//            for(int in intArray) {
-//                print("$int")
-//            }
-//            println()
-//        }
 
         for (i in seats.indices) {
             for (j in seats[i].indices) {
-                if (j == 0 || j == seats.size+1) {
-                    layout = LinearLayout(requireContext())
-                    layout.orientation = LinearLayout.HORIZONTAL
-                    layoutSeat.addView(layout)
-//                    if (seats[i][j] == WALL) {
-//                        val view = TextView(requireContext())
-//                        val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
-//                        layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-//                        view.layoutParams = layoutParams
-//                        view.setBackgroundColor(Color.TRANSPARENT)
-//                        layout.addView(view)
-//                    }
-                }
-                else if (seats[i][j] == WALL) {
-//                    val view = TextView(requireContext())
-//                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
-//                    layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-//                    view.layoutParams = layoutParams
-//                    view.setBackgroundColor(Color.TRANSPARENT)
-//                    layout.addView(view)
-                }
-                else if (seats[i][j] == EMPTY) {
+                if (j == START || j == seats.size + 1) {
+                    table = LinearLayout(requireContext())
+                    table.orientation = LinearLayout.HORIZONTAL
+                    layoutSeat.addView(table)
+                } else if (seats[i][j] == WALL) {
+
+                } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                    view.layoutParams = layoutParams
-                    view.setBackgroundColor(Color.TRANSPARENT)
-                    layout.addView(view)
+
+                    with(view) {
+                        layoutParams = layoutParams
+                        setBackgroundColor(Color.TRANSPARENT)
+                    }
+
+                    table.addView(view)
                 } else if (seats[i][j] == DOOR) {
-                    count++
                     val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                    view.layoutParams = layoutParams
-                    view.id = count
-                    view.setBackgroundResource(R.drawable.door)
-                    layout.addView(view)
+
+                    with(view) {
+                        layoutParams = layoutParams
+                        id = count
+                        setBackgroundResource(R.drawable.door)
+                    }
+
+                    table.addView(view)
                     seatViewList.add(view)
                 } else {
                     val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                    view.layoutParams = layoutParams
-                    view.setPadding(0, 0, 0, 2 * seatGaping)
-                    view.id = seats[i][j]
-                    view.gravity = Gravity.CENTER
-                    view.setBackgroundResource(R.drawable.ic_seats_book)
-                    view.setTextColor(Color.BLACK)
-                    view.text = seats[i][j].toString()
-                    view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-                    layout.addView(view)
+
+                    // 빈좌석일 때
+                    if (roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
+                        view.setBackgroundResource(R.drawable.ic_seats_book)
+                        view.tag = STATUS_AVAILABLE
+                    } else {
+                        // 확정되었을 때
+                        if (roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
+                            view.setBackgroundResource(R.drawable.ic_seats_booked)
+                            view.tag = STATUS_BOOKED
+                            // 예약만하고 확정 되지 않았을 때
+                        } else if (!roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
+                            view.setBackgroundResource(R.drawable.ic_seats_reserved)
+                            view.tag = STATUS_RESERVED
+                        }
+                    }
+
+                    with(view) {
+                        layoutParams = layoutParams
+                        setPadding(0, 0, 0, 2 * seatGaping)
+                        id = seats[i][j]
+                        gravity = Gravity.CENTER
+                        setTextColor(Color.BLACK)
+                        text = seats[i][j].toString()
+                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
+                    }
+
+                    table.addView(view)
                     seatViewList.add(view)
+                    view.setOnClickListener { click(view) }
                 }
 
             }
         }
 
+    }
+
+    private fun click(view: View) {
+        if (view.tag as Int == STATUS_AVAILABLE) {
+            if (selectedIds.contains(view.id.toString() + ",")) {
+                selectedIds = selectedIds.replace(view.id.toString() + ",", "")
+                view.setBackgroundResource(R.drawable.ic_seats_book)
+            } else {
+                selectedIds = selectedIds + view.id + ","
+                view.setBackgroundResource(R.drawable.ic_seats_selected)
+            }
+        } else if (view.tag as Int == STATUS_BOOKED) {
+            toast("Seat " + view.id + " is Booked")
+        } else if (view.tag as Int == STATUS_RESERVED) {
+            toast("Seat " + view.id + " is Reserved")
+        }
     }
 
     companion object {
         const val EMPTY = 0
+        const val START = 0
         const val DOOR = -2
         const val WALL = -1
+        const val STATUS_AVAILABLE = 1
+        const val STATUS_BOOKED = 2
+        const val STATUS_RESERVED = 3
         var seatGaping = 10
         var count = 0
     }
-
-
-
 
 }
