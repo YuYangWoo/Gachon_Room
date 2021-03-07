@@ -4,14 +4,16 @@ import android.graphics.Color
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
-
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
@@ -21,6 +23,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private lateinit var rooms: RoomsData
     private lateinit var name: String
     private lateinit var table: LinearLayout
+    var selectedIds = ""
+
     override fun init() {
         super.init()
         layout = binding.layoutSeat
@@ -38,9 +42,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        layoutSeat.orientation = LinearLayout.VERTICAL
-        layoutSeat.layoutParams = params
-        layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
+
+        with(layoutSeat) {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = params
+            setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
+        }
+
         layout.addView(layoutSeat)
 
         var seats = room
@@ -55,58 +63,83 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
                 } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                    view.layoutParams = layoutParams
-                    view.setBackgroundColor(Color.TRANSPARENT)
+
+                    with(view) {
+                        layoutParams = layoutParams
+                        setBackgroundColor(Color.TRANSPARENT)
+                    }
+
                     table.addView(view)
                 } else if (seats[i][j] == DOOR) {
-                    count++
                     val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-                    view.layoutParams = layoutParams
-                    view.id = count
-                    view.setBackgroundResource(R.drawable.door)
+
+                    with(view) {
+                        layoutParams = layoutParams
+                        id = count
+                        setBackgroundResource(R.drawable.door)
+                    }
+
                     table.addView(view)
                     seatViewList.add(view)
                 } else {
                     val view = TextView(requireContext())
-                    val layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     // 빈좌석일 때
-                    if(roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
+                    if (roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
                         view.setBackgroundResource(R.drawable.ic_seats_book)
                         view.tag = STATUS_AVAILABLE
-                    }
-                    else{
+                    } else {
                         // 확정되었을 때
-                            Log.d("test", "빈좌석이아니다.")
-                    if (roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
-                        view.setBackgroundResource(R.drawable.ic_seats_booked)
-                        view.tag = STATUS_BOOKED
-                        // 예약만하고 확정 되지 않았을 때
-                    } else if (!roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
-                        Log.d("test", "예약좌석이다.")
-                        view.setBackgroundResource(R.drawable.ic_seats_reserved)
-                        view.tag = STATUS_RESERVED
+                        if (roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
+                            view.setBackgroundResource(R.drawable.ic_seats_booked)
+                            view.tag = STATUS_BOOKED
+                            // 예약만하고 확정 되지 않았을 때
+                        } else if (!roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
+                            view.setBackgroundResource(R.drawable.ic_seats_reserved)
+                            view.tag = STATUS_RESERVED
+                        }
                     }
+
+                    with(view) {
+                        layoutParams = layoutParams
+                        setPadding(0, 0, 0, 2 * seatGaping)
+                        id = seats[i][j]
+                        gravity = Gravity.CENTER
+                        setTextColor(Color.BLACK)
+                        text = seats[i][j].toString()
+                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
                     }
-                    view.layoutParams = layoutParams
-                    view.setPadding(0, 0, 0, 2 * seatGaping)
-                    view.id = seats[i][j]
-                    view.gravity = Gravity.CENTER
-                    view.setTextColor(Color.BLACK)
-                    view.text = seats[i][j].toString()
-                    view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
+
                     table.addView(view)
                     seatViewList.add(view)
+                    view.setOnClickListener { click(view) }
                 }
 
             }
         }
 
+    }
+
+    private fun click(view: View) {
+        if (view.tag as Int == STATUS_AVAILABLE) {
+            if (selectedIds.contains(view.id.toString() + ",")) {
+                selectedIds = selectedIds.replace(view.id.toString() + ",", "")
+                view.setBackgroundResource(R.drawable.ic_seats_book)
+            } else {
+                selectedIds = selectedIds + view.id + ","
+                view.setBackgroundResource(R.drawable.ic_seats_selected)
+            }
+        } else if (view.tag as Int == STATUS_BOOKED) {
+            toast("Seat " + view.id + " is Booked")
+        } else if (view.tag as Int == STATUS_RESERVED) {
+            toast("Seat " + view.id + " is Reserved")
+        }
     }
 
     companion object {
@@ -120,6 +153,5 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         var seatGaping = 10
         var count = 0
     }
-
 
 }
