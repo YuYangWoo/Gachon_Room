@@ -19,7 +19,7 @@ import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 
 
-object LoginRequest {
+object      LoginRequest {
     private var loginInformation = LoginInformation("", "", "", "", "", "", "")
     private var msg: String = ""
     private var result: Boolean = false
@@ -67,6 +67,7 @@ object LoginRequest {
                         toast(context, context.resources.getString(R.string.server_error))
                     } else if (loginInformation.type == "STUDENT" && result) {
                         toast(context, loginInformation.id + context.resources.getString(R.string.confirm_login))
+                        MySharedPreferences.setResult(context, true)
                         startActivity(context, Intent(context, MainActivity::class.java), null)
                     }
 
