@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
@@ -44,7 +45,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         var list = arrayListOf(
                 Availiable(R.drawable.ic_seats_book, "사용가능"),
                 Availiable(R.drawable.ic_seats_reserved, "예약됨"),
-                Availiable(R.drawable.ic_seats_booked, "확정된 좌석")
+                Availiable(R.drawable.ic_seats_booked, "확정됨")
         )
 
         with(binding.recyclerAvailable) {
@@ -52,8 +53,15 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 data = list
                 notifyDataSetChanged()
             }
-            layoutManager = LinearLayoutManager(requireContext())
-            (layoutManager as LinearLayoutManager).orientation = LinearLayoutManager.HORIZONTAL
+            layoutManager = object : GridLayoutManager(requireContext(), 3) {
+                override fun canScrollHorizontally(): Boolean {
+                    return false
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
             setHasFixedSize(true)
         }
     }
