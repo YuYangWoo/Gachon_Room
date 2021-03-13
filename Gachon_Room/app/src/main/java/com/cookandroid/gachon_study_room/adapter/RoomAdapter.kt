@@ -1,25 +1,16 @@
 package com.cookandroid.gachon_study_room.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.Room
-import com.cookandroid.gachon_study_room.data.RoomsData
-import com.cookandroid.gachon_study_room.databinding.HolderMainListBinding
+import com.cookandroid.gachon_study_room.data.room.Room
+import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.HolderRoomListBinding
-import com.cookandroid.gachon_study_room.singleton.RoomRequest
-import com.cookandroid.gachon_study_room.singleton.RoomsRequest
-import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
-import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment
 import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragmentDirections
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RoomAdapter : RecyclerView.Adapter<RoomAdapter.ListViewHolder>() {
     var data = ArrayList<Room>()

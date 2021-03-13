@@ -3,19 +3,14 @@ package com.cookandroid.gachon_study_room.ui.fragment.seat
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.adapter.MainAdapter
 import com.cookandroid.gachon_study_room.adapter.RoomAdapter
-import com.cookandroid.gachon_study_room.data.Room
-import com.cookandroid.gachon_study_room.data.RoomsData
+import com.cookandroid.gachon_study_room.data.room.Room
+import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentRoomListBinding
 import com.cookandroid.gachon_study_room.singleton.RoomsRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseBottomSheet
-import com.cookandroid.gachon_study_room.ui.fragment.ReservationFragmentArgs
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
     private lateinit var conte: Context
