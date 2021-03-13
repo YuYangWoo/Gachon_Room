@@ -1,17 +1,19 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.graphics.Color
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.RoomsData
+import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
+import com.cookandroid.gachon_study_room.data.room.Availiable
+import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 
@@ -36,18 +38,41 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
+        setRecyclerView()
+    }
 
+    private fun setRecyclerView() {
+        var list = arrayListOf(
+                Availiable(R.drawable.ic_seats_book, "사용가능"),
+                Availiable(R.drawable.ic_seats_reserved, "예약됨"),
+                Availiable(R.drawable.ic_seats_booked, "확정됨")
+        )
+
+        with(binding.recyclerAvailable) {
+            adapter = AvailiableAdapter().apply {
+                data = list
+                notifyDataSetChanged()
+            }
+            layoutManager = object : GridLayoutManager(requireContext(), 3) {
+                override fun canScrollHorizontally(): Boolean {
+                    return false
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+            setHasFixedSize(true)
+        }
     }
 
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        with(layoutSeat) {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = params
-            setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
-        }
+        layoutSeat.orientation = LinearLayout.VERTICAL
+        layoutSeat.layoutParams = params
+        layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
 
         layout.addView(layoutSeat)
 
@@ -65,11 +90,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     val view = TextView(requireContext())
                     var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
-
-                    with(view) {
-                        layoutParams = layoutParams
-                        setBackgroundColor(Color.TRANSPARENT)
-                    }
+                    view.layoutParams = layoutParams
+                    view.setBackgroundColor(Color.TRANSPARENT)
 
                     table.addView(view)
                 } else if (seats[i][j] == DOOR) {
@@ -77,11 +99,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
-                    with(view) {
-                        layoutParams = layoutParams
-                        id = count
-                        setBackgroundResource(R.drawable.door)
-                    }
+                    view.layoutParams = layoutParams
+                    view.id = count
+                    view.setBackgroundResource(R.drawable.door)
 
                     table.addView(view)
                     seatViewList.add(view)
@@ -106,15 +126,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                         }
                     }
 
-                    with(view) {
-                        layoutParams = layoutParams
-                        setPadding(0, 0, 0, 2 * seatGaping)
-                        id = seats[i][j]
-                        gravity = Gravity.CENTER
-                        setTextColor(Color.BLACK)
-                        text = seats[i][j].toString()
-                        setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-                    }
+                    view.layoutParams = layoutParams
+                    view.setPadding(0, 0, 0, 2 * seatGaping)
+                    view.id = seats[i][j]
+                    view.gravity = Gravity.CENTER
+                    view.setTextColor(Color.BLACK)
+                    view.text = seats[i][j].toString()
+                    view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
 
                     table.addView(view)
                     seatViewList.add(view)

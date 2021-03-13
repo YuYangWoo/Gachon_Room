@@ -20,7 +20,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         checkBox()
 
         // 체크되어있다면 메인화면으로
-        if (MySharedPreferences.getCheck(this)) {
+        if (MySharedPreferences.getCheck(this) && MySharedPreferences.getResult(this)) {
             binding.edtId.setText(MySharedPreferences.getUserId(this))
             binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
             MySharedPreferences.setUserId(this, binding.edtId.text.toString())

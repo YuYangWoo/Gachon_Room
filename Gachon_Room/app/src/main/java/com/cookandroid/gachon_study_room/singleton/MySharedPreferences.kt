@@ -8,6 +8,18 @@ object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"
     private var student: StudentInformation = StudentInformation("", "", "", "")
 
+    fun setResult(context: Context, input: Boolean) {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor : SharedPreferences.Editor = prefs.edit()
+        editor.putBoolean("RESULT", input)
+        editor.commit()
+    }
+
+    fun getResult(context: Context): Boolean {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        return prefs.getBoolean("RESULT", false)
+    }
+
     // 사용자 정보 Set
     fun setInformation(context: Context, department: String, studentId: String, name: String, college: String) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)

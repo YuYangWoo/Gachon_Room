@@ -7,8 +7,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.cookandroid.gachon_study_room.data.Room
-import com.cookandroid.gachon_study_room.data.RoomsData
+import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.google.gson.Gson
 import java.io.UnsupportedEncodingException
 
@@ -30,8 +29,8 @@ object RoomsRequest {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-//                params["college"] = MySharedPreferences.getInformation(context).college
-                params["college"] = "TEST"
+                params["college"] = MySharedPreferences.getInformation(context).college
+//                params["college"] = "TEST"
 
                 return params
             }

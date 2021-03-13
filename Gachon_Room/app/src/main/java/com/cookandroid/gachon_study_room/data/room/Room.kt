@@ -1,4 +1,4 @@
-package com.cookandroid.gachon_study_room.data
+package com.cookandroid.gachon_study_room.data.room
 
 import java.io.Serializable
 

@@ -7,7 +7,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.cookandroid.gachon_study_room.data.RoomData
+import com.cookandroid.gachon_study_room.data.room.RoomData
 import com.google.gson.Gson
 import java.io.UnsupportedEncodingException
 
@@ -15,7 +15,7 @@ object RoomRequest {
     private lateinit var queue: RequestQueue
     var room = RoomData()
     private val url = "http://3.34.174.56:8080/room"
-    fun request(context: Context) :RoomData {
+    fun request(context: Context) : RoomData {
         queue = Volley.newRequestQueue(context)
 
         val stringRequest: StringRequest = object : StringRequest(Method.POST, url,
