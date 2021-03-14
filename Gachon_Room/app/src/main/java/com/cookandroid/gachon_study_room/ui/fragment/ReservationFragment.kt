@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             }
         }
         setRecyclerView()
+        btnTimeClick()
+    }
+
+    private fun btnTimeClick() {
+        binding.btnSetTime.setOnClickListener {
+            findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToSetTimeFragment())
+        }
     }
 
     private fun setRecyclerView() {

@@ -17,6 +17,7 @@ import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
     private lateinit var conte: Context
     private lateinit var dialog: ProgressDialog
+
     constructor(context: Context) : this() {
         this.conte = context
     }
@@ -24,7 +25,7 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
     override fun init() {
         super.init()
         var rooms = RoomsRequest.room
-         dialog = ProgressDialog(requireContext())
+        dialog = ProgressDialog(requireContext())
         setRecyclerView(rooms.rooms, rooms, dialog)
         cancel()
         binding.room = this
@@ -50,10 +51,10 @@ class RoomListFragment constructor() : BaseBottomSheet<FragmentRoomListBinding>(
         }
     }
 
-   private fun cancel() {
-       binding.cancel.setOnClickListener {
-           dismiss()
-       }
+    private fun cancel() {
+        binding.cancel.setOnClickListener {
+            dismiss()
+        }
     }
 
     override fun onStop() {
