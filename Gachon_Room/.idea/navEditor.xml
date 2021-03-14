@@ -8,6 +8,11 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="action_global_reservationFragment">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="mainFragment">
                     <value>
                       <LayoutPositions>
@@ -104,6 +109,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="setTimeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-98" />
+                            <option name="y" value="634" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

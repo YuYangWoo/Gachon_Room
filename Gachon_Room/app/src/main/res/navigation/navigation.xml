@@ -40,6 +40,9 @@
             android:name="name"
             app:argType="string"
             android:defaultValue='""' />
+        <action
+            android:id="@+id/action_reservationFragment_to_setTimeFragment"
+            app:destination="@id/setTimeFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomListFragment"
@@ -52,4 +55,8 @@
             android:name="rooms"
             app:argType="com.cookandroid.gachon_study_room.data.room.RoomsData"/>
     </fragment><action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
+    <fragment
+        android:id="@+id/setTimeFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.fragment.SetTimeFragment"
+        android:label="SetTimeFragment" />
 </navigation>
