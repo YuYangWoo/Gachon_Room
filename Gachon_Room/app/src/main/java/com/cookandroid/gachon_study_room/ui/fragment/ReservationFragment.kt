@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -16,6 +17,7 @@ import com.cookandroid.gachon_study_room.data.room.Availiable
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
+import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
