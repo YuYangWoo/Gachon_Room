@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.android.volley.*
@@ -38,39 +39,47 @@ object LoginRequest {
         val stringRequest: StringRequest = object : StringRequest(
                 Method.POST, url,
                 Response.Listener { response ->
-
                     var jsonObject = JSONObject(response)
-                    var account = jsonObject.getJSONObject("account")
-                    msg = jsonObject.getString("message")
                     result = jsonObject.getBoolean("result")
+                    Log.d("test", response)
+                  if(!result) {
+                      if (!isNetworkConnected(context)) {
+                          toast(context, context.resources.getString(R.string.confirm_internet))
+                      } else if (userId.isBlank() || password.isBlank()) {
+                          toast(context, context.resources.getString(R.string.confirm_account))
+                      } else if (msg == "INVALID_ACCOUNT") {
+                          toast(context, context.resources.getString(R.string.confirm_id))
+                      } else if (msg == "SMART_GACHON_ERROR" || msg == "ERROR") {
+                          toast(context, context.resources.getString(R.string.server_error))
+                      } else {
+                          toast(context, "연결 실패")
+                      }
+                  }
+                    else {
+                      var jsonObject = JSONObject(response)
+                      result = jsonObject.getBoolean("result")
+                      var account = jsonObject.getJSONObject("account")
+                      msg = jsonObject.getString("message")
 
-                    with(loginInformation) {
-                        id = account.getString("id")
-                        this.password = account.getString("password")
-                        type = account.getString("type")
-                        department = account.getString("department")
-                        studentId = account.getString("studentId")
-                        name = account.getString("name")
-                        college = account.getString("college")
-                    }
+                      with(loginInformation) {
+                          id = account.getString("id")
+                          this.password = account.getString("password")
+                          type = account.getString("type")
+                          department = account.getString("department")
+                          studentId = account.getString("studentId")
+                          name = account.getString("name")
+                          college = account.getString("college")
+                      }
 
+                      if (loginInformation.type == "STUDENT" && result) {
+                          toast(context, loginInformation.id + context.resources.getString(R.string.confirm_login))
+                          MySharedPreferences.setResult(context, true)
+                          startActivity(context, Intent(context, MainActivity::class.java), null)
+                      }
+
+                  }
                     MySharedPreferences.setInformation(context, loginInformation.department, loginInformation.studentId, loginInformation.name, loginInformation.college)
                     dialog.dismiss()
-
-                    if (!isNetworkConnected(context)) {
-                        toast(context, context.resources.getString(R.string.confirm_internet))
-                    } else if (userId.isBlank() || password.isBlank()) {
-                        toast(context, context.resources.getString(R.string.confirm_account))
-                    } else if (msg == "INVALID_ACCOUNT") {
-                        toast(context, context.resources.getString(R.string.confirm_id))
-                    } else if (msg == "SMART_GACHON_ERROR" || msg == "ERROR") {
-                        toast(context, context.resources.getString(R.string.server_error))
-                    } else if (loginInformation.type == "STUDENT" && result) {
-                        toast(context, loginInformation.id + context.resources.getString(R.string.confirm_login))
-                        MySharedPreferences.setResult(context, true)
-                        startActivity(context, Intent(context, MainActivity::class.java), null)
-                    }
-
                 },
                 Response.ErrorListener { error -> error.printStackTrace() }) {
 
