@@ -19,7 +19,7 @@ import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 
 
-object      LoginRequest {
+object LoginRequest {
     private var loginInformation = LoginInformation("", "", "", "", "", "", "")
     private var msg: String = ""
     private var result: Boolean = false
