@@ -1,8 +1,10 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
+import android.app.TimePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.text.format.DateFormat
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -21,9 +24,13 @@ import com.cookandroid.gachon_study_room.data.room.Availiable
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
+import com.cookandroid.gachon_study_room.ui.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
@@ -49,6 +56,40 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         }
         setRecyclerView()
         timeSet()
+        btnStart()
+        btnEnd()
+    }
+
+    private fun btnStart() {
+        binding.cardViewStart.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val hour = cal.get(Calendar.HOUR_OF_DAY)
+            val minute = cal.get(Calendar.MINUTE)
+            var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
+                                                                       hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+
+               var myStringInfo = SimpleDateFormat("HH:mm").format(cal.time)
+            }
+             CustomTimePickerDialog(requireContext(), timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+        }
+    }
+
+    private fun btnEnd() {
+        binding.cardViewEnd.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val hour = cal.get(Calendar.HOUR_OF_DAY)
+            val minute = cal.get(Calendar.MINUTE)
+            var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
+                                                                       hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+
+                var myStringInfo = SimpleDateFormat("HH:mm").format(cal.time)
+            }
+            CustomTimePickerDialog(requireContext(), timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
