@@ -2,12 +2,15 @@ package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +22,8 @@ import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
@@ -30,6 +35,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private lateinit var table: LinearLayout
     var selectedIds = ""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun init() {
         super.init()
         layout = binding.layoutSeat
@@ -42,13 +48,14 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             }
         }
         setRecyclerView()
-        btnTimeClick()
+        timeSet()
     }
 
-    private fun btnTimeClick() {
-        binding.btnSetTime.setOnClickListener {
-            findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToSetTimeFragment())
-        }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun timeSet() {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd E")
+        binding.txtCurrentTime.text = current.format(formatter)
     }
 
     private fun setRecyclerView() {
