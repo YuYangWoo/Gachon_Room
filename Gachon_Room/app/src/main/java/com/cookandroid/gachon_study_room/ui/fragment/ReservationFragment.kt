@@ -23,6 +23,7 @@ import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
 import com.cookandroid.gachon_study_room.data.room.Availiable
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
+import com.cookandroid.gachon_study_room.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
@@ -60,7 +61,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         btnEnd()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun btnStart() {
+        binding.txtStart.text = TimeRequest.time()
         binding.cardViewStart.setOnClickListener {
             val cal = Calendar.getInstance()
             val hour = cal.get(Calendar.HOUR_OF_DAY)
@@ -71,12 +74,15 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 cal.set(Calendar.MINUTE, minute)
 
                var myStringInfo = SimpleDateFormat("HH:mm").format(cal.time)
+               binding.txtStart.text = myStringInfo
             }
-             CustomTimePickerDialog(requireContext(), timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+             CustomTimePickerDialog(requireContext(), binding, timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun btnEnd() {
+        binding.txtEnd.text = TimeRequest.time()
         binding.cardViewEnd.setOnClickListener {
             val cal = Calendar.getInstance()
             val hour = cal.get(Calendar.HOUR_OF_DAY)
@@ -87,8 +93,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 cal.set(Calendar.MINUTE, minute)
 
                 var myStringInfo = SimpleDateFormat("HH:mm").format(cal.time)
+                binding.txtEnd.text = myStringInfo
             }
-            CustomTimePickerDialog(requireContext(), timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            CustomTimePickerDialog(requireContext(), binding, timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
         }
     }
 
@@ -202,7 +209,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
     }
 
-    private fun click(view: View) {
+    private fun click (view: View) {
         if (view.tag as Int == STATUS_AVAILABLE) {
             if (selectedIds.contains(view.id.toString() + ",")) {
                 selectedIds = selectedIds.replace(view.id.toString() + ",", "")

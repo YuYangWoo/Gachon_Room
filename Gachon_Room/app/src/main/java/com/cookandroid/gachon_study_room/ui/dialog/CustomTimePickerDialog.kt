@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.DialogInterface
 import android.widget.NumberPicker
 import android.widget.TimePicker
+import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 
 
 @Suppress("DEPRECATION")
-class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: OnTimeSetListener?,
+class CustomTimePickerDialog(context: Context?, private val binding: FragmentReservationBinding, private val mTimeSetListener: OnTimeSetListener?,
                              hourOfDay: Int, minute: Int, is24HourView: Boolean) : TimePickerDialog(context, THEME_HOLO_LIGHT, null, hourOfDay,
         minute / TIME_PICKER_INTERVAL, is24HourView) {
     private var mTimePicker: TimePicker? = null
@@ -19,8 +20,9 @@ class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: On
 
     override fun onClick(dialog: DialogInterface, which: Int) {
         when (which) {
-            BUTTON_POSITIVE -> mTimeSetListener?.onTimeSet(mTimePicker, mTimePicker!!.currentHour,
-                    mTimePicker!!.currentMinute * TIME_PICKER_INTERVAL)
+            BUTTON_POSITIVE -> {
+                mTimeSetListener?.onTimeSet(mTimePicker, mTimePicker!!.currentHour, mTimePicker!!.currentMinute * TIME_PICKER_INTERVAL)
+            }
             BUTTON_NEGATIVE -> cancel()
         }
     }
@@ -50,6 +52,6 @@ class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: On
     }
 
     companion object {
-        private const val TIME_PICKER_INTERVAL = 15
+        private const val TIME_PICKER_INTERVAL = 10
     }
 }

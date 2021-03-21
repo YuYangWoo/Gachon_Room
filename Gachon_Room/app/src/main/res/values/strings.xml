@@ -21,4 +21,6 @@
     <string name="extend">연장</string>
     <string name="return_seat">반납</string>
     <string name="choose_seat">원하는 좌석을 선택해주세요</string>
+    <string name="start_time">시작시간</string>
+    <string name="end_time">종료시간</string>
 </resources>
