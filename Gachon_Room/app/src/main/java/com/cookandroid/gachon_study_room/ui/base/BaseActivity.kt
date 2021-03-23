@@ -1,5 +1,6 @@
 package com.cookandroid.gachon_study_room.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +29,7 @@ abstract class BaseActivity<VB : ViewDataBinding>(private val layoutId: Int) : A
         binding = DataBindingUtil.setContentView(this, layoutId)
     }
 
-    protected open fun toast(msg: String) {
+    protected open fun toast(context: Context,  msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

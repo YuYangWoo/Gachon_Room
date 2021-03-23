@@ -3,6 +3,7 @@ package com.cookandroid.gachon_study_room.ui.dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.util.Log
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
@@ -21,6 +22,7 @@ class CustomTimePickerDialog(context: Context?, private val binding: FragmentRes
     override fun onClick(dialog: DialogInterface, which: Int) {
         when (which) {
             BUTTON_POSITIVE -> {
+                Log.d("test", "확인버튼 누름.")
                 mTimeSetListener?.onTimeSet(mTimePicker, mTimePicker!!.currentHour, mTimePicker!!.currentMinute * TIME_PICKER_INTERVAL)
             }
             BUTTON_NEGATIVE -> cancel()

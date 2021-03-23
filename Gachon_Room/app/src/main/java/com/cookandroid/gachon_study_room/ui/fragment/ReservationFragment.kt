@@ -2,7 +2,6 @@ package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.app.TimePickerDialog
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.text.format.DateFormat
 import android.util.Log
@@ -12,12 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.TimePicker
 import androidx.annotation.RequiresApi
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
 import com.cookandroid.gachon_study_room.data.room.Availiable
@@ -26,7 +22,6 @@ import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.dialog.CustomTimePickerDialog
-import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -42,6 +37,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private lateinit var name: String
     private lateinit var table: LinearLayout
     var selectedIds = ""
+    private val TAG = "RESERVATION"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun init() {
@@ -55,10 +51,19 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
-        setRecyclerView()
+        setAvailableRecyclerView()
         timeSet()
         btnStart()
         btnEnd()
+
+        // 열람실 이용가능시간은 9시에서 12시까지.
+        val cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH) + 1
+        var day = cal.get(Calendar.DAY_OF_MONTH)
+        //시작시간
+        val startTime = GregorianCalendar(year, month, day, 9, 0)
+        val endTime = GregorianCalendar(year, month, day, 24, 0)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -66,6 +71,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         binding.txtStart.text = TimeRequest.time()
         binding.cardViewStart.setOnClickListener {
             val cal = Calendar.getInstance()
+            val year = cal.get(Calendar.YEAR)
+            val month = cal.get(Calendar.MONTH) + 1
+            var day = cal.get(Calendar.DAY_OF_MONTH)
             val hour = cal.get(Calendar.HOUR_OF_DAY)
             val minute = cal.get(Calendar.MINUTE)
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
@@ -73,10 +81,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
 
-               var myStringInfo = SimpleDateFormat("HH:mm").format(cal.time)
-               binding.txtStart.text = myStringInfo
+                var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
+                var time = GregorianCalendar(year, month, day, hour, minute)
+                binding.txtStart.text = myStringInfo
+                Log.d("TAG", "year$year month$month day$day hour$hour minute$minute  \n ${time.timeInMillis}")
+
             }
-             CustomTimePickerDialog(requireContext(), binding, timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            CustomTimePickerDialog(requireContext(), binding, timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
         }
     }
 
@@ -85,17 +96,22 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         binding.txtEnd.text = TimeRequest.time()
         binding.cardViewEnd.setOnClickListener {
             val cal = Calendar.getInstance()
+            val year = cal.get(Calendar.YEAR)
+            val month = cal.get(Calendar.MONTH)+1
+            var day = cal.get(Calendar.DAY_OF_MONTH)
             val hour = cal.get(Calendar.HOUR_OF_DAY)
             val minute = cal.get(Calendar.MINUTE)
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-
-                var myStringInfo = SimpleDateFormat("HH:mm").format(cal.time)
+                var time = GregorianCalendar(year, month, day, hour, minute)
+                var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 binding.txtEnd.text = myStringInfo
+                Log.d("TAG", "year$year month$month day$day hour$hour minute$minute  \n ${time.timeInMillis}")
+
             }
-            CustomTimePickerDialog(requireContext(), binding, timeSetListener , hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            CustomTimePickerDialog(requireContext(), binding, timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
         }
     }
 
@@ -106,7 +122,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         binding.txtCurrentTime.text = current.format(formatter)
     }
 
-    private fun setRecyclerView() {
+    private fun setAvailableRecyclerView() {
         var list = arrayListOf(
                 Availiable(R.drawable.ic_seats_book, "사용가능"),
                 Availiable(R.drawable.ic_seats_reserved, "예약됨"),
@@ -209,7 +225,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
     }
 
-    private fun click (view: View) {
+    private fun click(view: View) {
         if (view.tag as Int == STATUS_AVAILABLE) {
             if (selectedIds.contains(view.id.toString() + ",")) {
                 selectedIds = selectedIds.replace(view.id.toString() + ",", "")

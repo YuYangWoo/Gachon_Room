@@ -8,7 +8,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.HolderMainListBinding
-import com.cookandroid.gachon_study_room.singleton.RoomsRequest
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment
 

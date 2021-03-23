@@ -1,22 +1,15 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
-import android.content.Intent
-import android.util.Log
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
-import com.bumptech.glide.Glide
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.MainAdapter
 import com.cookandroid.gachon_study_room.data.StudentInformation
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
-import com.cookandroid.gachon_study_room.singleton.RoomRequest
-import com.cookandroid.gachon_study_room.singleton.RoomsRequest
-import com.cookandroid.gachon_study_room.ui.activity.LoginActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
-import kotlinx.coroutines.*
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -41,8 +34,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private fun roomInfo() {
         queue = Volley.newRequestQueue(context)
-        RoomRequest.request(requireContext())
-        RoomsRequest.request(requireContext())
     }
 
     private fun btnOption() {
