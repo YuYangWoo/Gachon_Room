@@ -12,4 +12,22 @@ data class Information(
     var message: String
 ) : Serializable {
     constructor() : this(Account(), false, "")
+    data class Account(
+        @SerializedName("type")
+        var type: String,
+        @SerializedName("id")
+        var id: String,
+        @SerializedName("password")
+        var password: String,
+        @SerializedName("name")
+        var name: String,
+        @SerializedName("studentId")
+        var studentId: String,
+        @SerializedName("college")
+        var college: String,
+        @SerializedName("department")
+        var department: String,
+    ): Serializable {
+        constructor(): this("","","","","","","")
+    }
 }

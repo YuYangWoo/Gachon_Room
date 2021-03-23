@@ -9,6 +9,20 @@ data class Room(
         var available: ArrayList<Boolean>,
         var reserved: ArrayList<MutableSet<Reservation>>,
         var confirmTimeLimit: Long
-): Serializable {
-    constructor(): this("","", arrayListOf(), arrayListOf(), arrayListOf(), 0)
+) : Serializable {
+    constructor() : this("", "", arrayListOf(), arrayListOf(), arrayListOf(), 0)
+
+    data class Reservation(
+            var studentId: String,
+            var college: String,
+            var room: String,
+            var seat: Int,
+            var time: Long,
+            var begin: Long,
+            var end: Long,
+            var confirmed: Boolean
+    ) : Serializable {
+        constructor() : this("", "", "", 0, 0, 0, 0, false)
+    }
+
 }

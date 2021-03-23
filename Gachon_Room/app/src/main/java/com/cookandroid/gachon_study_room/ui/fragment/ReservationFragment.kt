@@ -46,6 +46,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         rooms = args.rooms
         name = args.name
 
+        // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].name) {
                 seatView(rooms.rooms[i].seat, rooms, i)
@@ -191,7 +192,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
-                    // 빈좌석일 때
+                    // 빈좌석일 때 -> 여기서 코드 추가?
                     if (roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
                         view.setBackgroundResource(R.drawable.ic_seats_book)
                         view.tag = STATUS_AVAILABLE

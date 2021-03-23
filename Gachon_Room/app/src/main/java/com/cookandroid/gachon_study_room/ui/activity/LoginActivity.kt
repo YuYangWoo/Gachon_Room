@@ -7,7 +7,6 @@ import android.util.Log
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.Account
 import com.cookandroid.gachon_study_room.data.Information
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
 import com.cookandroid.gachon_study_room.isNetworkConnected
@@ -20,12 +19,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
-    private lateinit var que: RequestQueue
     private val TAG = "MAIN"
     var userData = Information()
     override fun init() {
         super.init()
-        que = Volley.newRequestQueue(this)
         btnLogin()
         checkBox()
 
@@ -68,7 +65,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
                     if(response.isSuccessful) {
                       userData = response.body()!!
-                        Log.d("TEST", userData.toString())
                         // result가 실패할 경우
                         if(!userData.result) {
                             if (!isNetworkConnected(this@LoginActivity)) {
@@ -123,7 +119,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 큐 비우고 액티비티 종료
     override fun onStop() {
         super.onStop()
-
         finish()
     }
 
