@@ -1,14 +1,11 @@
 package com.cookandroid.gachon_study_room.ui.fragment.seat
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.RoomAdapter
-import com.cookandroid.gachon_study_room.data.room.Room
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentRoomListBinding
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
@@ -37,7 +34,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
     private fun setRecyclerView(dialog: ProgressDialog) {
         var input = HashMap<String, String>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
-        RetrofitBuilder.api.post(input).enqueue(object : Callback<RoomsData> {
+        RetrofitBuilder.api.roomsRequest(input).enqueue(object : Callback<RoomsData> {
             override fun onResponse(call: Call<RoomsData>, response: Response<RoomsData>) {
                 if (response.isSuccessful) {
                     Log.d("test", "연결성공")
