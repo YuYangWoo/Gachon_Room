@@ -25,6 +25,6 @@ object TimeRequest {
     fun fullTime(): String{
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss초")
-        return "현재 시각 : "+ current.format(formatter)
+        return current.format(formatter)
     }
 }
