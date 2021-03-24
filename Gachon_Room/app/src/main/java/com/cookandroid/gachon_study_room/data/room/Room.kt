@@ -7,7 +7,7 @@ data class Room(
         var name: String,
         var seat: ArrayList<Array<Int>>, //2차원
         var available: ArrayList<Boolean>,
-        var reserved: ArrayList<MutableSet<Reservation>>,
+        var reserved: List<ArrayList<Reservation>>,
         var confirmTimeLimit: Long
 ) : Serializable {
     constructor() : this("", "", arrayListOf(), arrayListOf(), arrayListOf(), 0)

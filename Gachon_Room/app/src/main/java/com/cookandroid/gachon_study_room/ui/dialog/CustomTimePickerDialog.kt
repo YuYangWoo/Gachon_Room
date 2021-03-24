@@ -10,7 +10,7 @@ import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 
 
 @Suppress("DEPRECATION")
-class CustomTimePickerDialog(context: Context?, private val binding: FragmentReservationBinding, private val mTimeSetListener: OnTimeSetListener?,
+class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: OnTimeSetListener?,
                              hourOfDay: Int, minute: Int, is24HourView: Boolean) : TimePickerDialog(context, THEME_HOLO_LIGHT, null, hourOfDay,
         minute / TIME_PICKER_INTERVAL, is24HourView) {
     private var mTimePicker: TimePicker? = null
@@ -34,7 +34,7 @@ class CustomTimePickerDialog(context: Context?, private val binding: FragmentRes
         try {
             val classForid = Class.forName("com.android.internal.R\$id")
             val timePickerField = classForid.getField("timePicker")
-            mTimePicker = findViewById<TimePicker>(timePickerField.getInt(null))
+            mTimePicker = findViewById(timePickerField.getInt(null))
             val field = classForid.getField("minute")
             val minuteSpinner = mTimePicker!!
                     .findViewById(field.getInt(null)) as NumberPicker
