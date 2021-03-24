@@ -79,21 +79,27 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val minute = cal.get(Calendar.MINUTE) + interval
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
-                // ok 버트 누르고 나오는 시간.
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                startOurHour = hour
-                startOurMinute = minute
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
-                binding.txtStart.text = myStringInfo
                 startTime = time.timeInMillis
 
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
-                for (i in 0 until rooms.rooms.size) {
-                    if (name == rooms.rooms[i].name) {
-                        seatView(rooms.rooms[i].seat, rooms, i)
+                if(startTime < endTime) {
+                    for (i in 0 until rooms.rooms.size) {
+                        if (name == rooms.rooms[i].name) {
+                            seatView(rooms.rooms[i].seat, rooms, i)
+                        }
                     }
+                    // ok 버트 누르고 나오는 시간.
+
+                    startOurHour = hour
+                    startOurMinute = minute
+                    binding.txtStart.text = myStringInfo
+                }
+                else {
+                    toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
                 }
 
             }
@@ -120,21 +126,28 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val endminute = cal.get(Calendar.MINUTE) + interval
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        endHour, endMinute ->
+
                 cal.set(Calendar.HOUR_OF_DAY, endHour)
                 cal.set(Calendar.MINUTE, endMinute)
                 var time = GregorianCalendar(year, month, day, endHour, endMinute)
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
-                endOurHour = endHour
-                endOurMinute = endMinute
-                binding.txtEnd.text = myStringInfo
                 endTime = time.timeInMillis
 
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
-                for (i in 0 until rooms.rooms.size) {
-                    if (name == rooms.rooms[i].name) {
-                        seatView(rooms.rooms[i].seat, rooms, i)
+                if(startTime < endTime) {
+                    for (i in 0 until rooms.rooms.size) {
+                        if (name == rooms.rooms[i].name) {
+                            seatView(rooms.rooms[i].seat, rooms, i)
+                        }
+                        endOurHour = endHour
+                        endOurMinute = endMinute
+                        binding.txtEnd.text = myStringInfo
                     }
                 }
+                else {
+                    toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
+                }
+
             }
             if(endOurHour == 0) {
                 CustomTimePickerDialog(requireContext(), timeSetListener, endhour, endminute, DateFormat.is24HourFormat(requireContext())).show()
@@ -276,9 +289,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 view.setBackgroundResource(R.drawable.ic_seats_selected)
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
-            toast("Seat " + view.id + " is Booked")
+            toast(requireContext(), "Seat " + view.id + " is Booked")
         } else if (view.tag as Int == STATUS_RESERVED) {
-            toast("Seat " + view.id + " is Reserved")
+            toast(requireContext(), "Seat " + view.id + " is Reserved")
         }
     }
 
