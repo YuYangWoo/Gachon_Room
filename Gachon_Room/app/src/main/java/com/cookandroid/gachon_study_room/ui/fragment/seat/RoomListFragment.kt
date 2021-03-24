@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.RoomAdapter
+import com.cookandroid.gachon_study_room.data.room.Room
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentRoomListBinding
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
@@ -39,6 +40,8 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
                 if (response.isSuccessful) {
                     Log.d("test", "연결성공")
                     var roomsData = response.body()!!
+                    Log.d("TAG", roomsData.rooms[0].reserved[1][0].toString())
+                    roomsData.rooms[0].reserved
 
                     with(binding.recyclerList) {
                         adapter = RoomAdapter(dialog).apply {

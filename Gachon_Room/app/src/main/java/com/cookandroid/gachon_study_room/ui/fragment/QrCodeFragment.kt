@@ -21,9 +21,9 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents == null) {
-                toast("Canceled")
+                toast(requireContext(),"Canceled")
             } else {
-                toast("Scanned: " + result.contents)
+                toast(requireContext(), "Scanned: " + result.contents)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)

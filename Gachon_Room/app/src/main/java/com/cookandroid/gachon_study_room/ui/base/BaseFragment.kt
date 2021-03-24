@@ -1,5 +1,6 @@
 package com.cookandroid.gachon_study_room.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ abstract class BaseFragment<VB: ViewDataBinding>(private val layoutId: Int) : Fr
     protected open fun init() {
 
     }
-    protected open fun toast(msg: String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    protected open fun toast(context: Context, msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 }
