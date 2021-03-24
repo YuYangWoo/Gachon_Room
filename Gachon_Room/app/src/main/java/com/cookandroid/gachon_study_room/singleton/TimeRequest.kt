@@ -16,7 +16,6 @@ object TimeRequest {
         return current.format(formatter)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun time() : String{
         var cal = Calendar.getInstance()
         var hour = cal.get(Calendar.HOUR_OF_DAY)
@@ -28,6 +27,27 @@ object TimeRequest {
     }
 
     fun endTime(): String{
+        var cal = Calendar.getInstance()
+        var hour = cal.get(Calendar.HOUR_OF_DAY) + 3
+        var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+        var minute = cal.get(Calendar.MINUTE) + interval
+        cal.set(Calendar.HOUR_OF_DAY, hour)
+        cal.set(Calendar.MINUTE, minute)
+        return  SimpleDateFormat("HH시 mm분").format(cal.time)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun timeLong() : String{
+        var cal = Calendar.getInstance()
+        var hour = cal.get(Calendar.HOUR_OF_DAY)
+        var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+        var minute = cal.get(Calendar.MINUTE) + interval
+        cal.set(Calendar.HOUR_OF_DAY, hour)
+        cal.set(Calendar.MINUTE, minute)
+        return  SimpleDateFormat("HH시 mm분").format(cal.time)
+    }
+
+    fun endTimeLong(): String{
         var cal = Calendar.getInstance()
         var hour = cal.get(Calendar.HOUR_OF_DAY) + 3
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)

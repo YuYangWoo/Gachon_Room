@@ -38,7 +38,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private lateinit var table: LinearLayout
     var selectedIds = ""
     private val TAG = "RESERVATION"
-
+    private var startTime = 0L
+    private var endTime = 0L
+    private var check = -1
     @RequiresApi(Build.VERSION_CODES.O)
     override fun init() {
         super.init()
@@ -46,27 +48,18 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         rooms = args.rooms
         name = args.name
 
-        // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
-        for (i in 0 until rooms.rooms.size) {
-            if (name == rooms.rooms[i].name) {
-//                var reserved = rooms.rooms[i].reserved
-//                Log.d("TAG",reserved[1].begin.toString())
-                seatView(rooms.rooms[i].seat, rooms, i)
-            }
-        }
+//        // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
+//        for (i in 0 until rooms.rooms.size) {
+//            if (name == rooms.rooms[i].name) {
+////                var reserved = rooms.rooms[i].reserved
+////                Log.d("TAG",reserved[1].begin.toString())
+//                seatView(rooms.rooms[i].seat, rooms, i)
+//            }
+//        }
         setAvailableRecyclerView()
         timeSet()
         btnStart()
         btnEnd()
-
-        // 열람실 이용가능시간은 9시에서 12시까지.
-        val cal = Calendar.getInstance()
-        val year = cal.get(Calendar.YEAR)
-        val month = cal.get(Calendar.MONTH) + 1
-        var day = cal.get(Calendar.DAY_OF_MONTH)
-        //시작시간
-        val startTime = GregorianCalendar(year, month, day, 9, 0)
-        val endTime = GregorianCalendar(year, month, day, 24, 0)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -88,6 +81,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 binding.txtStart.text = myStringInfo
                 Log.d(TAG, "year$year month$month day$day hour$hour minute$minute  \n ${time.timeInMillis}")
+                startTime = time.timeInMillis
                 var simple = SimpleDateFormat("YYYY-MM-dd HH:mm:ss")
                 var date = Date()
                 date.time = time.timeInMillis
@@ -116,11 +110,19 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 binding.txtEnd.text = myStringInfo
                 Log.d(TAG, "year$year month$month day$day hour$hour minute$minute  \n ${time.timeInMillis}")
+                endTime = time.timeInMillis
                 var simple = SimpleDateFormat("YYYY-MM-dd HH:mm:ss")
                 var date = Date()
                 date.time = time.timeInMillis
                 Log.d(TAG, simple.format(date))
-
+                // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
+                for (i in 0 until rooms.rooms.size) {
+                    if (name == rooms.rooms[i].name) {
+//                var reserved = rooms.rooms[i].reserved
+//                Log.d("TAG",reserved[1].begin.toString())
+                        seatView(rooms.rooms[i].seat, rooms, i)
+                    }
+                }
             }
             CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
         }
@@ -161,13 +163,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
+        layoutSeat.removeAllViews()
+        layout.removeAllViews()
         layoutSeat.orientation = LinearLayout.VERTICAL
         layoutSeat.layoutParams = params
         layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
 
         layout.addView(layoutSeat)
-//        Log.d(TAG, roomData.rooms[index].reserved[0])
 
         var seats = room
 
@@ -203,15 +205,42 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
-
-                    // 빈좌석일 때 -> 여기서 코드 추가?
-                    if (roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
-//                        if(TimeRequest.time().toLong() < roomData.rooms[index].reserved.contains("begin"))
-                        view.setBackgroundResource(R.drawable.ic_seats_book)
-                        view.tag = STATUS_AVAILABLE
+                    for(z in 0 until roomData.rooms[index].reserved[seats[i][j]].size) {
+                        if(startTime <= roomData.rooms[index].reserved[seats[i][j]][z].end && endTime >= roomData.rooms[index].reserved[seats[i][j]][z].begin) {
+                            check = STATUS_RESERVED
+                            if(roomData.rooms[index].reserved[seats[i][j]][z].confirmed) {
+                                check = STATUS_BOOKED
+                            }
+                        }
                     }
+                    when (check) {
+                        STATUS_RESERVED -> {
+                            view.setBackgroundResource(R.drawable.ic_seats_reserved)
+                            view.tag = STATUS_RESERVED
+                        }
+                        STATUS_BOOKED -> {
+                            view.setBackgroundResource(R.drawable.ic_seats_booked)
+                            view.tag = STATUS_BOOKED
+                        }
+                        else -> {
+                            view.setBackgroundResource(R.drawable.ic_seats_book)
+                            view.tag = STATUS_AVAILABLE
+                        }
+                    }
+//                    // 빈좌석일 때 -> 여기서 코드 추가?
+//                    if (roomData.rooms[index].reserved[seats[i][j]].toString() == "[]") {
+////                        if(TimeRequest.time().toLong() < roomData.rooms[index].reserved.contains("begin"))
+//                        view.setBackgroundResource(R.drawable.ic_seats_book)
+//                        view.tag = STATUS_AVAILABLE
+//                    }
 //                    else {
 //                        // 확정되었을 때
+//                            for(z in 0 until roomData.rooms[index].reserved[seats[i][j]].size) {
+//                                Log.d("TAG", roomData.rooms[index].reserved[seats[i][j]][z].begin.toString())
+//                                Log.d("TAG", roomData.rooms[index].reserved[seats[i][j]][z].end.toString())
+//
+//                                roomData.rooms[index].reserved[seats[i][j]][z].end
+//                            }
 //                        if (roomData.rooms[index].reserved[seats[i][j]].contains("confirmed")) {
 //                            view.setBackgroundResource(R.drawable.ic_seats_booked)
 //                            view.tag = STATUS_BOOKED
@@ -233,6 +262,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     table.addView(view)
                     seatViewList.add(view)
                     view.setOnClickListener { click(view) }
+                    check = -1
                 }
 
             }
