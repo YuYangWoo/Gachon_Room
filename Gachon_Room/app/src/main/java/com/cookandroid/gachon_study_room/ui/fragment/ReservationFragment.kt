@@ -88,6 +88,14 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 binding.txtStart.text = myStringInfo
                 startTime = time.timeInMillis
+
+                // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
+                for (i in 0 until rooms.rooms.size) {
+                    if (name == rooms.rooms[i].name) {
+                        seatView(rooms.rooms[i].seat, rooms, i)
+                    }
+                }
+
             }
             // 이부분 초기 설정 값으로 넣어주기.
             if(startOurHour == 0) {
@@ -107,17 +115,17 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val year = cal.get(Calendar.YEAR)
             val month = cal.get(Calendar.MONTH)
             var day = cal.get(Calendar.DAY_OF_MONTH)
-            var hour = cal.get(Calendar.HOUR_OF_DAY)
+            var endhour = cal.get(Calendar.HOUR_OF_DAY) + 3
             var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
-            val minute = cal.get(Calendar.MINUTE) +interval
+            val endminute = cal.get(Calendar.MINUTE) + interval
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
-                                                                       hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                var time = GregorianCalendar(year, month, day, hour, minute)
+                                                                       endHour, endMinute ->
+                cal.set(Calendar.HOUR_OF_DAY, endHour)
+                cal.set(Calendar.MINUTE, endMinute)
+                var time = GregorianCalendar(year, month, day, endHour, endMinute)
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
-                endOurHour = hour
-                endOurMinute = minute
+                endOurHour = endHour
+                endOurMinute = endMinute
                 binding.txtEnd.text = myStringInfo
                 endTime = time.timeInMillis
 
@@ -129,7 +137,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 }
             }
             if(endOurHour == 0) {
-                CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+                CustomTimePickerDialog(requireContext(), timeSetListener, endhour, endminute, DateFormat.is24HourFormat(requireContext())).show()
             }
             else {
                 CustomTimePickerDialog(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
