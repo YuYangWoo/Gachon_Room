@@ -45,6 +45,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private var startOurMinute = 0
     private var endOurHour = 0
     private var endOurMinute = 0
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun init() {
         super.init()
@@ -54,7 +55,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
-//        // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
+
+        // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].name) {
                 seatView(rooms.rooms[i].seat, rooms, i)
@@ -77,6 +79,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val hour = cal.get(Calendar.HOUR_OF_DAY)
             var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
             val minute = cal.get(Calendar.MINUTE) + interval
+            // 아래 hour, minute가 선택된 시간 분
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
@@ -84,7 +87,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 startTime = time.timeInMillis
-
+                Log.d("TAG", "시작시간은" + startTime.toString())
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 if(startTime < endTime) {
                     for (i in 0 until rooms.rooms.size) {
@@ -93,7 +96,6 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                         }
                     }
                     // ok 버트 누르고 나오는 시간.
-
                     startOurHour = hour
                     startOurMinute = minute
                     binding.txtStart.text = myStringInfo
@@ -103,7 +105,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 }
 
             }
-            // 이부분 초기 설정 값으로 넣어주기.
+            // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             if(startOurHour == 0) {
                 CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
             }
@@ -132,7 +134,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var time = GregorianCalendar(year, month, day, endHour, endMinute)
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 endTime = time.timeInMillis
-
+                Log.d("TAG", "종료 시간은" + endTime.toString())
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 if(startTime < endTime) {
                     for (i in 0 until rooms.rooms.size) {

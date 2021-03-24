@@ -40,7 +40,6 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
                 if (response.isSuccessful) {
                     Log.d("test", "연결성공")
                     var roomsData = response.body()!!
-                    Log.d("TAG", roomsData.rooms[0].reserved[1][0].toString())
                     roomsData.rooms[0].reserved
 
                     with(binding.recyclerList) {
