@@ -68,6 +68,53 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         btnEnd()
     }
 
+//    @RequiresApi(Build.VERSION_CODES.O)
+//    private fun btnStart() {
+//        binding.txtStart.text = TimeRequest.time()
+//        binding.cardViewStart.setOnClickListener {
+//            val cal = Calendar.getInstance()
+//            val year = cal.get(Calendar.YEAR)
+//            val month = cal.get(Calendar.MONTH)
+//            var day = cal.get(Calendar.DAY_OF_MONTH)
+//            val hour = cal.get(Calendar.HOUR_OF_DAY)
+//            var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+//            val minute = cal.get(Calendar.MINUTE) + interval
+//            // 아래 hour, minute가 선택된 시간 분
+//            var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
+//                                                                       hour, minute ->
+//                cal.set(Calendar.HOUR_OF_DAY, hour)
+//                cal.set(Calendar.MINUTE, minute)
+//                var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
+//                var time = GregorianCalendar(year, month, day, hour, minute)
+//                startTime = time.timeInMillis
+//                Log.d("TAG", "시작시간은" + startTime.toString())
+//                // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
+//                if(startTime < endTime) {
+//                    for (i in 0 until rooms.rooms.size) {
+//                        if (name == rooms.rooms[i].name) {
+//                            seatView(rooms.rooms[i].seat, rooms, i)
+//                        }
+//                    }
+//                    // ok 버트 누르고 나오는 시간.
+//                    startOurHour = hour
+//                    startOurMinute = minute
+//                    binding.txtStart.text = myStringInfo
+//                }
+//                else {
+//                    toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
+//                }
+//
+//            }
+//            // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
+//            if(startOurHour == 0) {
+//                CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+//            }
+//            else {
+//                CustomTimePickerDialog(requireContext(), timeSetListener, startOurHour, startOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+//            }
+//        }
+//    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun btnStart() {
         binding.txtStart.text = TimeRequest.time()
@@ -76,9 +123,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val year = cal.get(Calendar.YEAR)
             val month = cal.get(Calendar.MONTH)
             var day = cal.get(Calendar.DAY_OF_MONTH)
-            val hour = cal.get(Calendar.HOUR_OF_DAY)
+            startOurHour = cal.get(Calendar.HOUR_OF_DAY)
             var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
-            val minute = cal.get(Calendar.MINUTE) + interval
+            startOurMinute = cal.get(Calendar.MINUTE) + interval
             // 아래 hour, minute가 선택된 시간 분
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
@@ -106,59 +153,53 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
-            if(startOurHour == 0) {
-                CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
-            }
-            else {
+
+
                 CustomTimePickerDialog(requireContext(), timeSetListener, startOurHour, startOurMinute, DateFormat.is24HourFormat(requireContext())).show()
-            }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun btnEnd() {
-        binding.txtEnd.text = TimeRequest.endTime()
-        binding.cardViewEnd.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val year = cal.get(Calendar.YEAR)
-            val month = cal.get(Calendar.MONTH)
-            var day = cal.get(Calendar.DAY_OF_MONTH)
-            var endhour = cal.get(Calendar.HOUR_OF_DAY) + 3
-            var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
-            val endminute = cal.get(Calendar.MINUTE) + interval
-            var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
-                                                                       endHour, endMinute ->
+//
+@RequiresApi(Build.VERSION_CODES.O)
+private fun btnEnd() {
+    binding.txtEnd.text = TimeRequest.endTime()
+    binding.cardViewEnd.setOnClickListener {
+        val cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        var day = cal.get(Calendar.DAY_OF_MONTH)
+        endOurHour = cal.get(Calendar.HOUR_OF_DAY) + 3
+        var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+        endOurMinute = cal.get(Calendar.MINUTE) + interval
+        var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
+                                                                   endHour, endMinute ->
 
-                cal.set(Calendar.HOUR_OF_DAY, endHour)
-                cal.set(Calendar.MINUTE, endMinute)
-                var time = GregorianCalendar(year, month, day, endHour, endMinute)
-                var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
-                endTime = time.timeInMillis
-                Log.d("TAG", "종료 시간은" + endTime.toString())
-                // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
-                if(startTime < endTime) {
-                    for (i in 0 until rooms.rooms.size) {
-                        if (name == rooms.rooms[i].name) {
-                            seatView(rooms.rooms[i].seat, rooms, i)
-                        }
-                        endOurHour = endHour
-                        endOurMinute = endMinute
-                        binding.txtEnd.text = myStringInfo
+            cal.set(Calendar.HOUR_OF_DAY, endHour)
+            cal.set(Calendar.MINUTE, endMinute)
+            var time = GregorianCalendar(year, month, day, endHour, endMinute)
+            var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
+            endTime = time.timeInMillis
+            Log.d("TAG", "종료 시간은" + endTime.toString())
+            // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
+            if (startTime < endTime) {
+                for (i in 0 until rooms.rooms.size) {
+                    if (name == rooms.rooms[i].name) {
+                        seatView(rooms.rooms[i].seat, rooms, i)
                     }
+                    endOurHour = endHour
+                    endOurMinute = endMinute
+                    binding.txtEnd.text = myStringInfo
                 }
-                else {
-                    toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
-                }
+            } else {
+                toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
+            }
 
-            }
-            if(endOurHour == 0) {
-                CustomTimePickerDialog(requireContext(), timeSetListener, endhour, endminute, DateFormat.is24HourFormat(requireContext())).show()
-            }
-            else {
-                CustomTimePickerDialog(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
-            }
         }
+
+        CustomTimePickerDialog(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+
     }
+}
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun timeSet() {
