@@ -19,6 +19,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         arrayListOf(resources.getString(R.string.confirm_my_seat), resources.getString(R.string.choose_or_reservation), resources.getString(R.string.confirm_seat))
     }
 
+    // 뷰모델로바꾸기
     private val info: StudentInformation by lazy {
         MySharedPreferences.getInformation(requireContext())
     }

@@ -26,6 +26,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         btnLogin()
         checkBox()
 
+        // 로그인요청을해주고 result가 true면 그때넘어가야함
+        // 로그인할 때마다 가져온거.
         // 체크되어있다면 메인화면으로
         if (MySharedPreferences.getCheck(this) && MySharedPreferences.getResult(this)) {
             binding.edtId.setText(MySharedPreferences.getUserId(this))
@@ -99,6 +101,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                             MySharedPreferences.setResult(this@LoginActivity, true)
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java)
                             )
+                            // finish()
                         }
 
                     }
