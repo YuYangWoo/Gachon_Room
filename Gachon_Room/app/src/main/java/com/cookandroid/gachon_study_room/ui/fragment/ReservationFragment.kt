@@ -41,19 +41,22 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private var startTime = 0L
     private var endTime = 0L
     private var check = -1
+    private var startOurHour = 0
+    private var startOurMinute = 0
+    private var endOurHour = 0
+    private var endOurMinute = 0
     @RequiresApi(Build.VERSION_CODES.O)
     override fun init() {
         super.init()
         layout = binding.layoutSeat
         rooms = args.rooms
         name = args.name
-        startTime = TimeRequest.timeLong()
-        endTime = TimeRequest.endTimeLong()
+
+        startTime = TimeRequest.timeLong().time
+        endTime = TimeRequest.endTimeLong().time
 //        // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].name) {
-//                var reserved = rooms.rooms[i].reserved
-//                Log.d("TAG",reserved[1].begin.toString())
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
@@ -72,18 +75,27 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val month = cal.get(Calendar.MONTH)
             var day = cal.get(Calendar.DAY_OF_MONTH)
             val hour = cal.get(Calendar.HOUR_OF_DAY)
-            val minute = cal.get(Calendar.MINUTE)
+            var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+            val minute = cal.get(Calendar.MINUTE) + interval
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
+                // ok 버트 누르고 나오는 시간.
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-
+                startOurHour = hour
+                startOurMinute = minute
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 binding.txtStart.text = myStringInfo
                 startTime = time.timeInMillis
             }
-            CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            // 이부분 초기 설정 값으로 넣어주기.
+            if(startOurHour == 0) {
+                CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            }
+            else {
+                CustomTimePickerDialog(requireContext(), timeSetListener, startOurHour, startOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+            }
         }
     }
 
@@ -95,14 +107,17 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             val year = cal.get(Calendar.YEAR)
             val month = cal.get(Calendar.MONTH)
             var day = cal.get(Calendar.DAY_OF_MONTH)
-            val hour = cal.get(Calendar.HOUR_OF_DAY)
-            val minute = cal.get(Calendar.MINUTE)
+            var hour = cal.get(Calendar.HOUR_OF_DAY)
+            var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+            val minute = cal.get(Calendar.MINUTE) +interval
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
+                endOurHour = hour
+                endOurMinute = minute
                 binding.txtEnd.text = myStringInfo
                 endTime = time.timeInMillis
 
@@ -113,7 +128,12 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     }
                 }
             }
-            CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            if(endOurHour == 0) {
+                CustomTimePickerDialog(requireContext(), timeSetListener, hour, minute, DateFormat.is24HourFormat(requireContext())).show()
+            }
+            else {
+                CustomTimePickerDialog(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+            }
         }
     }
 

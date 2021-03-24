@@ -3,6 +3,7 @@ package com.cookandroid.gachon_study_room.singleton
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.cookandroid.gachon_study_room.data.Time
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,7 +39,7 @@ object TimeRequest {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun timeLong() : Long{
+    fun timeLong() : Time{
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
@@ -46,11 +47,12 @@ object TimeRequest {
         var hour = cal.get(Calendar.HOUR_OF_DAY)
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
         var minute = cal.get(Calendar.MINUTE) + interval
+        var time = Time(GregorianCalendar(year, month, day, hour, minute).timeInMillis, hour, minute)
         Log.d("TAG", GregorianCalendar(year, month, day, hour, minute).timeInMillis.toString())
-        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
+        return time
     }
 
-    fun endTimeLong(): Long{
+    fun endTimeLong(): Time{
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
@@ -58,8 +60,9 @@ object TimeRequest {
         var hour = cal.get(Calendar.HOUR_OF_DAY) + 3
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
         var minute = cal.get(Calendar.MINUTE) + interval
+        var time = Time(GregorianCalendar(year, month, day, hour, minute).timeInMillis, hour, minute)
         Log.d("TAG", GregorianCalendar(year, month, day, hour, minute).timeInMillis.toString())
-        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
+        return time
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
