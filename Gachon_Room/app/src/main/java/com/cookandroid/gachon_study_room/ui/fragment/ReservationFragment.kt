@@ -94,7 +94,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun btnEnd() {
-        binding.txtEnd.text = TimeRequest.time()
+        binding.txtEnd.text = TimeRequest.endTime().toString()
         binding.cardViewEnd.setOnClickListener {
             val cal = Calendar.getInstance()
             val year = cal.get(Calendar.YEAR)

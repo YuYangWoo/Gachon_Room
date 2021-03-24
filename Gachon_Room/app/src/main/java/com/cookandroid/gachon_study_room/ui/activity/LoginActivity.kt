@@ -116,7 +116,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
-    // 큐 비우고 액티비티 종료
     override fun onStop() {
         super.onStop()
         finish()
