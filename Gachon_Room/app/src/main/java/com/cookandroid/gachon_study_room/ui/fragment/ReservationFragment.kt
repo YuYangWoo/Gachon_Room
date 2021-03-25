@@ -52,11 +52,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         rooms = args.rooms
         name = args.name
 
-        Log.d("TAG","oncreateview")
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
-
-
 
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
@@ -64,11 +61,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
+
         var calc = Calendar.getInstance()
         startOurHour = calc.get(Calendar.HOUR_OF_DAY)
         startOurMinute = calc.get(Calendar.MINUTE) + interval
         endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 3
         endOurMinute = calc.get(Calendar.MINUTE) + interval
+
         setAvailableRecyclerView()
         timeSet()
         btnStart()
@@ -86,7 +85,10 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 startTime = time.timeInMillis
-                Log.d("TAG", "시작시간은$startTime")
+                var simple = SimpleDateFormat("HH시 mm분")
+                var date = Date()
+                date.time = time.timeInMillis
+                Log.d("TAG", "시작시간은$startTime 심플타임 ${simple.format(date)}")
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 if (startTime < endTime) {
                     for (i in 0 until rooms.rooms.size) {
@@ -119,7 +121,10 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 var time = GregorianCalendar(year, month, day, endHour, endMinute)
                 var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
                 endTime = time.timeInMillis
-                Log.d("TAG", "종료 시간은" + endTime.toString())
+                var simple = SimpleDateFormat("HH시 mm분")
+                var date = Date()
+                date.time = time.timeInMillis
+                Log.d("TAG", "종료시간은$endTime 심플타임 ${simple.format(date)}")
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 if (startTime < endTime) {
                     for (i in 0 until rooms.rooms.size) {
