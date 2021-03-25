@@ -28,12 +28,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         // 로그인요청을해주고 result가 true면 그때넘어가야함
         // 로그인할 때마다 가져온거.
         // 체크되어있다면 메인화면으로
-        if (MySharedPreferences.getCheck(this) && MySharedPreferences.getResult(this)) {
+        if (MySharedPreferences.getCheck(this)) {
             binding.edtId.setText(MySharedPreferences.getUserId(this))
             binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
-            MySharedPreferences.setUserId(this, binding.edtId.text.toString())
-            MySharedPreferences.setUserPass(this, binding.edtPassword.text.toString())
-            startActivity(Intent(this, MainActivity::class.java))
+            loginApi()
         }
     }
 
@@ -41,8 +39,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun checkBox() {
         binding.checkBox.setOnCheckedChangeListener { compoundButton, checked ->
             if (checked) {
-                MySharedPreferences.setUserId(this, binding.edtId.text.toString())
-                MySharedPreferences.setUserPass(this, binding.edtPassword.text.toString())
                 MySharedPreferences.setCheck(this, binding.checkBox.isChecked)
             } else {
                 MySharedPreferences.setCheck(this, binding.checkBox.isChecked)
@@ -54,26 +50,31 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            val dialog = ProgressDialog(this@LoginActivity).apply{
-                window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                show()
-            }
-            var input = HashMap<String, String>()
-            input["id"] = binding.edtId.text.toString()
-            input["password"] = binding.edtPassword.text.toString()
-            RetrofitBuilder.api.loginRequest(input).enqueue(object: Callback<Information> {
-                override fun onResponse(call: Call<Information>, response: Response<Information>) {
+            loginApi()
+        }
+    }
 
-                    if(response.isSuccessful) {
-                      userData = response.body()!!
-                        // result가 실패할 경우
-                        if(!userData.result) {
+    private fun loginApi() {
+        val dialog = ProgressDialog(this@LoginActivity).apply {
+            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+        var input = HashMap<String, String>()
+        input["id"] = binding.edtId.text.toString()
+        input["password"] = binding.edtPassword.text.toString()
+        RetrofitBuilder.api.loginRequest(input).enqueue(object : Callback<Information> {
+            override fun onResponse(call: Call<Information>, response: Response<Information>) {
+
+                if (response.isSuccessful) {
+                    userData = response.body()!!
+                    // result가 실패할 경우
+                    if (!userData.result) {
                         toast(this@LoginActivity, userData.message)
-                        }
-                        else {
+                    } else {
                         if (userData.account.type == "STUDENT" && userData.result) {
                             toast(this@LoginActivity, "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}")
-                            MySharedPreferences.setResult(this@LoginActivity, true)
+                            MySharedPreferences.setUserId(this@LoginActivity, binding.edtId.text.toString())
+                            MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.text.toString())
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             MySharedPreferences.setInformation(this@LoginActivity, userData.account.department, userData.account.studentId, userData.account.name, userData.account.college)
                             finish()
@@ -81,16 +82,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
                     }
                     dialog.dismiss()
-                        }
-
-                    }
-
-                override fun onFailure(call: Call<Information>, t: Throwable) {
-                    toast(this@LoginActivity, "연결 실패")
                 }
 
-            })
-        }
+            }
+
+            override fun onFailure(call: Call<Information>, t: Throwable) {
+                toast(this@LoginActivity, "연결 실패")
+            }
+
+        })
     }
 
     override fun onStop() {
