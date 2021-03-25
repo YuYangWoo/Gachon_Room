@@ -11,13 +11,6 @@ import java.util.*
 
 object TimeRequest {
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun day() : String{
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-        return current.format(formatter)
-    }
-
     fun time() : String{
         var cal = Calendar.getInstance()
         var hour = cal.get(Calendar.HOUR_OF_DAY)
@@ -38,7 +31,6 @@ object TimeRequest {
         return  SimpleDateFormat("HH시 mm분").format(cal.time)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun timeLong() : Time{
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
@@ -65,10 +57,4 @@ object TimeRequest {
         return time
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun fullTime(): String{
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss초")
-        return current.format(formatter)
-    }
 }
