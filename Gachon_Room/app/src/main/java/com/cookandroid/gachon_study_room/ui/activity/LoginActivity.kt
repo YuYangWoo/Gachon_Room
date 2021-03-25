@@ -3,17 +3,17 @@ package com.cookandroid.gachon_study_room.ui.activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.Information
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
-import com.cookandroid.gachon_study_room.isNetworkConnected
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
+import com.cookandroid.gachon_study_room.ui.viewmodel.UserDataInformation
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +25,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         super.init()
         btnLogin()
         checkBox()
-
         // 로그인요청을해주고 result가 true면 그때넘어가야함
         // 로그인할 때마다 가져온거.
         // 체크되어있다면 메인화면으로
@@ -69,43 +68,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                       userData = response.body()!!
                         // result가 실패할 경우
                         if(!userData.result) {
-                            if (!isNetworkConnected(this@LoginActivity)) {
-                            toast(this@LoginActivity,resources.getString(R.string.confirm_internet)
-                            )
-                        } else if (input["id"]!!.isBlank() || input["password"]!!.isBlank()) {
-                           toast(
-                                this@LoginActivity,
-                                resources.getString(R.string.confirm_account)
-                            )
-                        } else if (userData.message == "Invalid Account") {
-                           toast(
-                                this@LoginActivity,
-                                resources.getString(R.string.confirm_id)
-                            )
-                        } else if (userData.message == "Smart Gachon System Error" || userData.message == "ERROR") {
-                           toast(
-                                this@LoginActivity,
-                                resources.getString(R.string.server_error)
-                            )
-                        } else {
-                           toast(this@LoginActivity, "연결 실패")
-                        }
+                        toast(this@LoginActivity, userData.message)
                         }
                         else {
-
                         if (userData.account.type == "STUDENT" && userData.result) {
-                            toast(
-                                this@LoginActivity,
-                                userData.account.id + resources.getString(R.string.confirm_login)
-                            )
+                            toast(this@LoginActivity, "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}")
                             MySharedPreferences.setResult(this@LoginActivity, true)
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java)
-                            )
-                            // finish()
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            MySharedPreferences.setInformation(this@LoginActivity, userData.account.department, userData.account.studentId, userData.account.name, userData.account.college)
+                            finish()
                         }
 
                     }
-                    MySharedPreferences.setInformation(this@LoginActivity, userData.account.department, userData.account.studentId, userData.account.name, userData.account.college)
                     dialog.dismiss()
                         }
 
@@ -121,7 +95,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     override fun onStop() {
         super.onStop()
-        finish()
     }
 
 }
