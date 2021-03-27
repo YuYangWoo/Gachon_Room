@@ -35,6 +35,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
     private fun setRecyclerView(dialog: ProgressDialog) {
         var input = HashMap<String, String>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
+//        input["college"] = "TEST"
         RetrofitBuilder.api.roomsRequest(input).enqueue(object : Callback<RoomsData> {
             override fun onResponse(call: Call<RoomsData>, response: Response<RoomsData>) {
                 if (response.isSuccessful) {
