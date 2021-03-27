@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
@@ -353,6 +354,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                     if (response.isSuccessful) {
                                         Log.d("TAG", response.body()!!.toString())
                                         toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
+                                      findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
                                     }
                                 }
 
