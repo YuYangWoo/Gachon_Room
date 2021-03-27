@@ -1,12 +1,8 @@
 package com.cookandroid.gachon_study_room.singleton
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.cookandroid.gachon_study_room.data.Time
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 object TimeRequest {
@@ -44,6 +40,16 @@ object TimeRequest {
         return time
     }
 
+    fun todayTime(): Long {
+        var cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        var day = cal.get(Calendar.DAY_OF_MONTH)
+        var hour = cal.get(Calendar.HOUR_OF_DAY)
+        var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+        var minute = cal.get(Calendar.MINUTE) + interval
+        return GregorianCalendar(year, month, day, hour, minute).timeInMillis
+    }
     fun endTimeLong(): Time{
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)

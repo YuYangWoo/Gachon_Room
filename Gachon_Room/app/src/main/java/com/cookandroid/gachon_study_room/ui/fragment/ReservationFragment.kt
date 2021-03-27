@@ -61,13 +61,6 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
-
-        var calc = Calendar.getInstance()
-        startOurHour = calc.get(Calendar.HOUR_OF_DAY)
-        startOurMinute = calc.get(Calendar.MINUTE) + interval
-        endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 3
-        endOurMinute = calc.get(Calendar.MINUTE) + interval
-
         setAvailableRecyclerView()
         timeSet()
         btnStart()
@@ -90,18 +83,28 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 date.time = time.timeInMillis
                 Log.d("TAG", "시작시간은$startTime 심플타임 ${simple.format(date)}")
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
-                if (startTime < endTime) {
-                    for (i in 0 until rooms.rooms.size) {
-                        if (name == rooms.rooms[i].name) {
-                            seatView(rooms.rooms[i].seat, rooms, i)
-                        }
+                when {
+
+                    startTime < TimeRequest.todayTime() -> {
+                        toast(requireContext(), "대여 시각은 현재 시각 이후부터 설정할 수 있습니다.")
                     }
-                    // ok 버트 누르고 나오는 시간.
-                    startOurHour = hour
-                    startOurMinute = minute
-                    binding.txtStart.text = myStringInfo
-                } else {
-                    toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
+
+                    startTime > endTime -> {
+                        toast(requireContext(), "대여 시각은 종료 시각보다 클 수 없습니다.")
+                    }
+
+                    startTime < endTime -> {
+                        for (i in 0 until rooms.rooms.size) {
+                            if (name == rooms.rooms[i].name) {
+                                seatView(rooms.rooms[i].seat, rooms, i)
+                            }
+                        }
+                        // ok 버트 누르고 나오는 시간.
+                        startOurHour = hour
+                        startOurMinute = minute
+                        binding.txtStart.text = myStringInfo
+                    }
+
                 }
 
             }
@@ -126,19 +129,29 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 date.time = time.timeInMillis
                 Log.d("TAG", "종료시간은$endTime 심플타임 ${simple.format(date)}")
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
-                if (startTime < endTime) {
-                    for (i in 0 until rooms.rooms.size) {
-                        if (name == rooms.rooms[i].name) {
-                            seatView(rooms.rooms[i].seat, rooms, i)
-                        }
-                        endOurHour = endHour
-                        endOurMinute = endMinute
-                        binding.txtEnd.text = myStringInfo
-                    }
-                } else {
-                    toast(requireContext(), "시작시간이 종료시간 보다 늦을 수 없습니다.")
-                }
 
+                when {
+
+                    endTime < TimeRequest.todayTime() -> {
+                        toast(requireContext(), "종료 시각은 현재 시각 이후부터 설정할 수 있습니다.")
+                    }
+
+                    startTime > endTime -> {
+                        toast(requireContext(), "종료 시각은 대여 시각보다 작을 수 없습니다.")
+                    }
+
+                    startTime < endTime -> {
+                        for (i in 0 until rooms.rooms.size) {
+                            if (name == rooms.rooms[i].name) {
+                                seatView(rooms.rooms[i].seat, rooms, i)
+                            }
+                            endOurHour = endHour
+                            endOurMinute = endMinute
+                            binding.txtEnd.text = myStringInfo
+                        }
+                    }
+
+                }
             }
             CustomTimePickerDialog(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
         }
@@ -148,6 +161,20 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         var today = Date()
         var dateFormet = SimpleDateFormat("yyyy-MM-dd E")
         binding.txtCurrentTime.text = dateFormet.format(today)
+
+        var calc = Calendar.getInstance()
+        if (calc.get(Calendar.MINUTE) + interval == 60) {
+            startOurHour = calc.get(Calendar.HOUR_OF_DAY) + 1
+            endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 4
+            startOurMinute = 0
+            endOurMinute = 0
+        } else {
+            startOurHour = calc.get(Calendar.HOUR_OF_DAY)
+            startOurMinute = calc.get(Calendar.MINUTE) + interval
+            endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 3
+            endOurMinute = calc.get(Calendar.MINUTE) + interval
+        }
+
     }
 
     private fun setAvailableRecyclerView() {
