@@ -27,4 +27,8 @@ interface API {
     @FormUrlEncoded
     @POST("/room/reserve")
     fun reserveRequest(@FieldMap param: HashMap<String, Any>): Call<MySeat>
+
+    @FormUrlEncoded
+    @POST("/room/cancel")
+    fun back(@FieldMap param: HashMap<String, Any>): Call<MySeat>
 }
