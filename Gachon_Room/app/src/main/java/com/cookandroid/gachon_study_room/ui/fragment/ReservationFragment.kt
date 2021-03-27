@@ -1,8 +1,9 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
+import android.app.AlertDialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.graphics.Color
-import android.os.Build
 import android.text.format.DateFormat
 import android.util.Log
 import android.util.TypedValue
@@ -11,22 +12,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
+import com.cookandroid.gachon_study_room.data.MySeat
 import com.cookandroid.gachon_study_room.data.room.Availiable
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
+import com.cookandroid.gachon_study_room.service.RetrofitBuilder
+import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.dialog.CustomTimePickerDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
@@ -45,6 +50,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
     private var startOurMinute = 0
     private var endOurHour = 0
     private var endOurMinute = 0
+    private var seatId = 0
+    private var txtStartTime = ""
+    private var txtEndTime = ""
 
     override fun init() {
         super.init()
@@ -65,6 +73,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         timeSet()
         btnStart()
         btnEnd()
+        btnConfirm()
     }
 
     private fun btnStart() {
@@ -75,10 +84,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                                                        hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
+                txtStartTime = SimpleDateFormat("HH시 mm분").format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 startTime = time.timeInMillis
-                var simple = SimpleDateFormat("HH시 mm분")
                 var date = Date()
                 date.time = time.timeInMillis
                 Log.d("TAG", "시작시간은$startTime 심플타임 ${simple.format(date)}")
@@ -102,7 +110,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                         // ok 버트 누르고 나오는 시간.
                         startOurHour = hour
                         startOurMinute = minute
-                        binding.txtStart.text = myStringInfo
+                        binding.txtStart.text = txtStartTime
                     }
 
                 }
@@ -122,9 +130,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 cal.set(Calendar.HOUR_OF_DAY, endHour)
                 cal.set(Calendar.MINUTE, endMinute)
                 var time = GregorianCalendar(year, month, day, endHour, endMinute)
-                var myStringInfo = SimpleDateFormat("HH시 mm분").format(cal.time)
+                txtEndTime = SimpleDateFormat("HH시 mm분").format(cal.time)
                 endTime = time.timeInMillis
-                var simple = SimpleDateFormat("HH시 mm분")
                 var date = Date()
                 date.time = time.timeInMillis
                 Log.d("TAG", "종료시간은$endTime 심플타임 ${simple.format(date)}")
@@ -147,7 +154,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                             }
                             endOurHour = endHour
                             endOurMinute = endMinute
-                            binding.txtEnd.text = myStringInfo
+                            binding.txtEnd.text = txtEndTime
                         }
                     }
 
@@ -293,18 +300,80 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
     private fun click(view: View) {
         if (view.tag as Int == STATUS_AVAILABLE) {
+            // 다시 눌렀을 시
             if (selectedIds.contains(view.id.toString() + ",")) {
                 selectedIds = selectedIds.replace(view.id.toString() + ",", "")
                 view.setBackgroundResource(R.drawable.ic_seats_book)
-            } else {
-                selectedIds = selectedIds + view.id + ","
-                view.setBackgroundResource(R.drawable.ic_seats_selected)
+                Log.d("TAG", selectedIds)
+            } else { // 선택했을시
+                // 하나만 선택가능
+                if (selectedIds == "") {
+                    selectedIds = selectedIds + view.id + ","
+                    seatId = view.id
+                    view.setBackgroundResource(R.drawable.ic_seats_selected)
+                } else { // 2개이상 선택했을 시
+                    toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
+                }
+                Log.d("TAG", selectedIds)
+
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
             toast(requireContext(), "Seat " + view.id + " is Booked")
         } else if (view.tag as Int == STATUS_RESERVED) {
             toast(requireContext(), "Seat " + view.id + " is Reserved")
         }
+    }
+
+    private fun btnConfirm() {
+        binding.btnConfirm.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            var date = Date()
+            var endDate = Date()
+            date.time = startTime
+            endDate.time = endTime
+            if(seatId == 0) {
+                toast(requireContext(), "좌석을 선택해주세요.")
+            }
+            else {
+                builder.setTitle("예약메시지").setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                            var input = HashMap<String, Any>()
+                            input["studentId"] = MySharedPreferences.getInformation(requireContext()).studentId
+                            input["college"] = MySharedPreferences.getInformation(requireContext()).college
+                            input["room"] = name
+                            input["seat"] = seatId
+                            input["time"] = TimeRequest.todayTime()
+                            input["begin"] = startTime
+                            input["end"] = endTime
+                            input["id"] = MySharedPreferences.getUserId(requireContext())
+                            input["password"] = MySharedPreferences.getUserPass(requireContext())
+
+                            RetrofitBuilder.api.reserveRequest(input).enqueue(object : Callback<MySeat> {
+                                override fun onResponse(call: Call<MySeat>, response: Response<MySeat>) {
+                                    if (response.isSuccessful) {
+                                        Log.d("TAG", response.body()!!.toString())
+                                        toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<MySeat>, t: Throwable) {
+                                    Log.d("Error", "연결 에러")
+                                    toast(requireContext(), "좌석 예약에 실패하였습니다.")
+
+                                }
+
+                            })
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                            Log.d("TAG", "취소")
+                        })
+                builder.create()
+                builder.show()
+            }
+
+
+        }
+
     }
 
     companion object {
@@ -322,6 +391,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         val month = cal.get(Calendar.MONTH)
         var day = cal.get(Calendar.DAY_OF_MONTH)
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+        var simple = SimpleDateFormat("HH시 mm분")
     }
 
 }
