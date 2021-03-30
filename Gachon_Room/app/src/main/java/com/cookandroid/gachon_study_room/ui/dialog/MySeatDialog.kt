@@ -46,12 +46,15 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 mySeatData = response.body()!!
 
                 if (mySeatData.reservations.isNotEmpty()) {
-                    binding.txtSeatNumber.visibility = View.VISIBLE
-                    binding.txtLocation.visibility = View.VISIBLE
-                    binding.txtSeat.text = "나의자리"
-                    binding.txtTime.visibility = View.VISIBLE
-                    binding.button.visibility = View.VISIBLE
-                    binding.button2.visibility = View.VISIBLE
+                    with(binding) {
+                        txtSeatNumber.visibility = View.VISIBLE
+                        txtLocation.visibility = View.VISIBLE
+                        txtSeat.text = "나의자리"
+                        txtTime.visibility = View.VISIBLE
+                        button.visibility = View.VISIBLE
+                        button2.visibility = View.VISIBLE
+                    }
+
                     Log.d("TAG", mySeatData.toString())
                     binding.txtSeatNumber.text = binding.txtSeatNumber.text.toString() + " " + mySeatData.reservations[0].seat + "번"
                     binding.txtLocation.text = binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + mySeatData.reservations[0].room
@@ -62,12 +65,14 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                     var end = simple.format(date)
                     binding.txtTime.text = binding.txtTime.text.toString() + " " + "$start ~ $end"
                 } else {
-                    binding.txtSeatNumber.visibility = View.GONE
-                    binding.txtLocation.visibility = View.GONE
-                    binding.txtSeat.text = "예약을 진행해주세요."
-                    binding.txtTime.visibility = View.GONE
-                    binding.button.visibility = View.GONE
-                    binding.button2.visibility = View.GONE
+                    with(binding) {
+                        txtSeatNumber.visibility = View.GONE
+                        txtLocation.visibility = View.GONE
+                        txtSeat.text = "예약을 진행해주세요."
+                        txtTime.visibility = View.GONE
+                        button.visibility = View.GONE
+                        button2.visibility = View.GONE
+                    }
                 }
             }
 

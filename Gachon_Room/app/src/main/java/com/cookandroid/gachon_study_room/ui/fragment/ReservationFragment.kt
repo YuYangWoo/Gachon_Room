@@ -85,7 +85,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                                                        hour, minute ->
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
-                txtStartTime = SimpleDateFormat("HH시 mm분").format(cal.time)
+                txtStartTime = simple.format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 startTime = time.timeInMillis
                 var date = Date()
@@ -131,7 +131,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                 cal.set(Calendar.HOUR_OF_DAY, endHour)
                 cal.set(Calendar.MINUTE, endMinute)
                 var time = GregorianCalendar(year, month, day, endHour, endMinute)
-                txtEndTime = SimpleDateFormat("HH시 mm분").format(cal.time)
+                txtEndTime = simple.format(cal.time)
                 endTime = time.timeInMillis
                 var date = Date()
                 date.time = time.timeInMillis
@@ -165,6 +165,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
         }
     }
 
+    // 정각에 대응하는 timeSet과 년,월,일,요일 Set
     private fun timeSet() {
         var today = Date()
         var dateFormet = SimpleDateFormat("yyyy-MM-dd E")
