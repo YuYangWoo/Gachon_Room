@@ -16,6 +16,7 @@
         android:background="#d1b2ff">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="15dp"
@@ -23,9 +24,9 @@
             android:layout_marginEnd="15dp"
             app:cardCornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.55"
+            app:layout_constraintHeight_percent="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -35,9 +36,12 @@
                     android:id="@+id/recyclerAvailable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/scroolView"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.15"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"></androidx.recyclerview.widget.RecyclerView>
+
                 <ScrollView
                     android:id="@+id/scroolView"
                     android:layout_width="match_parent"
@@ -69,11 +73,121 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
-        <android.widget.Button
-            android:id="@+id/btnSetTime"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewCurrent"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            app:cardBackgroundColor="@color/gray"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+            <TextView
+                android:id="@+id/txtCurrentTime"
+                style="@style/BaseText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="28dp" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewStart"
             android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="20dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
+            app:layout_constraintEnd_toStartOf="@+id/cardViewEnd"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewCurrent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txtStartTime"
+                    style="@style/BaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:text="@string/start_time"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtStart"
+                    style="@style/BaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtStartTime" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewEnd"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="20dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardViewStart"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewCurrent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txtEndTime"
+                    style="@style/BaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:text="@string/end_time"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtEnd"
+                    style="@style/BaseText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtEndTime" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <android.widget.Button
+            android:id="@+id/btnConfirm"
+            style="@style/BaseText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="시간설정"
+            android:background="@drawable/list_edge_color"
+            android:text="확인"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

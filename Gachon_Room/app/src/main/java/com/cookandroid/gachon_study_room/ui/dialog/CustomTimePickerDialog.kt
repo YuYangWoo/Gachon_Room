@@ -2,43 +2,58 @@ package com.cookandroid.gachon_study_room.ui.dialog
 
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.util.Log
+import android.widget.NumberPicker
 import android.widget.TimePicker
+import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 
-class CustomTimePickerDialog(context: Context?, item:Int, callBack: OnTimeSetListener, hourOfDay: Int, minute: Int, is24HourView: Boolean) :  TimePickerDialog(context, item, callBack, hourOfDay, minute, is24HourView) {
-    private var mIgnoreEvent = false
 
-    /*
- * (non-Javadoc)
- * @see android.app.TimePickerDialog#onTimeChanged(android.widget.TimePicker, int, int)
- * Implements Time Change Interval
- */
+@Suppress("DEPRECATION")
+class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: OnTimeSetListener?,
+                             hourOfDay: Int, minute: Int, is24HourView: Boolean) : TimePickerDialog(context, THEME_HOLO_LIGHT, null, hourOfDay,
+        minute / TIME_PICKER_INTERVAL, is24HourView) {
+    private var mTimePicker: TimePicker? = null
+    override fun updateTime(hourOfDay: Int, minuteOfHour: Int) {
+        mTimePicker!!.currentHour = hourOfDay
+        mTimePicker!!.currentMinute = minuteOfHour / TIME_PICKER_INTERVAL
+    }
 
-    override fun onTimeChanged(
-            timePicker: TimePicker,
-            hourOfDay: Int,
-            minute: Int
-    ) {
-        var minute = minute
-        super.onTimeChanged(timePicker, hourOfDay, minute)
-        this.setTitle("예약 시간 선택")
-        if (!mIgnoreEvent) {
-            minute = getRoundedMinute(minute)
-            mIgnoreEvent = true
-            timePicker.currentMinute = minute
-            mIgnoreEvent = false
+    override fun onClick(dialog: DialogInterface, which: Int) {
+        when (which) {
+            BUTTON_POSITIVE -> {
+                Log.d("test", "확인버튼 누름.")
+                mTimeSetListener?.onTimeSet(mTimePicker, mTimePicker!!.currentHour, mTimePicker!!.currentMinute * TIME_PICKER_INTERVAL)
+            }
+            BUTTON_NEGATIVE -> cancel()
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        try {
+            val classForid = Class.forName("com.android.internal.R\$id")
+            val timePickerField = classForid.getField("timePicker")
+            mTimePicker = findViewById(timePickerField.getInt(null))
+            val field = classForid.getField("minute")
+            val minuteSpinner = mTimePicker!!
+                    .findViewById(field.getInt(null)) as NumberPicker
+            minuteSpinner.minValue = 0
+            minuteSpinner.maxValue = 60 / TIME_PICKER_INTERVAL - 1
+            val displayedValues: MutableList<String> = ArrayList()
+            var i = 0
+            while (i < 60) {
+                displayedValues.add(String.format("%02d", i))
+                i += TIME_PICKER_INTERVAL
+            }
+            minuteSpinner.displayedValues = displayedValues
+                    .toTypedArray()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     companion object {
-        const val TIME_PICKER_INTERVAL = 10
-        fun getRoundedMinute(minute: Int): Int {
-            var minute = minute
-            if (minute % TIME_PICKER_INTERVAL != 0) {
-                val minuteFloor = minute - minute % TIME_PICKER_INTERVAL
-                minute = minuteFloor + if (minute == minuteFloor + 1) TIME_PICKER_INTERVAL else 0
-                if (minute == 60) minute = 0
-            }
-            return minute
-        }
+        private const val TIME_PICKER_INTERVAL = 10
     }
 }

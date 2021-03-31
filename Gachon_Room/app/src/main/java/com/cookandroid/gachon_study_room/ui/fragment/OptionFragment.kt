@@ -17,7 +17,7 @@ class OptionFragment :BaseFragment<FragmentOptionBinding>(R.layout.fragment_opti
         binding.btnLogout.setOnClickListener {
             MySharedPreferences.clearUser(requireContext())
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
-            toast("로그아웃 되었습니다.")
+            toast(requireContext(), "로그아웃 되었습니다.")
             requireActivity().finish()
         }
     }

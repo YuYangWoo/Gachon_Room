@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_reservationFragment_to_setTimeFragment"
             app:destination="@id/setTimeFragment" />
+        <action
+            android:id="@+id/action_reservationFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomListFragment"
