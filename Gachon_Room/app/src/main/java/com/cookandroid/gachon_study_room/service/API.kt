@@ -17,7 +17,7 @@ interface API {
     fun roomsRequest(@FieldMap param: HashMap<String, String>): Call<RoomsData>
 
     @FormUrlEncoded
-    @POST("/login")
+    @POST("/account/login")
     fun loginRequest(@FieldMap param: HashMap<String, String>): Call<Information>
 
     @FormUrlEncoded

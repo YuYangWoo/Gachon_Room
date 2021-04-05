@@ -8,8 +8,8 @@ data class Information(
     var account: Account,
     @SerializedName("result")
     var result: Boolean,
-    @SerializedName("message")
-    var message: String
+    @SerializedName("response")
+    var response: String
 ) : Serializable {
     constructor() : this(Account(), false, "")
     data class Account(
@@ -19,8 +19,8 @@ data class Information(
         var id: String,
         @SerializedName("password")
         var password: String,
-        @SerializedName("name")
-        var name: String,
+        @SerializedName("studentName")
+        var studentName: String,
         @SerializedName("studentId")
         var studentId: String,
         @SerializedName("college")

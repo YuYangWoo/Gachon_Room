@@ -11,7 +11,7 @@
 
         <variable
             name="student"
-            type="com.cookandroid.gachon_study_room.data.StudentInformation" />
+            type="com.cookandroid.gachon_study_room.data.Information.Account" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,7 +54,7 @@
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="36dp"
                     android:layout_marginBottom="7dp"
-                    android:text="@{student.name, default = 이름}"
+                    android:text="@{student.studentName, default = 이름}"
                     app:layout_constraintBottom_toTopOf="@+id/txtStudentId"
                     app:layout_constraintStart_toEndOf="@+id/img"
                     app:layout_constraintTop_toTopOf="parent" />

@@ -1,18 +1,13 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
-import android.util.Log
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.MainAdapter
-import com.cookandroid.gachon_study_room.data.StudentInformation
+import com.cookandroid.gachon_study_room.data.Information
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
-import com.cookandroid.gachon_study_room.ui.viewmodel.UserDataInformation
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -22,7 +17,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     }
 
     // 뷰모델로바꾸기
-    private val info: StudentInformation by lazy {
+    private val info: Information.Account by lazy {
         MySharedPreferences.getInformation(requireContext())
     }
 
