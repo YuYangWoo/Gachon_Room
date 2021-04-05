@@ -354,7 +354,12 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                 override fun onResponse(call: Call<MySeat>, response: Response<MySeat>) {
                                     if (response.isSuccessful) {
                                         Log.d("TAG", response.body()!!.toString())
-                                        toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
+                                        if(response.body()!!.result) {
+                                            toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
+                                        }
+                                        else {
+                                            toast(requireContext(), response.body()!!.message)
+                                        }
                                       findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
                                     }
                                 }

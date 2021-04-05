@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.ui.fragment
 
 import android.content.Intent
+import android.util.Log
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.FragmentQrBinding
 import com.cookandroid.gachon_study_room.ui.activity.CaptureForm
@@ -18,16 +19,23 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents == null) {
-                toast(requireContext(),"Canceled")
+        if (requestCode == IntentIntegrator.REQUEST_CODE) {
+            val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+
+            if (result != null) {
+                if (result.contents == null) {
+                    toast(requireContext(),"Canceled")
+                    Log.d("TAG", result.contents)
+                } else {
+                    toast(requireContext(), "Scanned: " + result.contents)
+                    Log.d("TAG", result.contents)
+                }
             } else {
-                toast(requireContext(), "Scanned: " + result.contents)
+                super.onActivityResult(requestCode, resultCode, data)
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
         }
+
+
     }
 
 }
