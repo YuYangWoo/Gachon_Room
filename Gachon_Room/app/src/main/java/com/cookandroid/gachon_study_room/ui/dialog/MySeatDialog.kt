@@ -28,6 +28,7 @@ import kotlin.collections.HashMap
 class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my_seat) {
     private lateinit var mySeatData: MySeat
     private lateinit var dialog: ProgressDialog
+    private var TAG = "MYSEAT"
     override fun init() {
         super.init()
         dialog = ProgressDialog(requireContext()).apply {
@@ -65,7 +66,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                     Log.d("TAG", mySeatData.toString())
                     // 0인덱스 삽입한 것은 수정해야함.
                     binding.txtSeatNumber.text = binding.txtSeatNumber.text.toString() + " " + mySeatData.reservations[0].seat + "번"
-                    binding.txtLocation.text = binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + mySeatData.reservations[0].roomName
+                    binding.txtLocation.text = binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + " " + mySeatData.reservations[0].roomName
                     var date = Date()
                     date.time = mySeatData.reservations[0].begin
                     var start = simple.format(date)
@@ -89,7 +90,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
             override fun onFailure(call: Call<MySeat>, t: Throwable) {
                 Log.d("Error", "mySeat 연결 실패 $t")
-                MySeatDialog().dismiss()
+                dismiss()
                 toast(requireContext(), "연결실패")
             }
 
@@ -102,25 +103,25 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             builder.setTitle("반납확인").setMessage("좌석을 반납하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
                         var input = HashMap<String, Any>()
-                        input["studentId"] = MySharedPreferences.getInformation(requireContext()).studentId
+                        input["reservationId"] = mySeatData.reservations[0].reservationId
                         input["college"] = MySharedPreferences.getInformation(requireContext()).college
-                        input["room"] = mySeatData.reservations[0].roomName
-                        input["seat"] = mySeatData.reservations[0].seat
-                        input["time"] = mySeatData.reservations[0].time
-                        input["begin"] = mySeatData.reservations[0].begin
-                        input["end"] = mySeatData.reservations[0].end
+                        input["roomName"] = mySeatData.reservations[0].roomName
                         input["id"] = MySharedPreferences.getUserId(requireContext())
                         input["password"] = MySharedPreferences.getUserPass(requireContext())
                         RetrofitBuilder.api.back(input).enqueue(object : Callback<MySeat> {
                             override fun onResponse(call: Call<MySeat>, response: Response<MySeat>) {
-                                if (response.isSuccessful) {
+                                Log.d(TAG, response.body()!!.toString())
+                                if (response.body()!!.result) {
                                     toast(requireContext(), "반납성공!!")
+                                    dismiss()
+                                } else {
+                                    toast(requireContext(), response.body()!!.response)
                                     dismiss()
                                 }
                             }
 
                             override fun onFailure(call: Call<MySeat>, t: Throwable) {
-                                toast(requireContext(), "반납실패!!")
+                                toast(requireContext(), "연결실패!!")
 
                             }
 
