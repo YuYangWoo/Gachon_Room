@@ -53,6 +53,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             override fun onResponse(call: Call<MySeat>, response: Response<MySeat>) {
                 mySeatData = response.body()!!
 
+                // 예약을 했다면
                 if (mySeatData.reservations.isNotEmpty()) {
                     with(binding) {
                         txtSeatNumber.visibility = View.VISIBLE
@@ -74,7 +75,9 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                     var end = simple.format(date)
                     binding.txtTime.text = binding.txtTime.text.toString() + " " + "$start ~ $end"
                     dialog.dismiss()
-                } else {
+                }
+                // 예약을 하지 않았다면
+                else {
                     with(binding) {
                         dialog.dismiss()
                         txtSeatNumber.visibility = View.GONE
@@ -90,6 +93,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
             override fun onFailure(call: Call<MySeat>, t: Throwable) {
                 Log.d("Error", "mySeat 연결 실패 $t")
+                dialog.dismiss()
                 dismiss()
                 toast(requireContext(), "연결실패")
             }

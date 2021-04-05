@@ -14,6 +14,9 @@
             android:id="@+id/action_mainFragment_to_mySeatDialog"
             app:destination="@id/mySeatDialog" />
         <action
+            android:id="@+id/action_mainFragment_to_QRCodeActivity"
+            app:destination="@id/QRCodeActivity" />
+        <action
             android:id="@+id/action_mainFragment_to_qrCodeFragment"
             app:destination="@id/qrCodeFragment" />
     </fragment>
@@ -62,4 +65,8 @@
         android:id="@+id/setTimeFragment"
         android:name="com.cookandroid.gachon_study_room.ui.fragment.SetTimeFragment"
         android:label="SetTimeFragment" />
+    <activity
+        android:id="@+id/QRCodeActivity"
+        android:name="com.cookandroid.gachon_study_room.ui.activity.QRCodeActivity"
+        android:label="QRCodeActivity" />
 </navigation>

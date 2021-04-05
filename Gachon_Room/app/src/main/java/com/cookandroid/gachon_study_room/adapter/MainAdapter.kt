@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.HolderMainListBinding
+import com.cookandroid.gachon_study_room.ui.activity.QRCodeActivity
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment
 
@@ -42,7 +44,8 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewH
                         RoomListFragment().show((context as AppCompatActivity).supportFragmentManager,"Modal")
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {
-                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
+//                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
+                        context.startActivity(Intent(context, QRCodeActivity::class.java))
                     }
                 }
             }
