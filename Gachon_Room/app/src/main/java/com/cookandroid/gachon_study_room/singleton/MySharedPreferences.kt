@@ -8,6 +8,31 @@ object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"
     private var student: Information.Account = Information.Account()
 
+    // 사용자 Id Set
+    fun setConfirmRoomName(context: Context, input: String) {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor : SharedPreferences.Editor = prefs.edit()
+        editor.putString("MY_ROOM_NAME", input)
+        editor.commit()
+    }
+
+    fun getConfirmRoomName(context: Context): String {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        return prefs.getString("MY_ROOM_NAME", "").toString()
+    }
+
+    fun setConfirmId(context: Context, input: String) {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor : SharedPreferences.Editor = prefs.edit()
+        editor.putString("MY_CONFIRM_ID", input)
+        editor.commit()
+    }
+
+    fun getConfirmId(context: Context): String {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        return prefs.getString("MY_CONFIRM_ID", "").toString()
+    }
+
     // 사용자 정보 Set
     fun setInformation(context: Context, type: String, department: String, studentId: String, name: String, college: String) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)

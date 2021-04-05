@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
 import com.cookandroid.gachon_study_room.data.MySeat
+import com.cookandroid.gachon_study_room.data.Reserve
 import com.cookandroid.gachon_study_room.data.room.Availiable
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
@@ -349,12 +350,16 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                             input["id"] = MySharedPreferences.getUserId(requireContext())
                             input["password"] = MySharedPreferences.getUserPass(requireContext())
 
-                            RetrofitBuilder.api.reserveRequest(input).enqueue(object : Callback<MySeat> {
-                                override fun onResponse(call: Call<MySeat>, response: Response<MySeat>) {
+                            RetrofitBuilder.api.reserveRequest(input).enqueue(object : Callback<Reserve> {
+                                override fun onResponse(call: Call<Reserve>, response: Response<Reserve>) {
                                     if (response.isSuccessful) {
                                         Log.d("TAG", response.body()!!.toString())
+                                        var reserveResult = response.body()!!
                                         if(response.body()!!.result) {
                                             toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
+                                            MySharedPreferences.setConfirmRoomName(requireContext(), reserveResult.reservations.roomName)
+                                            MySharedPreferences.setConfirmId(requireContext(), reserveResult.reservations.reservationId)
+                                            Log.d("TAG", reserveResult.reservations.reservationId)
                                         }
                                         else {
                                             toast(requireContext(), response.body()!!.response)
@@ -363,7 +368,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                     }
                                 }
 
-                                override fun onFailure(call: Call<MySeat>, t: Throwable) {
+                                override fun onFailure(call: Call<Reserve>, t: Throwable) {
                                     Log.d("Error", "연결 에러")
                                     toast(requireContext(), "좌석 예약에 실패하였습니다.")
 

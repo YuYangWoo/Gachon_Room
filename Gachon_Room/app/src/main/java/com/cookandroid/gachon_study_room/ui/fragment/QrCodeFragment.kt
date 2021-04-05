@@ -13,7 +13,6 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
     override fun init() {
         super.init()
 //        scanQRCode()
-        IntentIntegrator(requireContext() as Activity?).initiateScan();
 
     }
 
@@ -36,16 +35,5 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
 //            super.onActivityResult(requestCode, resultCode, data)
 //        }
 //    }
-override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-    if (result != null) {
-        if (result.contents == null) {
-            toast(requireContext(), "Cancelled")
-        } else {
-            toast(requireContext(), "Scanned: " + result.contents)
-        }
-    } else {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-}
+
 }
