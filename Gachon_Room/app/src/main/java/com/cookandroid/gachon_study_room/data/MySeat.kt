@@ -6,7 +6,7 @@ import java.io.Serializable
 data class MySeat(
         var result: Boolean,
         var reservations: ArrayList<Room.Reservation>,
-        var message: String
+        var response: String
 ): Serializable {
     constructor(): this(false, arrayListOf(), "")
 }

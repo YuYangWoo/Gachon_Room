@@ -342,9 +342,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                             var input = HashMap<String, Any>()
                             input["studentId"] = MySharedPreferences.getInformation(requireContext()).studentId
                             input["college"] = MySharedPreferences.getInformation(requireContext()).college
-                            input["room"] = name
+                            input["roomName"] = name
                             input["seat"] = seatId
-                            input["time"] = TimeRequest.todayTime()
                             input["begin"] = startTime
                             input["end"] = endTime
                             input["id"] = MySharedPreferences.getUserId(requireContext())
@@ -358,7 +357,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                             toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
                                         }
                                         else {
-                                            toast(requireContext(), response.body()!!.message)
+                                            toast(requireContext(), response.body()!!.response)
                                         }
                                       findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
                                     }

@@ -21,7 +21,7 @@ interface API {
     fun loginRequest(@FieldMap param: HashMap<String, String>): Call<Information>
 
     @FormUrlEncoded
-    @POST("/room/myReservation")
+    @POST("/room/reserve/my")
     fun mySeatRequest(@FieldMap param: HashMap<String, String>): Call<MySeat>
 
     @FormUrlEncoded
@@ -29,6 +29,6 @@ interface API {
     fun reserveRequest(@FieldMap param: HashMap<String, Any>): Call<MySeat>
 
     @FormUrlEncoded
-    @POST("/room/cancel")
+    @POST("/room/reserve/cancel")
     fun back(@FieldMap param: HashMap<String, Any>): Call<MySeat>
 }

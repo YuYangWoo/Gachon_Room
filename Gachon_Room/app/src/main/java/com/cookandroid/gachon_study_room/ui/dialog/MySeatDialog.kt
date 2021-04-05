@@ -2,6 +2,8 @@ package com.cookandroid.gachon_study_room.ui.dialog
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
@@ -25,11 +27,16 @@ import kotlin.collections.HashMap
 
 class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my_seat) {
     private lateinit var mySeatData: MySeat
+    private lateinit var dialog: ProgressDialog
     override fun init() {
         super.init()
+        dialog = ProgressDialog(requireContext()).apply {
+            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
         binding.txtSeatNumber.visibility = View.GONE
         binding.txtLocation.visibility = View.GONE
-        binding.txtSeat.text = "예약을 진행해주세요."
+        binding.txtSeat.visibility = View.GONE
         binding.txtTime.visibility = View.GONE
         binding.button.visibility = View.GONE
         binding.button2.visibility = View.GONE
@@ -49,13 +56,14 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                     with(binding) {
                         txtSeatNumber.visibility = View.VISIBLE
                         txtLocation.visibility = View.VISIBLE
-                        txtSeat.text = "나의자리"
+                        txtSeat.visibility = View.VISIBLE
                         txtTime.visibility = View.VISIBLE
                         button.visibility = View.VISIBLE
                         button2.visibility = View.VISIBLE
                     }
 
                     Log.d("TAG", mySeatData.toString())
+                    // 0인덱스 삽입한 것은 수정해야함.
                     binding.txtSeatNumber.text = binding.txtSeatNumber.text.toString() + " " + mySeatData.reservations[0].seat + "번"
                     binding.txtLocation.text = binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + mySeatData.reservations[0].roomName
                     var date = Date()
@@ -64,10 +72,13 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                     date.time = mySeatData.reservations[0].end
                     var end = simple.format(date)
                     binding.txtTime.text = binding.txtTime.text.toString() + " " + "$start ~ $end"
+                    dialog.dismiss()
                 } else {
                     with(binding) {
+                        dialog.dismiss()
                         txtSeatNumber.visibility = View.GONE
                         txtLocation.visibility = View.GONE
+                        txtSeat.visibility = View.VISIBLE
                         txtSeat.text = "예약을 진행해주세요."
                         txtTime.visibility = View.GONE
                         button.visibility = View.GONE
@@ -78,6 +89,8 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
             override fun onFailure(call: Call<MySeat>, t: Throwable) {
                 Log.d("Error", "mySeat 연결 실패 $t")
+                MySeatDialog().dismiss()
+                toast(requireContext(), "연결실패")
             }
 
         })
