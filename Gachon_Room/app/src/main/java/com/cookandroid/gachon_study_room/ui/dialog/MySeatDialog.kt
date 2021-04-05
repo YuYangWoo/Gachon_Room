@@ -57,7 +57,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
                     Log.d("TAG", mySeatData.toString())
                     binding.txtSeatNumber.text = binding.txtSeatNumber.text.toString() + " " + mySeatData.reservations[0].seat + "번"
-                    binding.txtLocation.text = binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + mySeatData.reservations[0].room
+                    binding.txtLocation.text = binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + mySeatData.reservations[0].roomName
                     var date = Date()
                     date.time = mySeatData.reservations[0].begin
                     var start = simple.format(date)
@@ -91,7 +91,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                         var input = HashMap<String, Any>()
                         input["studentId"] = MySharedPreferences.getInformation(requireContext()).studentId
                         input["college"] = MySharedPreferences.getInformation(requireContext()).college
-                        input["room"] = mySeatData.reservations[0].room
+                        input["room"] = mySeatData.reservations[0].roomName
                         input["seat"] = mySeatData.reservations[0].seat
                         input["time"] = mySeatData.reservations[0].time
                         input["begin"] = mySeatData.reservations[0].begin

@@ -66,7 +66,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
-            if (name == rooms.rooms[i].name) {
+            if (name == rooms.rooms[i].roomName) {
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
@@ -104,7 +104,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
-                            if (name == rooms.rooms[i].name) {
+                            if (name == rooms.rooms[i].roomName) {
                                 seatView(rooms.rooms[i].seat, rooms, i)
                             }
                         }
@@ -150,7 +150,7 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
-                            if (name == rooms.rooms[i].name) {
+                            if (name == rooms.rooms[i].roomName) {
                                 seatView(rooms.rooms[i].seat, rooms, i)
                             }
                             endOurHour = endHour

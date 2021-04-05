@@ -19,7 +19,7 @@ import retrofit2.Response
 
 class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
     private lateinit var dialog: ProgressDialog
-
+    private var TAG = "RoomListFragment"
     override fun init() {
         super.init()
         dialog = ProgressDialog(requireContext())
@@ -41,7 +41,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
                 if (response.isSuccessful) {
                     Log.d("test", "연결성공")
                     var roomsData = response.body()!!
-                    roomsData.rooms[0].reserved
+                    Log.d(TAG, roomsData.toString())
 
                     with(binding.recyclerList) {
                         adapter = RoomAdapter(dialog).apply {

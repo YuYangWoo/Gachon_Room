@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
@@ -14,7 +13,6 @@ import com.cookandroid.gachon_study_room.data.room.Room
 import com.cookandroid.gachon_study_room.data.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.HolderRoomListBinding
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
-import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment
 import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragmentDirections
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -29,7 +27,7 @@ class RoomAdapter(dialog: ProgressDialog) : RecyclerView.Adapter<RoomAdapter.Lis
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.onBind(data[position].name)
+        holder.onBind(data[position].roomName)
     }
 
     override fun getItemCount(): Int {
