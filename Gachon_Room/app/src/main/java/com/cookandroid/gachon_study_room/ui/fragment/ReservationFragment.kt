@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.text.format.DateFormat
 import android.util.Log
 import android.util.TypedValue
@@ -27,6 +28,7 @@ import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.dialog.CustomTimePickerDialog
+import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -359,6 +361,10 @@ class ReservationFragment :
                 builder.setTitle("예약메시지")
                     .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                        val dialog = ProgressDialog(requireContext()).apply {
+                            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            show()
+                        }
                         var input = HashMap<String, Any>()
                         input["studentId"] =
                             MySharedPreferences.getInformation(requireContext()).studentId
@@ -381,7 +387,7 @@ class ReservationFragment :
                                         Log.d(TAG, response.body()!!.toString())
                                         var reserveResult = response.body()!!
                                         if (reserveResult.result) {
-                                            toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
+                                            toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
                                             MySharedPreferences.setConfirmRoomName(
                                                 requireContext(),
                                                 reserveResult.reservation.roomName
@@ -394,6 +400,7 @@ class ReservationFragment :
                                             toast(requireContext(), response.body()!!.response)
                                         }
                                         findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
+                                        dialog.dismiss()
                                     }
                                 }
 

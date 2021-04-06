@@ -35,12 +35,15 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()
         }
-        binding.txtSeatNumber.visibility = View.GONE
-        binding.txtLocation.visibility = View.GONE
-        binding.txtSeat.visibility = View.GONE
-        binding.txtTime.visibility = View.GONE
-        binding.button.visibility = View.GONE
-        binding.button2.visibility = View.GONE
+        with(binding) {
+            txtSeatNumber.visibility = View.GONE
+            txtLocation.visibility = View.GONE
+            txtSeat.visibility = View.GONE
+            txtTime.visibility = View.GONE
+            button.visibility = View.GONE
+            button2.visibility = View.GONE
+            txtStatus.visibility = View.GONE
+        }
         txtSet()
         back()
     }
@@ -64,6 +67,14 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                         button2.visibility = View.VISIBLE
                     }
 
+                    if(mySeatData.reservations[0].confirmed) {
+                        binding.txtStatus.visibility = View.VISIBLE
+                        binding.txtStatus.text = binding.txtStatus.text.toString() + " " + "확정됨"
+                    }
+                    else {
+                        binding.txtStatus.visibility = View.VISIBLE
+                        binding.txtStatus.text = binding.txtStatus.text.toString() + " " + "예약됨"
+                    }
                     Log.d("TAG", mySeatData.toString())
                     // 0인덱스 삽입한 것은 수정해야함.
                     binding.txtSeatNumber.text = binding.txtSeatNumber.text.toString() + " " + mySeatData.reservations[0].seat + "번"
@@ -106,6 +117,10 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("반납확인").setMessage("좌석을 반납하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                        val dialog = ProgressDialog(requireContext()).apply {
+                            window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            show()
+                        }
                         var input = HashMap<String, Any>()
                         input["reservationId"] = mySeatData.reservations[0].reservationId
                         input["college"] = MySharedPreferences.getInformation(requireContext()).college
@@ -122,6 +137,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                                     toast(requireContext(), response.body()!!.response)
                                     dismiss()
                                 }
+                                dialog.dismiss()
                             }
 
                             override fun onFailure(call: Call<MySeat>, t: Throwable) {
