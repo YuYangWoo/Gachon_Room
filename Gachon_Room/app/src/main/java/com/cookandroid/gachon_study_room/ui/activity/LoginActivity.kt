@@ -31,6 +31,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         if (MySharedPreferences.getCheck(this)) {
             binding.edtId.setText(MySharedPreferences.getUserId(this))
             binding.edtPassword.setText(MySharedPreferences.getUserPass(this))
+            binding.checkBox.isChecked = true
             loginApi()
         }
     }
