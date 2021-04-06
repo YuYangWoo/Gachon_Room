@@ -5,5 +5,7 @@
         <bitmap
             android:src="@drawable/logo_white"
             android:gravity="center"/>
+            <size
+                android:width="128dp"/>
     </item>
 </layer-list>
