@@ -6,6 +6,6 @@
             android:src="@drawable/logo_white"
             android:gravity="center"/>
             <size
-                android:width="128dp"/>
+                android:width="150dp"/>
     </item>
 </layer-list>
