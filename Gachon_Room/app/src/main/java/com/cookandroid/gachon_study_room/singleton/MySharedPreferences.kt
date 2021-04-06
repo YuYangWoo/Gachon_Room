@@ -10,8 +10,8 @@ object MySharedPreferences {
 
     // 사용자 Id Set
     fun setConfirmRoomName(context: Context, input: String) {
-        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        val editor : SharedPreferences.Editor = prefs.edit()
+        val prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
         editor.putString("MY_ROOM_NAME", input)
         editor.commit()
     }

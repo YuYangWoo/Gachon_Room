@@ -18,6 +18,7 @@ import java.util.HashMap
 
 class QRCodeActivity : BaseActivity<FragmentQrBinding>(R.layout.fragment_qr) {
 
+    private var TAG = "QRCODE_ACTIVITY"
     override fun init() {
         super.init()
         scanQRCode()
@@ -40,7 +41,7 @@ class QRCodeActivity : BaseActivity<FragmentQrBinding>(R.layout.fragment_qr) {
             }
             else { // 스캔 되었을 때
                 toast(this, "Scanned: " + result.contents)
-                Log.d("TAG", result.contents)
+                Log.d(TAG, result.contents)
                 var input = HashMap<String, Any>()
                 input["roomName"] = MySharedPreferences.getConfirmRoomName(this)
                 input["college"] = MySharedPreferences.getInformation(this).college
@@ -48,6 +49,7 @@ class QRCodeActivity : BaseActivity<FragmentQrBinding>(R.layout.fragment_qr) {
                 input["token"] = result.contents
                 input["id"] = MySharedPreferences.getUserId(this)
                 input["password"] = MySharedPreferences.getUserPass(this)
+                Log.d(TAG, input.toString())
                 RetrofitBuilder.api.confirm(input).enqueue(object : Callback<Confirm> {
                     override fun onResponse(call: Call<Confirm>, response: Response<Confirm>) {
                        var confirmResult = response.body()!!

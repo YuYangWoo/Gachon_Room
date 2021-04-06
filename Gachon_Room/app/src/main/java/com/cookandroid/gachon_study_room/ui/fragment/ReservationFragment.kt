@@ -35,7 +35,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
+class ReservationFragment :
+    BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
     private lateinit var layout: ViewGroup
     private var seatViewList = ArrayList<TextView>()
@@ -119,7 +120,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
-            CustomTimePickerDialog(requireContext(), timeSetListener, startOurHour, startOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+            CustomTimePickerDialog(
+                requireContext(),
+                timeSetListener,
+                startOurHour,
+                startOurMinute,
+                DateFormat.is24HourFormat(requireContext())
+            ).show()
         }
     }
 
@@ -162,7 +169,13 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
                 }
             }
-            CustomTimePickerDialog(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+            CustomTimePickerDialog(
+                requireContext(),
+                timeSetListener,
+                endOurHour,
+                endOurMinute,
+                DateFormat.is24HourFormat(requireContext())
+            ).show()
         }
     }
 
@@ -189,9 +202,9 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
     private fun setAvailableRecyclerView() {
         var list = arrayListOf(
-                Availiable(R.drawable.ic_seats_book, "사용가능"),
-                Availiable(R.drawable.ic_seats_reserved, "예약됨"),
-                Availiable(R.drawable.ic_seats_booked, "확정됨")
+            Availiable(R.drawable.ic_seats_book, "사용가능"),
+            Availiable(R.drawable.ic_seats_reserved, "예약됨"),
+            Availiable(R.drawable.ic_seats_booked, "확정됨")
         )
 
         with(binding.recyclerAvailable) {
@@ -214,7 +227,10 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
-        val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        val params = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
         layoutSeat.removeAllViews()
         layout.removeAllViews()
         layoutSeat.orientation = LinearLayout.VERTICAL
@@ -235,7 +251,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
 
                 } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
-                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams =
+                        LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                     view.layoutParams = layoutParams
                     view.setBackgroundColor(Color.TRANSPARENT)
@@ -243,7 +260,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     table.addView(view)
                 } else if (seats[i][j] == DOOR) {
                     val view = TextView(requireContext())
-                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams =
+                        LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     view.layoutParams = layoutParams
@@ -254,7 +272,8 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                     seatViewList.add(view)
                 } else {
                     val view = TextView(requireContext())
-                    var layoutParams: LinearLayout.LayoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams: LinearLayout.LayoutParams =
+                        LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     // 좌석의 번호에 따른 reserved 크기를 구해 예약된 시간과 비교
@@ -334,37 +353,47 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
             var endDate = Date()
             date.time = startTime
             endDate.time = endTime
-            if(seatId == 0) {
+            if (seatId == 0) {
                 toast(requireContext(), "좌석을 선택해주세요.")
-            }
-            else {
-                builder.setTitle("예약메시지").setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                            var input = HashMap<String, Any>()
-                            input["studentId"] = MySharedPreferences.getInformation(requireContext()).studentId
-                            input["college"] = MySharedPreferences.getInformation(requireContext()).college
-                            input["roomName"] = name
-                            input["seat"] = seatId
-                            input["begin"] = startTime
-                            input["end"] = endTime
-                            input["id"] = MySharedPreferences.getUserId(requireContext())
-                            input["password"] = MySharedPreferences.getUserPass(requireContext())
+            } else {
+                builder.setTitle("예약메시지")
+                    .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                        var input = HashMap<String, Any>()
+                        input["studentId"] =
+                            MySharedPreferences.getInformation(requireContext()).studentId
+                        input["college"] =
+                            MySharedPreferences.getInformation(requireContext()).college
+                        input["roomName"] = name
+                        input["seat"] = seatId
+                        input["begin"] = startTime
+                        input["end"] = endTime
+                        input["id"] = MySharedPreferences.getUserId(requireContext())
+                        input["password"] = MySharedPreferences.getUserPass(requireContext())
 
-                            RetrofitBuilder.api.reserveRequest(input).enqueue(object : Callback<Reserve> {
-                                override fun onResponse(call: Call<Reserve>, response: Response<Reserve>) {
+                        RetrofitBuilder.api.reserveRequest(input)
+                            .enqueue(object : Callback<Reserve> {
+                                override fun onResponse(
+                                    call: Call<Reserve>,
+                                    response: Response<Reserve>
+                                ) {
                                     if (response.isSuccessful) {
-                                        Log.d("TAG", response.body()!!.toString())
+                                        Log.d(TAG, response.body()!!.toString())
                                         var reserveResult = response.body()!!
-                                        if(response.body()!!.result) {
+                                        if (reserveResult.result) {
                                             toast(requireContext(), "좌석 예약에 성공하였습니다. 10분안에 확정해주세요!")
-                                            MySharedPreferences.setConfirmRoomName(requireContext(), reserveResult.reservations.roomName)
-                                            MySharedPreferences.setConfirmId(requireContext(), reserveResult.reservations.reservationId)
-                                            Log.d("TAG", reserveResult.reservations.reservationId)
-                                        }
-                                        else {
+                                            MySharedPreferences.setConfirmRoomName(
+                                                requireContext(),
+                                                reserveResult.reservation.roomName
+                                            )
+                                            MySharedPreferences.setConfirmId(
+                                                requireContext(),
+                                                reserveResult.reservation.reservationId
+                                            )
+                                        } else {
                                             toast(requireContext(), response.body()!!.response)
                                         }
-                                      findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
+                                        findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
                                     }
                                 }
 
@@ -375,10 +404,10 @@ class ReservationFragment : BaseFragment<FragmentReservationBinding>(R.layout.fr
                                 }
 
                             })
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                            Log.d("TAG", "취소")
-                        })
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                        Log.d("TAG", "취소")
+                    })
                 builder.create()
                 builder.show()
             }
