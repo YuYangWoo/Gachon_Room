@@ -69,14 +69,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     userData = response.body()!!
                     // result가 실패할 경우
                     if (!userData.result) {
-                        toast(this@LoginActivity, userData.message)
+                        toast(this@LoginActivity, userData.response)
                     } else {
                         if (userData.account.type == "STUDENT" && userData.result) {
                             toast(this@LoginActivity, "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}")
                             MySharedPreferences.setUserId(this@LoginActivity, binding.edtId.text.toString())
                             MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.text.toString())
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                            MySharedPreferences.setInformation(this@LoginActivity, userData.account.department, userData.account.studentId, userData.account.name, userData.account.college)
+                            MySharedPreferences.setInformation(this@LoginActivity, userData.account.type,userData.account.department, userData.account.studentId, userData.account.studentName, userData.account.college)
                             finish()
                         }
 
@@ -93,8 +93,5 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         })
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
 
 }

@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="QRCodeActivity">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-784" />
+                            <option name="y" value="38" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="action_global_reservationFragment">
                     <value>
                       <LayoutPositions />
@@ -74,7 +86,7 @@
                         <option name="myPosition">
                           <Point>
                             <option name="x" value="-608" />
-                            <option name="y" value="209" />
+                            <option name="y" value="329" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -88,6 +100,20 @@
                             <option name="x" value="-369" />
                             <option name="y" value="636" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_reservationFragment_to_mainFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_reservationFragment_to_setTimeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

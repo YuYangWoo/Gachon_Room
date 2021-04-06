@@ -1,5 +1,6 @@
 package com.cookandroid.gachon_study_room.service
 
+import com.cookandroid.gachon_study_room.data.Confirm
 import com.cookandroid.gachon_study_room.data.Information
 import com.cookandroid.gachon_study_room.data.MySeat
 import com.cookandroid.gachon_study_room.data.Reserve
@@ -17,18 +18,22 @@ interface API {
     fun roomsRequest(@FieldMap param: HashMap<String, String>): Call<RoomsData>
 
     @FormUrlEncoded
-    @POST("/login")
+    @POST("/account/login")
     fun loginRequest(@FieldMap param: HashMap<String, String>): Call<Information>
 
     @FormUrlEncoded
-    @POST("/room/myReservation")
+    @POST("/room/reserve/my")
     fun mySeatRequest(@FieldMap param: HashMap<String, String>): Call<MySeat>
 
     @FormUrlEncoded
     @POST("/room/reserve")
-    fun reserveRequest(@FieldMap param: HashMap<String, Any>): Call<MySeat>
+    fun reserveRequest(@FieldMap param: HashMap<String, Any>): Call<Reserve>
 
     @FormUrlEncoded
-    @POST("/room/cancel")
+    @POST("/room/reserve/cancel")
     fun back(@FieldMap param: HashMap<String, Any>): Call<MySeat>
+
+    @FormUrlEncoded
+    @POST("/room/reserve/confirm")
+    fun confirm(@FieldMap param: HashMap<String, Any>): Call<Confirm>
 }
