@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.Nullable
+import androidx.navigation.fragment.findNavController
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.Confirm
 import com.cookandroid.gachon_study_room.databinding.FragmentQrBinding
@@ -30,7 +31,7 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
     override fun init() {
         super.init()
         scanQRCode()
-
+        btnConfirm()
     }
 
     private fun scanQRCode() {
@@ -45,7 +46,11 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
         integrator.initiateScan()
     }
 
-
+    private fun btnConfirm() {
+        binding.btnConfirm.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
