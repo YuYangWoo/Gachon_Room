@@ -44,8 +44,8 @@ class MainAdapter(context: Context) : RecyclerView.Adapter<MainAdapter.ListViewH
                         RoomListFragment().show((context as AppCompatActivity).supportFragmentManager,"Modal")
                     }
                     binding.root.resources.getString(R.string.confirm_seat) -> {
-//                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
-                        context.startActivity(Intent(context, QRCodeActivity::class.java))
+                        binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
+//                        context.startActivity(Intent(context, QRCodeActivity::class.java))
                     }
                 }
             }

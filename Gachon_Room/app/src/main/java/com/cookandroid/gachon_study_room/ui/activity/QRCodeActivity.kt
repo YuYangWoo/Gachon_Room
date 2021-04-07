@@ -20,7 +20,6 @@ import com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 import com.google.zxing.integration.android.IntentIntegrator
-import kotlinx.android.synthetic.main.fragment_my_seat.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
