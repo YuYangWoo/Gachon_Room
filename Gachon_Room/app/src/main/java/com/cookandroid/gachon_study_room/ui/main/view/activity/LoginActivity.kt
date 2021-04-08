@@ -104,6 +104,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.text.toString())
             MySharedPreferences.setInformation(this@LoginActivity, userData.account.type, userData.account.department, userData.account.studentId, userData.account.studentName, userData.account.college)
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
         } else {
             toast(this@LoginActivity, "연결실패")
         }
