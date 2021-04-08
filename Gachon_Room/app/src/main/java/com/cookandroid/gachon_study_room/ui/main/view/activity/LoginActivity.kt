@@ -71,14 +71,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
                         dialog.show()
                     }
-//                    userData.result -> {
-//                        loginApi()
-//                        Log.d(TAG, "로그인성공")
-//                        ProgressDialog(this).dismiss()
-//                    }
-//                    else -> {
-//                        toast(this@LoginActivity, userData.response)
-//                    }
                 }
             }
         })

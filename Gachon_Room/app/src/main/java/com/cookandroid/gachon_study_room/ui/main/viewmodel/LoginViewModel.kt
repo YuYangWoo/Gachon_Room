@@ -28,14 +28,6 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 _loginData.postValue(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
             }
         }
-//        emit(Resource.loading(data = null))
-//        try {
-//           emit(Resource.success(data = loginRepository.login(data)))
-//            _loginData.postValue(loginRepository.login(data))
-//        }
-//        catch(e: Exception) {
-//            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
-//
-//        }
+
     }
 }
