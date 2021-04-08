@@ -71,7 +71,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                         dialog.dismiss()
                     }
                     Resource.Status.ERROR -> {
-                        toast(this@LoginActivity, resources.getString(R.string.connect_fail))
+                        toast(this@LoginActivity, resource.message + "\n" + resources.getString(R.string.connect_fail))
                         dialog.dismiss()
                     }
                     Resource.Status.LOADING -> {
