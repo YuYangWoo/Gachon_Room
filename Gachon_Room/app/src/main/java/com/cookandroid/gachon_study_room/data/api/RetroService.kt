@@ -2,6 +2,7 @@ package com.cookandroid.gachon_study_room.data.api
 
 import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
+import com.cookandroid.gachon_study_room.util.Resource
 import retrofit2.Response
 import retrofit2.http.*
 
