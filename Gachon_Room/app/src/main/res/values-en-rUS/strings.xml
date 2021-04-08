@@ -24,4 +24,5 @@
     <string name="choose_seat">Please choose your seat you want</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
+    <string name="connect_fail">Connection Failed</string>
 </resources>

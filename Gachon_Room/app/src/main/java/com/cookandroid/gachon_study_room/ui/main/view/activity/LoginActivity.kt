@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.cookandroid.gachon_study_room.R
+import com.cookandroid.gachon_study_room.data.api.RetroInstance
 import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
 import com.cookandroid.gachon_study_room.data.repository.LoginRepository
@@ -18,7 +19,7 @@ import com.cookandroid.gachon_study_room.util.Resource
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private val TAG = "MAIN"
     private val viewModelFactory by lazy {
-        LoginViewModelFactory(LoginRepository())
+        LoginViewModelFactory(LoginRepository(RetroInstance))
     }
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
@@ -39,8 +40,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun checkAutoLogin() {
         if (MySharedPreferences.getCheck(this@LoginActivity) &&
-                MySharedPreferences.getUserId(this@LoginActivity).isNotBlank() &&
-                MySharedPreferences.getUserPass(this@LoginActivity).isNotBlank()) {
+            MySharedPreferences.getUserId(this@LoginActivity).isNotBlank() &&
+            MySharedPreferences.getUserPass(this@LoginActivity).isNotBlank()
+        ) {
             binding.edtId.setText(MySharedPreferences.getUserId(this@LoginActivity))
             binding.edtPassword.setText(MySharedPreferences.getUserPass(this@LoginActivity))
             binding.checkBox.isChecked = true
@@ -53,22 +55,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun initViewModel() {
         viewModel.loginData.observe(this@LoginActivity, Observer {
             it.let { resource ->
+                Log.d(TAG, resource.data.toString())
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
                         userData = resource.data!!
-                        loginApi()
+                        when (userData.result) {
+                            true -> {
+                                loginApi()
+                            }
+                            false -> {
+                                toast(this@LoginActivity, userData.response)
+                            }
+                        }
+
                         dialog.dismiss()
-                        Log.d(TAG, "성공")
-                        Log.d(TAG,resource.data.toString())
                     }
                     Resource.Status.ERROR -> {
-                        Log.d(TAG, "에러")
-
-                       dialog.dismiss()
+                        toast(this@LoginActivity, resources.getString(R.string.connect_fail))
+                        dialog.dismiss()
                     }
                     Resource.Status.LOADING -> {
-                        Log.d(TAG, "로딩")
-
                         dialog.show()
                     }
                 }
@@ -99,14 +105,22 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun loginApi() {
         if (userData.account.type == "STUDENT" && userData.result) {
-            toast(this@LoginActivity, "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}")
+            toast(
+                this@LoginActivity,
+                "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}"
+            )
             MySharedPreferences.setUserId(this@LoginActivity, binding.edtId.text.toString())
             MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.text.toString())
-            MySharedPreferences.setInformation(this@LoginActivity, userData.account.type, userData.account.department, userData.account.studentId, userData.account.studentName, userData.account.college)
+            MySharedPreferences.setInformation(
+                this@LoginActivity,
+                userData.account.type,
+                userData.account.department,
+                userData.account.studentId,
+                userData.account.studentName,
+                userData.account.college
+            )
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
-        } else {
-            toast(this@LoginActivity, "연결실패")
         }
     }
 
