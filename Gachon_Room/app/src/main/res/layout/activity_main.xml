@@ -6,13 +6,13 @@
     <data>
         <variable
             name="main"
-            type="com.cookandroid.gachon_study_room.ui.activity.MainActivity" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.activity.MainActivity" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.MainActivity">
+    tools:context=".ui.main.view.activity.MainActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"

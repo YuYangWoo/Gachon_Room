@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.fragment.MainFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.MainFragment"
         android:label="@string/main_name">
         <action
             android:id="@+id/action_mainFragment_to_optionFragment"
@@ -22,19 +22,19 @@
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.fragment.OptionFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.OptionFragment"
         android:label="@string/option_name" />
     <dialog
         android:id="@+id/mySeatDialog"
-        android:name="com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.dialog.MySeatDialog"
         android:label="MySeatDialog" />
     <fragment
         android:id="@+id/qrCodeFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.fragment.QrCodeFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.QrCodeFragment"
         android:label="@string/qr" />
     <fragment
         android:id="@+id/reservationFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.fragment.ReservationFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment"
         android:label="@string/reservation_seat" >
         <argument
             android:name="rooms"
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/roomListFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.RoomListFragment"
         android:label="RoomListFragment" >
         <action
             android:id="@+id/action_roomListFragment_to_reservationFragment"
@@ -60,6 +60,6 @@
     </fragment><action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
     <activity
         android:id="@+id/QRCodeActivity"
-        android:name="com.cookandroid.gachon_study_room.ui.activity.QRCodeActivity"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.activity.QRCodeActivity"
         android:label="QRCodeActivity" />
 </navigation>

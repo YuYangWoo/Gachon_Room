@@ -7,7 +7,7 @@
 
         <variable
             name="reservation"
-            type="com.cookandroid.gachon_study_room.ui.fragment.ReservationFragment" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

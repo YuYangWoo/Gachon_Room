@@ -5,7 +5,7 @@
     <data>
         <variable
             name="login"
-            type="com.cookandroid.gachon_study_room.ui.activity.LoginActivity" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.activity.LoginActivity" />
 
     </data>
 
@@ -87,7 +87,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

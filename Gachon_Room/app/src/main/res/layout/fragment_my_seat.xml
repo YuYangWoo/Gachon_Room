@@ -7,7 +7,7 @@
 
         <variable
             name="bottom"
-            type="com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.dialog.MySeatDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
