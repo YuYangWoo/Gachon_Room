@@ -1,6 +1,6 @@
-package com.cookandroid.gachon_study_room.data
+package com.cookandroid.gachon_study_room.data.model
 
-import com.cookandroid.gachon_study_room.data.room.Room
+import com.cookandroid.gachon_study_room.data.model.room.Room
 import java.io.Serializable
 
 data class MySeat(

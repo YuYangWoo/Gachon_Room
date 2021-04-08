@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.recyclerview.widget.RecyclerView
-import com.cookandroid.gachon_study_room.data.room.Availiable
+import com.cookandroid.gachon_study_room.data.model.room.Availiable
 import com.cookandroid.gachon_study_room.databinding.HolderAvailiableBinding
 
 class AvailiableAdapter : RecyclerView.Adapter<AvailiableAdapter.ListViewHolder>() {

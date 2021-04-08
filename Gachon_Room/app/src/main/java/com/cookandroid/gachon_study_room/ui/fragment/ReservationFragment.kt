@@ -18,10 +18,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.AvailiableAdapter
-import com.cookandroid.gachon_study_room.data.MySeat
-import com.cookandroid.gachon_study_room.data.Reserve
-import com.cookandroid.gachon_study_room.data.room.Availiable
-import com.cookandroid.gachon_study_room.data.room.RoomsData
+import com.cookandroid.gachon_study_room.data.model.Reserve
+import com.cookandroid.gachon_study_room.data.model.room.Availiable
+import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
@@ -380,8 +379,8 @@ class ReservationFragment :
                         RetrofitBuilder.api.reserveRequest(input)
                             .enqueue(object : Callback<Reserve> {
                                 override fun onResponse(
-                                    call: Call<Reserve>,
-                                    response: Response<Reserve>
+                                        call: Call<Reserve>,
+                                        response: Response<Reserve>
                                 ) {
                                     if (response.isSuccessful) {
                                         Log.d(TAG, response.body()!!.toString())

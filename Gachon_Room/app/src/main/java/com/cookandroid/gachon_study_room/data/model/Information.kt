@@ -1,14 +1,14 @@
-package com.cookandroid.gachon_study_room.data
+package com.cookandroid.gachon_study_room.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Information(
-    @SerializedName("account")
+        @SerializedName("account")
     var account: Account,
-    @SerializedName("result")
+        @SerializedName("result")
     var result: Boolean,
-    @SerializedName("response")
+        @SerializedName("response")
     var response: String
 ) : Serializable {
     constructor() : this(Account(), false, "")

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.Information
+import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences

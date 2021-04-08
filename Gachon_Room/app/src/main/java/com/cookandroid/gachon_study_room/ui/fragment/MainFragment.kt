@@ -4,7 +4,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.MainAdapter
-import com.cookandroid.gachon_study_room.data.Information
+import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment

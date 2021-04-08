@@ -6,8 +6,8 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.adapter.RoomAdapter
-import com.cookandroid.gachon_study_room.data.room.Room
-import com.cookandroid.gachon_study_room.data.room.RoomsData
+import com.cookandroid.gachon_study_room.data.model.room.Room
+import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentRoomListBinding
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences

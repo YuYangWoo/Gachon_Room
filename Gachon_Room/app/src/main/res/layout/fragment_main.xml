@@ -11,7 +11,7 @@
 
         <variable
             name="student"
-            type="com.cookandroid.gachon_study_room.data.Information.Account" />
+            type="com.cookandroid.gachon_study_room.data.model.Information.Account" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

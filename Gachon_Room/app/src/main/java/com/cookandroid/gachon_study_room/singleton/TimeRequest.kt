@@ -1,7 +1,7 @@
 package com.cookandroid.gachon_study_room.singleton
 
 import android.util.Log
-import com.cookandroid.gachon_study_room.data.Time
+import com.cookandroid.gachon_study_room.data.model.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +27,7 @@ object TimeRequest {
         return  SimpleDateFormat("HH시 mm분").format(cal.time)
     }
 
-    fun timeLong() : Time{
+    fun timeLong() : Time {
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
@@ -50,7 +50,7 @@ object TimeRequest {
         var minute = cal.get(Calendar.MINUTE) + interval
         return GregorianCalendar(year, month, day, hour, minute).timeInMillis
     }
-    fun endTimeLong(): Time{
+    fun endTimeLong(): Time {
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)

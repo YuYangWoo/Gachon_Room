@@ -1,29 +1,19 @@
 package com.cookandroid.gachon_study_room.ui.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.navigation.findNavController
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.Confirm
-import com.cookandroid.gachon_study_room.data.MySeat
+import com.cookandroid.gachon_study_room.data.model.Confirm
+import com.cookandroid.gachon_study_room.data.model.MySeat
 import com.cookandroid.gachon_study_room.databinding.FragmentQrBinding
 import com.cookandroid.gachon_study_room.service.RetrofitBuilder
 import com.cookandroid.gachon_study_room.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
-import com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
-import com.cookandroid.gachon_study_room.ui.fragment.MainFragmentDirections
 import com.google.zxing.integration.android.IntentIntegrator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -80,8 +70,8 @@ class QRCodeActivity : BaseActivity<FragmentQrBinding>(R.layout.fragment_qr) {
 
                 RetrofitBuilder.api.confirm(input).enqueue(object : Callback<Confirm> {
                             override fun onResponse(
-                                call: Call<Confirm>,
-                                response: Response<Confirm>
+                                    call: Call<Confirm>,
+                                    response: Response<Confirm>
                             ) {
                                 confirmResult = response.body()!!
                                 binding.txtResult.visibility = View.VISIBLE

@@ -38,7 +38,7 @@
         android:label="@string/reservation_seat" >
         <argument
             android:name="rooms"
-            app:argType="com.cookandroid.gachon_study_room.data.room.RoomsData"/>
+            app:argType="com.cookandroid.gachon_study_room.data.model.room.RoomsData"/>
         <argument
             android:name="name"
             app:argType="string"
@@ -56,7 +56,7 @@
             app:destination="@id/reservationFragment" />
         <argument
             android:name="rooms"
-            app:argType="com.cookandroid.gachon_study_room.data.room.RoomsData"/>
+            app:argType="com.cookandroid.gachon_study_room.data.model.room.RoomsData"/>
     </fragment><action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
     <activity
         android:id="@+id/QRCodeActivity"

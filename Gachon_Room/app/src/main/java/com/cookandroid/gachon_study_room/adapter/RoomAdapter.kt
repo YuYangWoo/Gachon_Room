@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.room.Room
-import com.cookandroid.gachon_study_room.data.room.RoomsData
+import com.cookandroid.gachon_study_room.data.model.room.Room
+import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.HolderRoomListBinding
 import com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.fragment.seat.RoomListFragmentDirections

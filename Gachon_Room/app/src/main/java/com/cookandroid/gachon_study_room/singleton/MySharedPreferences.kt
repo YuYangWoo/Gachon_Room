@@ -2,7 +2,7 @@ package com.cookandroid.gachon_study_room.singleton
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.cookandroid.gachon_study_room.data.Information
+import com.cookandroid.gachon_study_room.data.model.Information
 
 object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"

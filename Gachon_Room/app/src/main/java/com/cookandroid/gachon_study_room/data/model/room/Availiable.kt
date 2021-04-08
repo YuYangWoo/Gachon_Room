@@ -1,4 +1,4 @@
-package com.cookandroid.gachon_study_room.data.room
+package com.cookandroid.gachon_study_room.data.model.room
 
 import android.widget.ImageView
 import java.io.Serializable

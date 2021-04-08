@@ -1,15 +1,14 @@
 package com.cookandroid.gachon_study_room.service
 
-import com.cookandroid.gachon_study_room.data.Confirm
-import com.cookandroid.gachon_study_room.data.Information
-import com.cookandroid.gachon_study_room.data.MySeat
-import com.cookandroid.gachon_study_room.data.Reserve
-import com.cookandroid.gachon_study_room.data.room.RoomsData
+import com.cookandroid.gachon_study_room.data.model.Confirm
+import com.cookandroid.gachon_study_room.data.model.Information
+import com.cookandroid.gachon_study_room.data.model.MySeat
+import com.cookandroid.gachon_study_room.data.model.Reserve
+import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import retrofit2.Call
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
-import java.util.*
 import kotlin.collections.HashMap
 
 interface API {
