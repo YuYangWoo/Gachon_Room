@@ -15,7 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private val TAG = "MAIN"
-    val viewModel: LoginViewModel by viewModel()
+    private val viewModel: LoginViewModel by viewModel()
     private var userData = Information()
     private var input = HashMap<String, Any>()
     private val dialog by lazy {
@@ -59,7 +59,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                                 toast(this@LoginActivity, userData.response)
                             }
                         }
-
                         dialog.dismiss()
                     }
                     Resource.Status.ERROR -> {

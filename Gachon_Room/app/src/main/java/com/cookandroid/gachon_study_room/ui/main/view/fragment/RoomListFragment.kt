@@ -1,67 +1,68 @@
 package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
-import android.app.Dialog
-import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.ui.adapter.RoomAdapter
+import com.cookandroid.gachon_study_room.data.api.RetrofitBuilder
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentRoomListBinding
-import com.cookandroid.gachon_study_room.data.api.RetrofitBuilder
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
+import com.cookandroid.gachon_study_room.ui.adapter.RoomAdapter
 import com.cookandroid.gachon_study_room.ui.base.BaseBottomSheet
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
+import com.cookandroid.gachon_study_room.util.Resource
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
-    private lateinit var dialog: ProgressDialog
+    private val dialog by lazy {
+        ProgressDialog(requireContext())
+    }
+    private val viewModel: MainViewModel by viewModel()
     private var TAG = "RoomListFragment"
+    private var roomsData = RoomsData()
     override fun init() {
         super.init()
-        dialog = ProgressDialog(requireContext())
-        setRecyclerView(dialog)
+        initViewModel()
         cancel()
         binding.room = this
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-    }
-
-    private fun setRecyclerView(dialog: ProgressDialog) {
-        var input = HashMap<String, String>()
+    private fun initViewModel() {
+        var input = HashMap<String, Any>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
 //        input["college"] = "TEST"
-        RetrofitBuilder.api.roomsRequest(input).enqueue(object : Callback<RoomsData> {
-            override fun onResponse(call: Call<RoomsData>, response: Response<RoomsData>) {
-                if (response.isSuccessful) {
-                    Log.d("test", "연결성공")
-                    var roomsData = response.body()!!
-                    Log.d(TAG, roomsData.toString())
-
-                    with(binding.recyclerList) {
-                        adapter = RoomAdapter(dialog).apply {
-                            data = roomsData.rooms
-                            rooms = roomsData
-                            context = requireContext()
-                            notifyDataSetChanged()
-                        }
-                        layoutManager = LinearLayoutManager(requireContext())
-                        setHasFixedSize(true)
-                    }
+        viewModel.callRooms(input)
+        viewModel.roomList.observe(requireActivity(), Observer { resource ->
+            Log.d(TAG, resource.data.toString())
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {
+                    roomsData = resource.data!!
+                    setRecyclerView()
+                    dialog.dismiss()
+                }
+                Resource.Status.ERROR -> {
+                    toast(requireContext(), resource.message + "\n" + resources.getString(R.string.connect_fail))
+                    dialog.dismiss()
+                }
+                Resource.Status.LOADING -> {
+                    dialog.show()
                 }
             }
-
-            override fun onFailure(call: Call<RoomsData>, t: Throwable) {
-                Log.d("test", "연결실패")
-            }
-
         })
-
-
+    }
+    private fun setRecyclerView() {
+        with(binding.recyclerList) {
+            adapter = RoomAdapter(dialog).apply {
+                data = roomsData.rooms
+                rooms = roomsData
+                context = requireContext()
+                notifyDataSetChanged()
+            }
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+        }
     }
 
     private fun cancel() {
