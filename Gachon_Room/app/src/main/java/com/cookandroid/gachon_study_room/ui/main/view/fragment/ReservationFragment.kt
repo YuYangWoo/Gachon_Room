@@ -34,6 +34,7 @@ import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -68,8 +69,8 @@ class ReservationFragment :
     override fun init() {
         super.init()
         layout = binding.layoutSeat
-        rooms = args.rooms
-        initViewModel()
+//        rooms = args.rooms
+        rooms = model.roomList.value!!.data!!
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
@@ -85,13 +86,6 @@ class ReservationFragment :
         btnStart()
         btnEnd()
         btnConfirm()
-    }
-
-    private fun initViewModel() {
-       model.roomList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-           rooms = it.data!!
-
-       })
     }
 
     private fun btnStart() {
