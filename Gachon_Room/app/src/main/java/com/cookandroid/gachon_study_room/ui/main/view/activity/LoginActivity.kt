@@ -3,27 +3,19 @@ package com.cookandroid.gachon_study_room.ui.main.view.activity
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.api.RetroInstance
 import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
-import com.cookandroid.gachon_study_room.data.repository.LoginRepository
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.LoginViewModel
-import com.cookandroid.gachon_study_room.ui.main.viewmodel.LoginViewModelFactory
 import com.cookandroid.gachon_study_room.util.Resource
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private val TAG = "MAIN"
-    private val viewModelFactory by lazy {
-        LoginViewModelFactory(LoginRepository(RetroInstance))
-    }
-    private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(LoginViewModel::class.java)
-    }
+    val viewModel: LoginViewModel by viewModel()
     private var userData = Information()
     private var input = HashMap<String, Any>()
     private val dialog by lazy {

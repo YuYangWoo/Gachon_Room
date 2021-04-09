@@ -16,15 +16,15 @@ import java.lang.Exception
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
     private var _loginData = MutableLiveData<Resource<Information>>()
-    val loginData = _loginData
+    val loginData: MutableLiveData<Resource<Information>>
+        get() = _loginData
 
     fun loginApiCall(data: HashMap<String, Any>) {
         viewModelScope.launch(Dispatchers.IO) {
             _loginData.postValue(Resource.loading(null))
             try {
                 _loginData.postValue(Resource.success(loginRepository.login(data).body()!!))
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 _loginData.postValue(Resource.error(null, e.message ?: "Error Occurred!"))
             }
         }
