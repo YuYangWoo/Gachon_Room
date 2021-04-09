@@ -15,7 +15,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
     private val TAG = "MAIN"
-    private val viewModel: LoginViewModel by viewModel()
+    private val model: LoginViewModel by viewModel()
     private var userData = Information()
     private var input = HashMap<String, Any>()
     private val dialog by lazy {
@@ -40,12 +40,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             binding.checkBox.isChecked = true
             input["id"] = binding.edtId.text.toString()
             input["password"] = binding.edtPassword.text.toString()
-            viewModel.loginApiCall(input)
+            model.loginApiCall(input)
         }
     }
 
     private fun initViewModel() {
-        viewModel.loginData.observe(this@LoginActivity, Observer {
+        model.loginData.observe(this@LoginActivity, Observer {
             it.let { resource ->
                 Log.d(TAG, resource.data.toString())
                 when (resource.status) {
@@ -90,7 +90,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.btnLogin.setOnClickListener {
             input["id"] = binding.edtId.text.toString()
             input["password"] = binding.edtPassword.text.toString()
-            viewModel.loginApiCall(input)
+            model.loginApiCall(input)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
 import android.util.Log
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
@@ -13,13 +14,14 @@ import com.cookandroid.gachon_study_room.ui.base.BaseBottomSheet
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
     private val dialog by lazy {
         ProgressDialog(requireContext())
     }
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: MainViewModel by sharedViewModel()
     private var TAG = "RoomListFragment"
     private var roomsData = RoomsData()
     override fun init() {
@@ -34,7 +36,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
 //        input["college"] = "TEST"
         viewModel.callRooms(input)
-        viewModel.roomList.observe(requireActivity(), Observer { resource ->
+        viewModel.roomList.observe(viewLifecycleOwner, Observer { resource ->
             Log.d(TAG, resource.data.toString())
             when (resource.status) {
                 Resource.Status.SUCCESS -> {

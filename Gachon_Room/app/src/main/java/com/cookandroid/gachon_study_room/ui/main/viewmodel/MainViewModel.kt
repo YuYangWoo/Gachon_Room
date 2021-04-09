@@ -1,5 +1,6 @@
 package com.cookandroid.gachon_study_room.ui.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,5 +25,10 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
                 _roomList.postValue(Resource.error(null, e.message ?: "Error Occurred!"))
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("TAG", "클리어됨")
     }
 }
