@@ -57,7 +57,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
 
     private fun setRecyclerView() {
         with(binding.recyclerList) {
-            adapter = RoomAdapter(dialog).apply {
+            adapter = RoomAdapter().apply {
                 data = roomsData.rooms
                 rooms = roomsData
                 context = requireContext()
@@ -72,11 +72,6 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
         binding.cancel.setOnClickListener {
             dismiss()
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        dialog.dismiss()
     }
 
 }
