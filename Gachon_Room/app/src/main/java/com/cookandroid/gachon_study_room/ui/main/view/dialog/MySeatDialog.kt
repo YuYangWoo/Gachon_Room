@@ -40,8 +40,15 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
                         dialog.dismiss()
-                        mySeatData = resource.data!!
-                        mySeat()
+                        when(resource.data!!.result) {
+                            true -> {
+                                mySeatData = resource.data!!
+                                mySeat()
+                            }
+                            false -> {
+                                toast(requireContext(), resource.data!!.response)
+                            }
+                        }
                     }
                     Resource.Status.ERROR -> {
                         dialog.dismiss()
@@ -113,17 +120,25 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("반납확인").setMessage("좌석을 반납하시겠습니까?")
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-
                     input["reservationId"] = mySeatData.reservations[0].reservationId
                     input["college"] = MySharedPreferences.getInformation(requireContext()).college
                     input["roomName"] = mySeatData.reservations[0].roomName
                     input["id"] = MySharedPreferences.getUserId(requireContext())
                     input["password"] = MySharedPreferences.getUserPass(requireContext())
+
                     model.callCancel(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
                         when (resource.status) {
                             Resource.Status.SUCCESS -> {
                                 dialog.dismiss()
-                                toast(requireContext(), "반납성공!!")
+                                when(resource.data!!.result) {
+                                    true -> {
+                                        toast(requireContext(), "반납성공!!")
+
+                                    }
+                                    false -> {
+                                        toast(requireContext(), resource.data!!.response)
+                                    }
+                                }
                                 dismiss()
                             }
                             Resource.Status.ERROR -> {
