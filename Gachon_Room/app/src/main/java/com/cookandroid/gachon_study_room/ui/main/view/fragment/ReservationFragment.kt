@@ -390,6 +390,7 @@ class ReservationFragment :
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     reservation = resource.data!!
+                    MySharedPreferences.setReservation(requireContext(), reservation.reservation)
                     Log.d(TAG, reservation.toString())
                     when(reservation.result) {
                         true -> {

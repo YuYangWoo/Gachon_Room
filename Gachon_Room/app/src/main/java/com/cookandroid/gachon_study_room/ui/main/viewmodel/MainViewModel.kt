@@ -28,7 +28,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
             }
         }
     }
-
+    var reservation = MutableLiveData<Reserve>()
     fun callReserve(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
         try{
@@ -53,6 +53,16 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
      emit(Resource.loading(null))
         try {
             emit(Resource.success(mainRepository.cancel(data).body()!!))
+        }
+        catch (e: Exception) {
+            emit(Resource.error(null, e.message ?: "Error Occurred!"))
+        }
+    }
+
+    fun callConfirm(data: HashMap<String, Any>) = liveData {
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(mainRepository.confirm(data).body()))
         }
         catch (e: Exception) {
             emit(Resource.error(null, e.message ?: "Error Occurred!"))

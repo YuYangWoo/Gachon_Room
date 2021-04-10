@@ -157,7 +157,6 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 })
             builder.create()
             builder.show()
-
         }
     }
 

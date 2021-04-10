@@ -7,4 +7,5 @@ class MainRepository {
     suspend fun reserve(data: HashMap<String, Any>) = RetroInstance.client.requestReserve(data)
     suspend fun mySeat(data: HashMap<String, Any>) = RetroInstance.client.requestMySeat(data)
     suspend fun cancel(data: HashMap<String, Any>) = RetroInstance.client.requestCancel(data)
+    suspend fun confirm(data: HashMap<String, Any>) = RetroInstance.client.requestConfirm(data)
 }

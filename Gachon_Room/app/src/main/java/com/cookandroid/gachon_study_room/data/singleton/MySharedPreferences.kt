@@ -3,34 +3,61 @@ package com.cookandroid.gachon_study_room.data.singleton
 import android.content.Context
 import android.content.SharedPreferences
 import com.cookandroid.gachon_study_room.data.model.Information
+import com.cookandroid.gachon_study_room.data.model.Reserve
+import com.cookandroid.gachon_study_room.data.model.room.Room
 
 object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"
     private var student: Information.Account = Information.Account()
+    private var reservation = Room.Reservation()
 
-    // 사용자 Id Set
-    fun setConfirmRoomName(context: Context, input: String) {
-        val prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-        editor.putString("MY_ROOM_NAME", input)
-        editor.commit()
-    }
-
-    fun getConfirmRoomName(context: Context): String {
-        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        return prefs.getString("MY_ROOM_NAME", "").toString()
-    }
-
-    fun setConfirmId(context: Context, input: String) {
+    // 사용자 Token
+    fun setToken(context: Context, input: String) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         val editor : SharedPreferences.Editor = prefs.edit()
-        editor.putString("MY_CONFIRM_ID", input)
+        editor.putString("MY_TOKEN", input)
         editor.commit()
     }
 
-    fun getConfirmId(context: Context): String {
+    fun getToken(context: Context): String {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
-        return prefs.getString("MY_CONFIRM_ID", "").toString()
+        return prefs.getString("MY_TOKEN", "").toString()
+    }
+
+    // 사용자 예약정보 Set
+    fun setReservation(context: Context, reservationData: Room.Reservation) {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor : SharedPreferences.Editor = prefs.edit().apply{
+            putString("MY_COLLEGE", reservationData.college)
+            putString("MY_ROOM_NAME", reservationData.roomName)
+            putInt("MY_SEAT", reservationData.seat)
+            putLong("MY_TIME", reservationData.time)
+            putLong("MY_BEGIN", reservationData.begin)
+            putLong("MY_END", reservationData.end)
+            putBoolean("MY_CONFIRMED", reservationData.confirmed)
+            putBoolean("MY_EXTENDED", reservationData.extended)
+            putString("MY_RESERVATION_ID", reservationData.reservationId)
+
+        }
+        editor.commit()
+    }
+
+    // 사용자 예약정보 얻기
+    fun getReservation(context: Context): Room.Reservation{
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        with(reservation) {
+            college = prefs.getString("MY_COLLEGE", "").toString()
+            roomName = prefs.getString("MY_ROOM_NAME", "").toString()
+            seat = prefs.getInt("MY_SEAT", 0)
+            time = prefs.getLong("MY_TIME", 0L)
+            begin = prefs.getLong("MY_BEGIN", 0L)
+            end = prefs.getLong("MY_END", 0L)
+            confirmed = prefs.getBoolean("MY_CONFIRMED", false)
+            extended = prefs.getBoolean("MY_EXTENDED", false)
+            reservationId = prefs.getString("MY_RESERVATION_ID", "").toString()
+
+        }
+        return reservation
     }
 
     // 사용자 정보 Set
