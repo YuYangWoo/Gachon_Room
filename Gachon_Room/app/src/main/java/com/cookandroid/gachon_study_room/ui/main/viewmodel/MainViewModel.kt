@@ -49,6 +49,16 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    fun callCancel(data: HashMap<String, Any>) = liveData {
+     emit(Resource.loading(null))
+        try {
+            emit(Resource.success(mainRepository.cancel(data).body()!!))
+        }
+        catch (e: Exception) {
+            emit(Resource.error(null, e.message ?: "Error Occurred!"))
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         Log.d("TAG", "onCleared")
