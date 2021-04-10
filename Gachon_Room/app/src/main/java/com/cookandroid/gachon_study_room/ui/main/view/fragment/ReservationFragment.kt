@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.text.format.DateFormat
 import android.util.Log
 import android.util.TypedValue
@@ -13,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,7 +20,6 @@ import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.model.room.Availiable
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
-import com.cookandroid.gachon_study_room.data.api.RetrofitBuilder
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.adapter.AvailiableAdapter
@@ -31,13 +28,7 @@ import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDia
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
-import org.koin.android.viewmodel.ext.android.getViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

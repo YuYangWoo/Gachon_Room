@@ -34,5 +34,5 @@ interface RetroService {
 
     @FormUrlEncoded
     @POST("/room/reserve/my")
-    suspend fun requestMySeat(@FieldMap param: HashMap<String, String>): Response<MySeat>
+    suspend fun requestMySeat(@FieldMap param: HashMap<String, Any>): Response<MySeat>
 }
