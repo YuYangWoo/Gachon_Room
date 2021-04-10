@@ -89,7 +89,6 @@ class ReservationFragment :
         btnStart()
         btnEnd()
         btnConfirm()
-        initViewModel()
     }
 
     private fun btnStart() {
@@ -372,18 +371,7 @@ class ReservationFragment :
                 builder.setTitle("예약메시지")
                     .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                        var input = HashMap<String, Any>()
-                        input["studentId"] =
-                            MySharedPreferences.getInformation(requireContext()).studentId
-                        input["college"] =
-                            MySharedPreferences.getInformation(requireContext()).college
-                        input["roomName"] = name
-                        input["seat"] = seatId
-                        input["begin"] = startTime
-                        input["end"] = endTime
-                        input["id"] = MySharedPreferences.getUserId(requireContext())
-                        input["password"] = MySharedPreferences.getUserPass(requireContext())
-                        model.callReserve(input)
+                        initViewModel()
                     })
                     .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
                         Log.d("TAG", "취소")
@@ -395,10 +383,23 @@ class ReservationFragment :
     }
 
     private fun initViewModel() {
-        model.reserveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
+        var input = HashMap<String, Any>()
+        input["studentId"] =
+            MySharedPreferences.getInformation(requireContext()).studentId
+        input["college"] =
+            MySharedPreferences.getInformation(requireContext()).college
+        input["roomName"] = name
+        input["seat"] = seatId
+        input["begin"] = startTime
+        input["end"] = endTime
+        input["id"] = MySharedPreferences.getUserId(requireContext())
+        input["password"] = MySharedPreferences.getUserPass(requireContext())
+
+        model.callReserve(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     reservation = resource.data!!
+                    Log.d(TAG, reservation.toString())
                     when(reservation.result) {
                         true -> {
                             toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
@@ -407,8 +408,8 @@ class ReservationFragment :
                             toast(requireContext(), reservation.response)
                         }
                     }
-                    findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
                     dialog.dismiss()
+                    findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
                 }
                 Resource.Status.ERROR -> {
                     toast(requireContext(), resource.message + "\n" + resources.getString(R.string.connect_fail))
