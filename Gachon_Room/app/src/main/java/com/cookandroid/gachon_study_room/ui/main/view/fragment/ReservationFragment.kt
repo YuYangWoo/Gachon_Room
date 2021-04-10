@@ -97,6 +97,7 @@ class ReservationFragment :
                 var date = Date()
                 date.time = time.timeInMillis
                 Log.d("TAG", "시작시간은$startTime 심플타임 ${simple.format(date)}")
+                Log.d(TAG, GregorianCalendar(0,0,0,2,0).timeInMillis.toString())
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
 

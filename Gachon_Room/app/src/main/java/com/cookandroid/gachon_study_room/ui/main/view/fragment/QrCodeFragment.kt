@@ -38,7 +38,6 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
         super.init()
         scanQRCode()
         btnConfirm()
-        dataSet()
     }
 
     private fun scanQRCode() {
@@ -102,7 +101,9 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
             if (result.contents == null) {
                 toast(requireContext(), "Cancelled")
             } else { // 스캔 되었을 때
+                Log.d(TAG, result.contents)
                 MySharedPreferences.setToken(requireContext(), result.contents)
+                dataSet()
                 initViewModel()
             }
         } else {

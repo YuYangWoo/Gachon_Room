@@ -67,6 +67,16 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    fun callExtend(data: HashMap<String, Any>) = liveData {
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(mainRepository.extend(data).body()))
+        }
+        catch (e: Exception) {
+            emit(Resource.error(null, e.message ?: "Error Occurred!"))
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         Log.d("TAG", "onCleared")
