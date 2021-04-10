@@ -44,7 +44,7 @@ import kotlin.collections.ArrayList
 
 
 class ReservationFragment :
-        BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
+    BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
     private lateinit var layout: ViewGroup
     private var seatViewList = ArrayList<TextView>()
@@ -65,11 +65,14 @@ class ReservationFragment :
     private var txtStartTime = ""
     private var txtEndTime = ""
     private val model: MainViewModel by sharedViewModel()
+    private val dialog by lazy {
+        ProgressDialog(requireContext())
+    }
+    private var reservation: Reserve = Reserve()
 
     override fun init() {
         super.init()
         layout = binding.layoutSeat
-//        rooms = args.rooms
         rooms = model.roomList.value!!.data!!
         name = args.name
         startTime = TimeRequest.timeLong().time
@@ -86,6 +89,7 @@ class ReservationFragment :
         btnStart()
         btnEnd()
         btnConfirm()
+        initViewModel()
     }
 
     private fun btnStart() {
@@ -130,11 +134,11 @@ class ReservationFragment :
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             CustomTimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    startOurHour,
-                    startOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
+                requireContext(),
+                timeSetListener,
+                startOurHour,
+                startOurMinute,
+                DateFormat.is24HourFormat(requireContext())
             ).show()
         }
     }
@@ -179,11 +183,11 @@ class ReservationFragment :
                 }
             }
             CustomTimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    endOurHour,
-                    endOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
+                requireContext(),
+                timeSetListener,
+                endOurHour,
+                endOurMinute,
+                DateFormat.is24HourFormat(requireContext())
             ).show()
         }
     }
@@ -211,9 +215,9 @@ class ReservationFragment :
 
     private fun setAvailableRecyclerView() {
         var list = arrayListOf(
-                Availiable(R.drawable.ic_seats_book, "사용가능"),
-                Availiable(R.drawable.ic_seats_reserved, "예약됨"),
-                Availiable(R.drawable.ic_seats_booked, "확정됨")
+            Availiable(R.drawable.ic_seats_book, "사용가능"),
+            Availiable(R.drawable.ic_seats_reserved, "예약됨"),
+            Availiable(R.drawable.ic_seats_booked, "확정됨")
         )
 
         with(binding.recyclerAvailable) {
@@ -237,8 +241,8 @@ class ReservationFragment :
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
         layoutSeat.removeAllViews()
         layout.removeAllViews()
@@ -261,7 +265,7 @@ class ReservationFragment :
                 } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
                     var layoutParams: LinearLayout.LayoutParams =
-                            LinearLayout.LayoutParams(seatSize, seatSize)
+                        LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                     view.layoutParams = layoutParams
                     view.setBackgroundColor(Color.TRANSPARENT)
@@ -270,7 +274,7 @@ class ReservationFragment :
                 } else if (seats[i][j] == DOOR) {
                     val view = TextView(requireContext())
                     var layoutParams: LinearLayout.LayoutParams =
-                            LinearLayout.LayoutParams(seatSize, seatSize)
+                        LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     view.layoutParams = layoutParams
@@ -282,7 +286,7 @@ class ReservationFragment :
                 } else {
                     val view = TextView(requireContext())
                     var layoutParams: LinearLayout.LayoutParams =
-                            LinearLayout.LayoutParams(seatSize, seatSize)
+                        LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     // 좌석의 번호에 따른 reserved 크기를 구해 예약된 시간과 비교
@@ -366,69 +370,55 @@ class ReservationFragment :
                 toast(requireContext(), "좌석을 선택해주세요.")
             } else {
                 builder.setTitle("예약메시지")
-                        .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                            val dialog = ProgressDialog(requireContext()).apply {
-                                window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                                show()
-                            }
-                            var input = HashMap<String, Any>()
-                            input["studentId"] =
-                                    MySharedPreferences.getInformation(requireContext()).studentId
-                            input["college"] =
-                                    MySharedPreferences.getInformation(requireContext()).college
-                            input["roomName"] = name
-                            input["seat"] = seatId
-                            input["begin"] = startTime
-                            input["end"] = endTime
-                            input["id"] = MySharedPreferences.getUserId(requireContext())
-                            input["password"] = MySharedPreferences.getUserPass(requireContext())
-
-                            RetrofitBuilder.api.reserveRequest(input)
-                                    .enqueue(object : Callback<Reserve> {
-                                        override fun onResponse(
-                                                call: Call<Reserve>,
-                                                response: Response<Reserve>
-                                        ) {
-                                            if (response.isSuccessful) {
-                                                Log.d(TAG, response.body()!!.toString())
-                                                var reserveResult = response.body()!!
-                                                if (reserveResult.result) {
-                                                    toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
-                                                    MySharedPreferences.setConfirmRoomName(
-                                                            requireContext(),
-                                                            reserveResult.reservation.roomName
-                                                    )
-                                                    MySharedPreferences.setConfirmId(
-                                                            requireContext(),
-                                                            reserveResult.reservation.reservationId
-                                                    )
-                                                } else {
-                                                    toast(requireContext(), response.body()!!.response)
-                                                }
-                                                findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
-                                                dialog.dismiss()
-                                            }
-                                        }
-
-                                        override fun onFailure(call: Call<Reserve>, t: Throwable) {
-                                            Log.d("Error", "연결 에러")
-                                            toast(requireContext(), "좌석 예약에 실패하였습니다.")
-
-                                        }
-
-                                    })
-                        })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                            Log.d("TAG", "취소")
-                        })
+                    .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                        var input = HashMap<String, Any>()
+                        input["studentId"] =
+                            MySharedPreferences.getInformation(requireContext()).studentId
+                        input["college"] =
+                            MySharedPreferences.getInformation(requireContext()).college
+                        input["roomName"] = name
+                        input["seat"] = seatId
+                        input["begin"] = startTime
+                        input["end"] = endTime
+                        input["id"] = MySharedPreferences.getUserId(requireContext())
+                        input["password"] = MySharedPreferences.getUserPass(requireContext())
+                        model.callReserve(input)
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                        Log.d("TAG", "취소")
+                    })
                 builder.create()
                 builder.show()
             }
-
-
         }
+    }
 
+    private fun initViewModel() {
+        model.reserveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {
+                    reservation = resource.data!!
+                    when(reservation.result) {
+                        true -> {
+                            toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
+                        }
+                        false -> {
+                            toast(requireContext(), reservation.response)
+                        }
+                    }
+                    findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
+                    dialog.dismiss()
+                }
+                Resource.Status.ERROR -> {
+                    toast(requireContext(), resource.message + "\n" + resources.getString(R.string.connect_fail))
+                    dialog.dismiss()
+                }
+                Resource.Status.LOADING -> {
+                    dialog.show()
+                }
+            }
+        })
     }
 
     companion object {

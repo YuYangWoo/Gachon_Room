@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.repository.MainRepository
 import com.cookandroid.gachon_study_room.util.Resource
@@ -27,8 +28,22 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    private val _reserveData = MutableLiveData<Resource<Reserve>>()
+    val reserveData = _reserveData
+
+    fun callReserve(data: HashMap<String, Any>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _reserveData.postValue(Resource.loading(null))
+            try {
+                _reserveData.postValue(Resource.success(mainRepository.reserve(data).body()!!))
+            }
+            catch (e: Exception) {
+                _reserveData.postValue(Resource.error(null, e.message ?: "Error Occurred!"))
+            }
+        }
+    }
     override fun onCleared() {
         super.onCleared()
-        Log.d("TAG", "클리어됨")
+        Log.d("TAG", "onCleared")
     }
 }

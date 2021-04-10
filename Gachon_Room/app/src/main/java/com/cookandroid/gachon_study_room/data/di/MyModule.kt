@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     single { LoginRepository() }
-    single {MainRepository()}
+    single { MainRepository() }
     viewModel { LoginViewModel(get()) }
     viewModel { MainViewModel(get()) }
 }
