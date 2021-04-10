@@ -14,18 +14,16 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
-    private val _roomList = MutableLiveData<Resource<RoomsData>>()
-    val roomList = _roomList
+//    private val _roomList = MutableLiveData<Resource<RoomsData>>()
+//    val roomList = _roomList
 
-    fun callRooms(data : HashMap<String, Any>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            _roomList.postValue(Resource.loading(null))
-            try {
-                _roomList.postValue(Resource.success(mainRepository.rooms(data).body()!!))
-            }
-            catch(e: Exception) {
-                _roomList.postValue(Resource.error(null, e.message ?: "Error Occurred!"))
-            }
+    fun callRooms(data: HashMap<String, Any>) = liveData {
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(mainRepository.rooms(data).body()))
+        }
+        catch(e: Exception) {
+            emit(Resource.error(null, e.message ?: "Error Occurred!"))
         }
     }
     var reservation = MutableLiveData<Reserve>()

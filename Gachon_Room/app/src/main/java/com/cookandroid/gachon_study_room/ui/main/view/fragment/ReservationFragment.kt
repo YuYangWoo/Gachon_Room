@@ -59,12 +59,13 @@ class ReservationFragment :
     private val dialog by lazy {
         ProgressDialog(requireContext())
     }
+    var input = HashMap<String, Any>()
     private var reservation: Reserve = Reserve()
 
     override fun init() {
         super.init()
         layout = binding.layoutSeat
-        rooms = model.roomList.value!!.data!!
+        rooms = args.rooms
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
@@ -373,8 +374,7 @@ class ReservationFragment :
         }
     }
 
-    private fun initViewModel() {
-        var input = HashMap<String, Any>()
+    private fun dataSet() {
         input["studentId"] =
             MySharedPreferences.getInformation(requireContext()).studentId
         input["college"] =
@@ -385,7 +385,10 @@ class ReservationFragment :
         input["end"] = endTime
         input["id"] = MySharedPreferences.getUserId(requireContext())
         input["password"] = MySharedPreferences.getUserPass(requireContext())
+    }
 
+    private fun initViewModel() {
+        dataSet()
         model.callReserve(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {

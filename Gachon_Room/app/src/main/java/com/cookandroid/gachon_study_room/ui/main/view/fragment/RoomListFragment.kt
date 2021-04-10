@@ -35,8 +35,8 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
         var input = HashMap<String, Any>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
 //        input["college"] = "TEST"
-        viewModel.callRooms(input)
-        viewModel.roomList.observe(viewLifecycleOwner, Observer { resource ->
+
+        viewModel.callRooms(input).observe(viewLifecycleOwner, Observer { resource ->
             Log.d(TAG, resource.data.toString())
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
@@ -54,6 +54,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
             }
         })
     }
+
     private fun setRecyclerView() {
         with(binding.recyclerList) {
             adapter = RoomAdapter(dialog).apply {

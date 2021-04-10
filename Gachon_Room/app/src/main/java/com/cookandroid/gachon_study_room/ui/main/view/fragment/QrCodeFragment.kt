@@ -69,13 +69,13 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
     }
 
     private fun initViewModel() {
-
         model.callConfirm(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
             when(resource.status) {
                 Resource.Status.SUCCESS -> {
                     confirmResult = resource.data!!
                     when(confirmResult.result) {
                         true -> {
+                            toast(requireContext(), "좌석 확정에 성공하였습니다.")
                             binding.txtResult.text = "확정성공"
                         }
                         false -> {
