@@ -29,7 +29,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     private fun btnClick() {
         binding.btn30.setOnClickListener {
-            dataSet(180000L)
+            dataSet(1800000L)
             builder.setTitle("연장")
                     .setMessage("${binding.btn30.text.toString()} 연장하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
@@ -42,7 +42,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             builder.show()
         }
         binding.btn60.setOnClickListener {
-            dataSet(360000L)
+            dataSet(3600000L)
 
             builder.setTitle("연장")
                     .setMessage("${binding.btn60.text.toString()} 연장하시겠습니까?")
@@ -57,7 +57,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             builder.show()
         }
         binding.btn90.setOnClickListener {
-            dataSet(540000L)
+            dataSet(5400000L)
 
             builder.setTitle("연장")
                     .setMessage("${binding.btn90.text.toString()} 연장하시겠습니까?")
@@ -72,7 +72,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             builder.show()
         }
         binding.btn120.setOnClickListener {
-            dataSet(720000L)
+            dataSet(7200000L)
 
             builder.setTitle("연장")
                     .setMessage("${binding.btn120.text} 연장하시겠습니까?")
@@ -96,7 +96,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         input["roomName"] = MySharedPreferences.getReservation(requireContext()).roomName
         input["reservationId"] = MySharedPreferences.getReservation(requireContext()).reservationId
         input["token"] = MySharedPreferences.getToken(requireContext())
-        input["extendedTime"] = extendedTime
+        input["extendedTime"] = MySharedPreferences.getReservation(requireContext()).end + extendedTime
     }
 
     private fun initViewModel() {
@@ -104,8 +104,16 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             when(resource.status) {
                 Resource.Status.SUCCESS -> {
                     Log.d(TAG, "연결성공" + resource.data.toString())
+                    when(resource.data!!.result) {
+                        true -> {
+                            toast(requireContext(), "연장성공")
+                        }
+                        false -> {
+                            toast(requireContext(), resource.data!!.response)
+                        }
+                    }
                     dialog.dismiss()
-                    toast(requireContext(), "연장성공")
+                    dismiss()
                 }
                 Resource.Status.LOADING -> {
                     dialog.show()

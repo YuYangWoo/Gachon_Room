@@ -68,6 +68,7 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
     }
 
     private fun initViewModel() {
+        // 변수를 observe하는걸로 바꿔야할듯.
         model.callConfirm(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
             when(resource.status) {
                 Resource.Status.SUCCESS -> {
