@@ -5,10 +5,8 @@
     <data>
         <variable
             name="login"
-            type="com.cookandroid.gachon_study_room.ui.activity.LoginActivity" />
-        <variable
-            name="model"
-            type="com.cookandroid.gachon_study_room.ui.viewmodel.UserDataInformation" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.activity.LoginActivity" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -113,8 +111,10 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="progress"
-            type="com.cookandroid.gachon_study_room.ui.dialog.ProgressDialog" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog" />
     </data>
 
 <LinearLayout
@@ -24,7 +24,7 @@
         android:layout_gravity="center_vertical"
         android:text="Loading..."
         android:textStyle="bold"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="16dp" />
 </LinearLayout>
 </layout>

@@ -23,4 +23,5 @@
     <string name="choose_seat">원하는 좌석을 선택해주세요</string>
     <string name="start_time">시작시간</string>
     <string name="end_time">종료시간</string>
+    <string name="connect_fail">연결실패</string>
 </resources>

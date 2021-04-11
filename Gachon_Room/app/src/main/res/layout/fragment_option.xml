@@ -5,7 +5,7 @@
     <data>
         <variable
             name="option"
-            type="com.cookandroid.gachon_study_room.ui.fragment.OptionFragment" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.fragment.OptionFragment" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"

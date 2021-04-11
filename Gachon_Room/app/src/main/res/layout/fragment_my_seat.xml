@@ -7,7 +7,7 @@
 
         <variable
             name="bottom"
-            type="com.cookandroid.gachon_study_room.ui.dialog.MySeatDialog" />
+            type="com.cookandroid.gachon_study_room.ui.main.view.dialog.MySeatDialog" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,31 +60,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtSeatNumber" />
 
-        <android.widget.Button
-            android:id="@+id/button"
+        <TextView
+            android:id="@+id/txtStatus"
             style="@style/BaseText"
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/button_edge"
-            android:elevation="0dp"
-            android:text="@string/extend"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:text="좌석상태:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTime" />
 
         <android.widget.Button
-            android:id="@+id/button2"
+            android:id="@+id/btnExtend"
             style="@style/BaseText"
             android:layout_width="0dp"
             android:layout_height="70dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_edge"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:elevation="0dp"
+            android:text="@string/extend"
+            app:layout_constraintEnd_toStartOf="@+id/btnBack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtStatus" />
+
+        <android.widget.Button
+            android:id="@+id/btnBack"
+            style="@style/BaseText"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/button_edge"
             android:elevation="0dp"
             android:text="@string/return_seat"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toBottomOf="@+id/txtTime" />
+            app:layout_constraintStart_toEndOf="@+id/btnExtend"
+            app:layout_constraintTop_toTopOf="@+id/btnExtend" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
