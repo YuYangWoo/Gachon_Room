@@ -76,7 +76,7 @@ class ReservationFragment :
             }
         }
 
-        setAvailableRecyclerView()
+//        setAvailableRecyclerView()
         timeSet()
         btnStart()
         btnEnd()
@@ -205,30 +205,30 @@ class ReservationFragment :
 
     }
 
-    private fun setAvailableRecyclerView() {
-        var list = arrayListOf(
-            Availiable(R.drawable.ic_seats_book, "사용가능"),
-            Availiable(R.drawable.ic_seats_reserved, "예약됨"),
-            Availiable(R.drawable.ic_seats_booked, "확정됨")
-        )
-
-        with(binding.recyclerAvailable) {
-            adapter = AvailiableAdapter().apply {
-                data = list
-                notifyDataSetChanged()
-            }
-            layoutManager = object : GridLayoutManager(requireContext(), 3) {
-                override fun canScrollHorizontally(): Boolean {
-                    return false
-                }
-
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
-            setHasFixedSize(true)
-        }
-    }
+//    private fun setAvailableRecyclerView() {
+//        var list = arrayListOf(
+//            Availiable(R.drawable.ic_seats_book, "사용가능"),
+//            Availiable(R.drawable.ic_seats_reserved, "예약됨"),
+//            Availiable(R.drawable.ic_seats_booked, "확정됨")
+//        )
+//
+//        with(binding.recyclerAvailable) {
+//            adapter = AvailiableAdapter().apply {
+//                data = list
+//                notifyDataSetChanged()
+//            }
+//            layoutManager = object : GridLayoutManager(requireContext(), 3) {
+//                override fun canScrollHorizontally(): Boolean {
+//                    return false
+//                }
+//
+//                override fun canScrollVertically(): Boolean {
+//                    return false
+//                }
+//            }
+//            setHasFixedSize(true)
+//        }
+//    }
 
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
