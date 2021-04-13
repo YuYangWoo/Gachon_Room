@@ -3,6 +3,7 @@ package com.cookandroid.gachon_study_room.ui.main.view.fragment
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
+import android.content.res.Resources
 import android.graphics.Color
 import android.text.format.DateFormat
 import android.util.Log
@@ -11,17 +12,17 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.TimePicker
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Reserve
-import com.cookandroid.gachon_study_room.data.model.room.Availiable
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
-import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
+import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
@@ -81,6 +82,7 @@ class ReservationFragment :
         btnConfirm()
     }
 
+
     private fun btnStart() {
         binding.txtStart.text = TimeRequest.time()
         binding.cardViewStart.setOnClickListener {
@@ -95,7 +97,7 @@ class ReservationFragment :
                 var date = Date()
                 date.time = time.timeInMillis
                 Log.d("TAG", "시작시간은$startTime 심플타임 ${simple.format(date)}")
-                Log.d(TAG, GregorianCalendar(0,0,0,2,0).timeInMillis.toString())
+                Log.d(TAG, GregorianCalendar(0, 0, 0, 2, 0).timeInMillis.toString())
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
 
@@ -124,11 +126,11 @@ class ReservationFragment :
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             CustomTimePickerDialog(
-                requireContext(),
-                timeSetListener,
-                startOurHour,
-                startOurMinute,
-                DateFormat.is24HourFormat(requireContext())
+                    requireContext(),
+                    timeSetListener,
+                    startOurHour,
+                    startOurMinute,
+                    DateFormat.is24HourFormat(requireContext())
             ).show()
         }
     }
@@ -173,11 +175,11 @@ class ReservationFragment :
                 }
             }
             CustomTimePickerDialog(
-                requireContext(),
-                timeSetListener,
-                endOurHour,
-                endOurMinute,
-                DateFormat.is24HourFormat(requireContext())
+                    requireContext(),
+                    timeSetListener,
+                    endOurHour,
+                    endOurMinute,
+                    DateFormat.is24HourFormat(requireContext())
             ).show()
         }
     }
@@ -206,8 +208,8 @@ class ReservationFragment :
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
         )
         layoutSeat.removeAllViews()
         layout.removeAllViews()
@@ -369,7 +371,7 @@ class ReservationFragment :
                     reservation = resource.data!!
                     MySharedPreferences.setReservation(requireContext(), reservation.reservation)
                     Log.d(TAG, reservation.toString())
-                    when(reservation.result) {
+                    when (reservation.result) {
                         true -> {
                             toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
                         }
@@ -407,6 +409,7 @@ class ReservationFragment :
         var day = cal.get(Calendar.DAY_OF_MONTH)
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
         var simple = SimpleDateFormat("HH시 mm분")
+        private const val TIME_PICKER_INTERVAL = 10
     }
 
 }
