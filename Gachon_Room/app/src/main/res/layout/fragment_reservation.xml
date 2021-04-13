@@ -64,7 +64,7 @@
                             android:layout_height="0dp"
                             android:src="@drawable/ic_seats_book"
                             app:layout_constraintEnd_toStartOf="@+id/reserved"
-                            app:layout_constraintHeight_percent="0.7"
+                            app:layout_constraintHeight_percent="0.65"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.33" />
@@ -72,15 +72,14 @@
                         <TextView
                             android:id="@+id/txtAvailable"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:text="사용가능"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/available"
                             app:layout_constraintEnd_toStartOf="@+id/reserved"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            />
+                            app:layout_constraintHeight_percent="0.35"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/available" />
 
                         <ImageView
                             android:id="@+id/reserved"
@@ -88,22 +87,23 @@
                             android:layout_height="0dp"
                             android:src="@drawable/ic_seats_reserved"
                             app:layout_constraintEnd_toStartOf="@+id/using"
-                            app:layout_constraintHeight_percent="0.7"
+                            app:layout_constraintHeight_percent="0.65"
                             app:layout_constraintStart_toEndOf="@id/available"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.33" />
+
                         <TextView
                             android:id="@+id/txtReserved"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:text="예약중"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@+id/available"
-                            app:layout_constraintTop_toBottomOf="@id/reserved"
                             app:layout_constraintEnd_toStartOf="@+id/using"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            />
+                            app:layout_constraintHeight_percent="0.35"
+                            app:layout_constraintStart_toEndOf="@+id/available"
+                            app:layout_constraintTop_toBottomOf="@id/reserved" />
+
                         <ImageView
                             android:id="@+id/using"
                             android:layout_width="0dp"
@@ -111,7 +111,7 @@
                             android:layout_marginEnd="4dp"
                             android:src="@drawable/ic_seats_booked"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHeight_percent="0.7"
+                            app:layout_constraintHeight_percent="0.65"
                             app:layout_constraintStart_toEndOf="@id/reserved"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.33" />
@@ -119,13 +119,14 @@
                         <TextView
                             android:id="@+id/txtUsing"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="사용가능"
+                            android:layout_height="0dp"
+                            android:text="확정됨"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintStart_toEndOf="@id/reserved"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/using"  />
+                            app:layout_constraintHeight_percent="0.35"
+                            app:layout_constraintStart_toEndOf="@id/reserved"
+                            app:layout_constraintTop_toBottomOf="@id/using" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,7 +134,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHeight_percent="0.8"
+                        app:layout_constraintHeight_percent="0.85"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/cstLyCardTop">
 
@@ -168,7 +169,7 @@
                             style="@style/BaseText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="10dp"
                             android:text="@string/choose_seat"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"

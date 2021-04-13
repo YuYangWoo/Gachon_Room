@@ -22,7 +22,6 @@ import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
-import com.cookandroid.gachon_study_room.ui.adapter.AvailiableAdapter
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
@@ -76,7 +75,6 @@ class ReservationFragment :
             }
         }
 
-//        setAvailableRecyclerView()
         timeSet()
         btnStart()
         btnEnd()
@@ -204,31 +202,6 @@ class ReservationFragment :
         }
 
     }
-
-//    private fun setAvailableRecyclerView() {
-//        var list = arrayListOf(
-//            Availiable(R.drawable.ic_seats_book, "사용가능"),
-//            Availiable(R.drawable.ic_seats_reserved, "예약됨"),
-//            Availiable(R.drawable.ic_seats_booked, "확정됨")
-//        )
-//
-//        with(binding.recyclerAvailable) {
-//            adapter = AvailiableAdapter().apply {
-//                data = list
-//                notifyDataSetChanged()
-//            }
-//            layoutManager = object : GridLayoutManager(requireContext(), 3) {
-//                override fun canScrollHorizontally(): Boolean {
-//                    return false
-//                }
-//
-//                override fun canScrollVertically(): Boolean {
-//                    return false
-//                }
-//            }
-//            setHasFixedSize(true)
-//        }
-//    }
 
     private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
