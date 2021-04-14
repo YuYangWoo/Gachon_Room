@@ -23,6 +23,7 @@ import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
+import com.cookandroid.gachon_study_room.ui.main.view.dialog.TimePickerDialogFixedNougatSpinner
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -87,10 +88,6 @@ class ReservationFragment :
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
                 var startMinute = minute
-                if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
-                    Log.d(TAG, "누가다")
-                    startMinute /= 10
-                }
 
                 Log.d(TAG, "$hour   $minute")
                 cal.set(Calendar.HOUR_OF_DAY, hour)
@@ -131,13 +128,18 @@ class ReservationFragment :
 
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
-            CustomTimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    startOurHour,
-                    startOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
-            ).show()
+            if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
+              TimePickerDialogFixedNougatSpinner(requireContext(), timeSetListener, startOurHour, startOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+                }
+            else {
+                CustomTimePickerDialog(
+                        requireContext(),
+                        timeSetListener,
+                        startOurHour,
+                        startOurMinute,
+                        DateFormat.is24HourFormat(requireContext())
+                ).show()
+            }
         }
     }
 
@@ -148,10 +150,6 @@ class ReservationFragment :
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
                 var endMinute = minute
-                if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
-                    Log.d(TAG, "누가다")
-                    endMinute /= 10
-                }
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, endMinute)
                 var time = GregorianCalendar(year, month, day, hour, endMinute)
@@ -185,13 +183,19 @@ class ReservationFragment :
 
                 }
             }
-            CustomTimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    endOurHour,
-                    endOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
-            ).show()
+
+            if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
+                TimePickerDialogFixedNougatSpinner(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
+            }
+            else {
+                CustomTimePickerDialog(
+                        requireContext(),
+                        timeSetListener,
+                        endOurHour,
+                        endOurMinute,
+                        DateFormat.is24HourFormat(requireContext())
+                ).show()
+            }
         }
     }
 
