@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MyProgressBar">
+
+        <attr name="maxValue" format="integer"/>
+
+        <attr name="curValue" format="integer" />
+
+        <attr name="lineColor" format="color" />
+
+    </declare-styleable>
+
+</resources>

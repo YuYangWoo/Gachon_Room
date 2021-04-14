@@ -14,11 +14,11 @@
             android:id="@+id/action_mainFragment_to_mySeatDialog"
             app:destination="@id/mySeatDialog" />
         <action
-            android:id="@+id/action_mainFragment_to_QRCodeActivity"
-            app:destination="@id/QRCodeActivity" />
-        <action
             android:id="@+id/action_mainFragment_to_qrCodeFragment"
             app:destination="@id/qrCodeFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_reservationStatusFragment"
+            app:destination="@id/reservationStatusFragment" />
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
@@ -32,6 +32,7 @@
         android:id="@+id/qrCodeFragment"
         android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.QrCodeFragment"
         android:label="@string/qr" />
+
     <fragment
         android:id="@+id/reservationFragment"
         android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment"
@@ -47,6 +48,7 @@
             android:id="@+id/action_reservationFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/roomListFragment"
         android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.RoomListFragment"
@@ -57,9 +59,12 @@
         <argument
             android:name="rooms"
             app:argType="com.cookandroid.gachon_study_room.data.model.room.RoomsData"/>
-    </fragment><action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
-    <activity
-        android:id="@+id/QRCodeActivity"
-        android:name="com.cookandroid.gachon_study_room.ui.main.view.activity.QRCodeActivity"
-        android:label="QRCodeActivity" />
+    </fragment>
+
+    <action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
+
+    <fragment
+        android:id="@+id/reservationStatusFragment"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.dialog.ReservationStatusFragment"
+        android:label="ReservationStatusFragment" />
 </navigation>

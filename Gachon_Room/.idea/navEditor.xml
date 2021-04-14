@@ -8,18 +8,6 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="QRCodeActivity">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-784" />
-                            <option name="y" value="38" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="action_global_reservationFragment">
                     <value>
                       <LayoutPositions />
@@ -36,6 +24,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_mainFragment_to_QRCodeActivity">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_mainFragment_to_mySeatDialog">
                               <value>
                                 <LayoutPositions />
@@ -47,6 +40,11 @@
                               </value>
                             </entry>
                             <entry key="action_mainFragment_to_qrCodeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_mainFragment_to_reservationStatusFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -108,12 +106,19 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_reservationFragment_to_setTimeFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="reservationStatusFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="106" />
+                            <option name="y" value="640" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -135,18 +140,6 @@
                               </value>
                             </entry>
                           </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="setTimeFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-98" />
-                            <option name="y" value="634" />
-                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

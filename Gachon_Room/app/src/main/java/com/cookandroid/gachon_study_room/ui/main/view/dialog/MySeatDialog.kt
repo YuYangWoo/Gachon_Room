@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.MySeat
 import com.cookandroid.gachon_study_room.databinding.FragmentMySeatBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseBottomSheet
-import com.cookandroid.gachon_study_room.ui.main.view.fragment.RoomListFragment
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -123,8 +123,8 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
     private fun extendSeat() {
     binding.btnExtend.setOnClickListener {
+//        findNavController().navigate(MySeatDialogDirections.actionMySeatDialogToReservationStatusView())
         ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
-//        RoomListFragment().show((context as AppCompatActivity).supportFragmentManager,"Modal")
     }
     }
 
