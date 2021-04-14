@@ -35,11 +35,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             MySharedPreferences.getUserId(this@LoginActivity).isNotBlank() &&
             MySharedPreferences.getUserPass(this@LoginActivity).isNotBlank()
         ) {
-            binding.edtId.setText(MySharedPreferences.getUserId(this@LoginActivity))
-            binding.edtPassword.setText(MySharedPreferences.getUserPass(this@LoginActivity))
+            binding.edtId.editText!!.setText(MySharedPreferences.getUserId(this@LoginActivity))
+            binding.edtPassword.editText!!.setText(MySharedPreferences.getUserPass(this@LoginActivity))
             binding.checkBox.isChecked = true
-            input["id"] = binding.edtId.text.toString()
-            input["password"] = binding.edtPassword.text.toString()
+            input["id"] = binding.edtId.editText!!.text.toString()
+            input["password"] = binding.edtPassword.editText!!.text.toString()
             model.loginApiCall(input)
         }
     }
@@ -88,8 +88,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            input["id"] = binding.edtId.text.toString()
-            input["password"] = binding.edtPassword.text.toString()
+            input["id"] = binding.edtId.editText!!.text.toString()
+            input["password"] = binding.edtPassword.editText!!.text.toString()
             model.loginApiCall(input)
         }
     }
@@ -100,8 +100,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 this@LoginActivity,
                 "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}"
             )
-            MySharedPreferences.setUserId(this@LoginActivity, binding.edtId.text.toString())
-            MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.text.toString())
+            MySharedPreferences.setUserId(this@LoginActivity, binding.edtId.editText!!.text.toString())
+            MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.editText!!.text.toString())
             MySharedPreferences.setInformation(
                 this@LoginActivity,
                 userData.account.type,

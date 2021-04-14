@@ -51,13 +51,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/logo_jungsook" />
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/edtId"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/moon"
-                        android:drawableStart="@drawable/left_id"
-                        android:ems="10"
+                        app:endIconMode="clear_text"
                         android:hint="id"
                         android:inputType="textPersonName"
                         android:textColor="@color/moon"
@@ -66,23 +66,34 @@
                         app:layout_constraintHorizontal_bias="0.497"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintWidth_percent="0.8"
-                        tools:layout_editor_absoluteY="130dp" />
+                        tools:layout_editor_absoluteY="130dp" >
 
-                    <EditText
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/edtPassword"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        app:endIconMode="password_toggle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="7dp"
                         android:backgroundTint="@color/moon"
-                        android:drawableStart="@drawable/left_password"
-                        android:ems="10"
                         android:hint="password"
                         android:inputType="textPersonName|textPassword"
                         android:textColor="@color/moon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/edtId"
-                        app:layout_constraintWidth_percent="0.8" />
+                        app:layout_constraintWidth_percent="0.8" >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <android.widget.Button
                         android:id="@+id/btnLogin"
