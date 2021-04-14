@@ -53,11 +53,11 @@ class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: On
                     "android"
             ))
 
-            val hourPicker = this.timePicker.findViewById<NumberPicker>(Resources.getSystem().getIdentifier(
-                    "hour",
-                    "id",
-                    "android"
-            ))
+//            val hourPicker = this.timePicker.findViewById<NumberPicker>(Resources.getSystem().getIdentifier(
+//                    "hour",
+//                    "id",
+//                    "android"
+//            ))
             minutePicker.minValue = 0
             minutePicker.maxValue = 60 / TIME_PICKER_INTERVAL -1
             val displayedValues: MutableList<String> = ArrayList()

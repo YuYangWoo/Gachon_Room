@@ -89,15 +89,18 @@ class ReservationFragment :
             // 아래 hour, minute가 선택된 시간 분
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
+                Log.d(TAG, "$hour   $minute")
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, minute)
+                // 좌석 시간 표시
                 txtStartTime = simple.format(cal.time)
                 var time = GregorianCalendar(year, month, day, hour, minute)
                 startTime = time.timeInMillis
+                // 심플타임으로 나타냄
                 var date = Date()
                 date.time = time.timeInMillis
-                Log.d("TAG", "시작시간은$startTime 심플타임 ${simple.format(date)}")
-                Log.d(TAG, GregorianCalendar(0, 0, 0, 2, 0).timeInMillis.toString())
+                Log.d(TAG, "시작시간은$startTime 심플타임 ${simple.format(date)}")
+//                Log.d(TAG, GregorianCalendar(0, 0, 0, 2, 0).timeInMillis.toString())
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
 
@@ -409,7 +412,6 @@ class ReservationFragment :
         var day = cal.get(Calendar.DAY_OF_MONTH)
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
         var simple = SimpleDateFormat("HH시 mm분")
-        private const val TIME_PICKER_INTERVAL = 10
     }
 
 }
