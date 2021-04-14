@@ -29,7 +29,7 @@ class ReservationStatusFragment : BaseFragment<ReservationStatusBinding>(R.layou
         endCal.set(Calendar.DAY_OF_MONTH, day)
         binding.txtStartDate.text = timeFormat.format(cal.time) + "\n09:00"
         binding.txtEndDate.text = timeFormat.format(endCal.time) + "\n00:00"
-        for(i in 0..90) {
+        for(i in 0 .. 90) {
             if(i <= count) {
                 color.add(0)
             }

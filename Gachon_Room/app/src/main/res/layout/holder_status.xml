@@ -12,16 +12,24 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/imgItem"
+        android:id="@+id/seatStatus"
         android:layout_width="10dp"
         android:layout_height="5dp"
-        android:foreground="?android:attr/selectableItemBackground"
         android:background="@drawable/status_list_edge"
         android:gravity="center"
-        android:text="@{status, default= 01}"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:gravity="center"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seatStatus" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
