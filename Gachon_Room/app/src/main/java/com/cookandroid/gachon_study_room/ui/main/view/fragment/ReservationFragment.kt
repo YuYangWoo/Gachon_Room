@@ -3,7 +3,6 @@ package com.cookandroid.gachon_study_room.ui.main.view.fragment
 import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
-import android.content.res.Resources
 import android.graphics.Color
 import android.text.format.DateFormat
 import android.util.Log
@@ -12,9 +11,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.NumberPicker
 import android.widget.TextView
-import android.widget.TimePicker
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cookandroid.gachon_study_room.R
@@ -89,12 +86,18 @@ class ReservationFragment :
             // 아래 hour, minute가 선택된 시간 분
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
+                var startMinute = minute
+                if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
+                    Log.d(TAG, "누가다")
+                    startMinute /= 10
+                }
+
                 Log.d(TAG, "$hour   $minute")
                 cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
+                cal.set(Calendar.MINUTE, startMinute)
                 // 좌석 시간 표시
                 txtStartTime = simple.format(cal.time)
-                var time = GregorianCalendar(year, month, day, hour, minute)
+                var time = GregorianCalendar(year, month, day, hour, startMinute)
                 startTime = time.timeInMillis
                 // 심플타임으로 나타냄
                 var date = Date()
@@ -120,7 +123,7 @@ class ReservationFragment :
                         }
                         // ok 버트 누르고 나오는 시간.
                         startOurHour = hour
-                        startOurMinute = minute
+                        startOurMinute = startMinute
                         binding.txtStart.text = txtStartTime
                     }
 
@@ -143,10 +146,15 @@ class ReservationFragment :
         binding.txtEnd.text = TimeRequest.endTime()
         binding.cardViewEnd.setOnClickListener {
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
-                                                                       endHour, endMinute ->
-                cal.set(Calendar.HOUR_OF_DAY, endHour)
+                                                                       hour, minute ->
+                var endMinute = minute
+                if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
+                    Log.d(TAG, "누가다")
+                    endMinute /= 10
+                }
+                cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, endMinute)
-                var time = GregorianCalendar(year, month, day, endHour, endMinute)
+                var time = GregorianCalendar(year, month, day, hour, endMinute)
                 txtEndTime = simple.format(cal.time)
                 endTime = time.timeInMillis
                 var date = Date()
@@ -169,7 +177,7 @@ class ReservationFragment :
                             if (name == rooms.rooms[i].roomName) {
                                 seatView(rooms.rooms[i].seat, rooms, i)
                             }
-                            endOurHour = endHour
+                            endOurHour = hour
                             endOurMinute = endMinute
                             binding.txtEnd.text = txtEndTime
                         }
@@ -372,10 +380,10 @@ class ReservationFragment :
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     reservation = resource.data!!
-                    MySharedPreferences.setReservation(requireContext(), reservation.reservation)
                     Log.d(TAG, reservation.toString())
                     when (reservation.result) {
                         true -> {
+                            MySharedPreferences.setReservation(requireContext(), reservation.reservation)
                             toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
                         }
                         false -> {
