@@ -20,7 +20,7 @@ class SeatStatusAdapter(private var context: Context) : RecyclerView.Adapter<Sea
     }
 
     override fun onBindViewHolder(holder: StatusViewHolder, position: Int) {
-     holder.onBind(data[position])
+     holder.onBind(data[position], position)
     }
 
     override fun getItemCount(): Int {
@@ -28,12 +28,18 @@ class SeatStatusAdapter(private var context: Context) : RecyclerView.Adapter<Sea
     }
 
     inner class StatusViewHolder(private val binding: HolderStatusBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(img: Int) {
+        fun onBind(img: Int, pos: Int) {
             if(img == 0) {
                 binding.imgItem.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
             }
             else {
-                binding.imgItem.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+                binding.imgItem.setBackgroundColor(ContextCompat.getColor(context, R.color.mainColor))
+            }
+            if((pos % 6) == 0) {
+                var params = binding.imgItem.layoutParams
+                params.width = 2
+                binding.imgItem.layoutParams = params
+                binding.imgItem.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
             }
 //            binding.status = img.toString()
         }

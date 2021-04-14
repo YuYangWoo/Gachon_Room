@@ -58,5 +58,18 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/textTwelve"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="40dp"-->
+<!--        android:layout_marginTop="2dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text="12:00"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/txtStartDate"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/recyclerStatus" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
