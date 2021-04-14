@@ -10,9 +10,13 @@
             type="com.cookandroid.gachon_study_room.ui.main.view.dialog.MySeatDialog" />
     </data>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/list_edge">
 
         <TextView
@@ -32,7 +36,7 @@
             style="@style/BaseText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:text="@string/seat_location"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +47,7 @@
             style="@style/BaseText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="7dp"
             android:text="@string/seat_number"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +58,7 @@
             style="@style/BaseText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="7dp"
             android:text="@string/seat_time"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,9 +69,9 @@
             style="@style/BaseText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:text="좌석상태:"
+            android:text="@string/seat_result"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTime" />
 
@@ -98,7 +102,7 @@
             app:layout_constraintStart_toEndOf="@+id/btnExtend"
             app:layout_constraintTop_toTopOf="@+id/btnExtend" />
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 </layout>

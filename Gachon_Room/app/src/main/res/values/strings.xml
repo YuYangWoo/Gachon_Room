@@ -24,4 +24,5 @@
     <string name="start_time">시작시간</string>
     <string name="end_time">종료시간</string>
     <string name="connect_fail">연결실패</string>
+    <string name="seat_result">좌석상태</string>
 </resources>

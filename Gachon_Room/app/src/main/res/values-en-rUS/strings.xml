@@ -16,13 +16,14 @@
     <string name="reservation_seat">Reserve Seat</string>
     <string name="qr">qr Reader</string>
     <string name="my_seat">My Seat</string>
-    <string name="seat_location">Location</string>
-    <string name="seat_number">Seat Number</string>
-    <string name="seat_time">Reservation Time</string>
+    <string name="seat_location">Location :</string>
+    <string name="seat_number">Seat Number :</string>
+    <string name="seat_time">Reservation Time :</string>
     <string name="extend">Extend</string>
     <string name="return_seat">Return</string>
     <string name="choose_seat">Please choose your seat you want</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="connect_fail">Connection Failed</string>
+    <string name="seat_result">Seat Status :</string>
 </resources>
