@@ -17,6 +17,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Reserve
+import com.cookandroid.gachon_study_room.data.model.SeatTime
+import com.cookandroid.gachon_study_room.data.model.room.Room
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
@@ -64,6 +66,7 @@ class ReservationFragment :
     private var reservation: Reserve = Reserve()
     private var color = ArrayList<Int>()
     private lateinit var persistentBottomSheetBehavior : BottomSheetBehavior<*>
+    private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
 
     override fun init() {
         super.init()
@@ -86,8 +89,8 @@ class ReservationFragment :
         btnStart()
         btnEnd()
         btnConfirm()
+        overLapTime()
     }
-
 
     private fun btnStart() {
         binding.txtStart.text = TimeRequest.time()
@@ -241,7 +244,7 @@ class ReservationFragment :
         layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
 
         layout.addView(layoutSeat)
-
+        seatTime = rooms.rooms[index].reserved as ArrayList<ArrayList<Room.Reservation>>
         var seats = room
 
         for (i in seats.indices) {
@@ -281,6 +284,7 @@ class ReservationFragment :
 
                     // 좌석의 번호에 따른 reserved 크기를 구해 예약된 시간과 비교
                     // roomData.rooms[index]까지가 2층, 스터디룸 등
+                    // reserved[seats[i][j]]는 seat 번호
                     for (z in 0 until roomData.rooms[index].reserved[seats[i][j]].size) {
                         // 예약하려는 시작시간이 예약된 종료시간보다 작고 예약하려는 종료시간이 예약된 시간 시작시간보다 크면 reserved confirmed면 booked
                         if (startTime < roomData.rooms[index].reserved[seats[i][j]][z].end && endTime > roomData.rooms[index].reserved[seats[i][j]][z].begin) {
@@ -457,6 +461,7 @@ class ReservationFragment :
 
     private fun overLapTime() {
        // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
+       Log.d(TAG, seatTime[89][0].begin.toString())
     }
 
     companion object {
@@ -483,7 +488,7 @@ class ReservationFragment :
         val status_day = status_endCal.get(Calendar.DAY_OF_MONTH) + 1
         val status_hour = cal.get(Calendar.HOUR_OF_DAY) //16시
         val status_minute = cal.get(Calendar.MINUTE) // 49분
-        val status_count = ((status_hour-9)*6) + ((status_minute/10)+1)
+        val status_count = ((status_hour - 9) * 6) + ((status_minute / 10) + 1)
         val status_timeFormat = SimpleDateFormat("MM/dd")
     }
 

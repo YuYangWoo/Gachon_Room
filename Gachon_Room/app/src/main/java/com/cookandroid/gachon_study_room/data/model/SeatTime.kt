@@ -3,9 +3,10 @@ package com.cookandroid.gachon_study_room.data.model
 import java.io.Serializable
 
 data class SeatTime(
-    var seatId: Int,
-    var startTime: Long,
-    var endTime: Long
+    var startTime: ArrayList<ArrayList<Long>>,
+    var endTime: ArrayList<ArrayList<Long>>,
+    var unStart: ArrayList<Int>,
+    var unEnd: ArrayList<Int>
 ) : Serializable {
-    constructor() : this(0, 0L, 0L)
+    constructor() : this(arrayListOf(), arrayListOf(), arrayListOf(), arrayListOf())
 }
