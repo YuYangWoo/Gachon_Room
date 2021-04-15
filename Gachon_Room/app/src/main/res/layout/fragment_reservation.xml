@@ -10,6 +10,10 @@
             type="com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment" />
     </data>
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.core.widget.NestedScrollView
         android:fillViewport="true"
         android:layout_width="match_parent"
@@ -298,6 +302,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardViewStart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-
+        <include layout="@layout/reservation_status"
+            android:id="@+id/layout_reservation_status"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

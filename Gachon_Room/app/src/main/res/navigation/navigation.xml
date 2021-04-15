@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_reservationFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_reservationFragment_to_reservationStatusFragment"
+            app:destination="@id/reservationStatusFragment" />
     </fragment>
 
     <fragment

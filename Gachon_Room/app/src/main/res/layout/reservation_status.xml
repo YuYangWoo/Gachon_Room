@@ -7,10 +7,21 @@
             name="status"
             type="com.cookandroid.gachon_study_room.ui.main.view.dialog.ReservationStatusFragment" />
     </data>
-
+<!--<FrameLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:behavior_hideable="false"-->
+<!--    app:behavior_peekHeight="100dp"-->
+<!--    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"-->
+<!--  >-->
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/bottom_sheet_persistent"
      android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_edge"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerStatus"
@@ -30,7 +41,6 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
         android:text="m/d\n09:00"
-
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,6 +117,6 @@
         app:layout_constraintEnd_toStartOf="@+id/txtEndDate"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/recyclerStatus" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+<!--</FrameLayout>-->
 </layout>

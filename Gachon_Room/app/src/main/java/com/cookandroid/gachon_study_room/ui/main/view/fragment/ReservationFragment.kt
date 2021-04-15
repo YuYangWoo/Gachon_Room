@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.Insets.add
 import android.text.format.DateFormat
 import android.util.Log
 import android.util.TypedValue
@@ -12,20 +13,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
+import com.cookandroid.gachon_study_room.ui.adapter.SeatStatusAdapter
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
+import com.cookandroid.gachon_study_room.ui.main.view.dialog.ReservationStatusFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.TimePickerDialogFixedNougatSpinner
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,6 +66,8 @@ class ReservationFragment :
     }
     var input = HashMap<String, Any>()
     private var reservation: Reserve = Reserve()
+    private var color = ArrayList<Int>()
+    private lateinit var persistentBottomSheetBehavior : BottomSheetBehavior<*>
 
     override fun init() {
         super.init()
@@ -67,13 +76,16 @@ class ReservationFragment :
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
+        persistentBottomSheetBehavior = BottomSheetBehavior.from(binding.layoutReservationStatus.bottomSheetPersistent)
+
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
-
+        txtSet()
+        setRecyclerStatus()
         timeSet()
         btnStart()
         btnEnd()
@@ -319,16 +331,19 @@ class ReservationFragment :
         if (view.tag as Int == STATUS_AVAILABLE) {
             // 다시 눌렀을 시
             if (selectedIds.contains(view.id.toString() + ",")) {
+                persistentBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 selectedIds = selectedIds.replace(view.id.toString() + ",", "")
                 view.setBackgroundResource(R.drawable.ic_seats_book)
                 Log.d("TAG", selectedIds)
             } else { // 선택했을시
                 // 하나만 선택가능
                 if (selectedIds == "") {
+                    persistentBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     selectedIds = selectedIds + view.id + ","
                     seatId = view.id
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
                 } else { // 2개이상 선택했을 시
+                    persistentBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                     toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
                 }
                 Log.d("TAG", selectedIds)
@@ -408,6 +423,41 @@ class ReservationFragment :
         })
     }
 
+    private fun setRecyclerStatus() {
+        with(binding.layoutReservationStatus.recyclerStatus) {
+            adapter = SeatStatusAdapter(context).apply {
+                data = color
+                notifyDataSetChanged()
+            }
+            layoutManager = object : GridLayoutManager(context, color.size) {
+                override fun canScrollHorizontally(): Boolean {
+                    return false
+                }
+
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
+            }
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun txtSet() {
+        status_endCal.set(Calendar.MONTH, status_month)
+        status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
+        binding.layoutReservationStatus.txtStartDate.text = status_timeFormat.format(status_cal.time) + "\n09:00"
+        binding.layoutReservationStatus.txtEndDate.text = status_timeFormat.format(status_endCal.time) + "\n00:00"
+        for(i in 0 until 90) {
+            if(i <= status_count) {
+                color.add(0)
+            }
+            else {
+                color.add(1)
+            }
+        }
+        color.add(0,-1)
+    }
+
     companion object {
         const val EMPTY = 0
         const val START = 0
@@ -424,6 +474,16 @@ class ReservationFragment :
         var day = cal.get(Calendar.DAY_OF_MONTH)
         var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
         var simple = SimpleDateFormat("HH시 mm분")
+
+        // status
+        val status_cal = Calendar.getInstance()
+        val status_endCal = Calendar.getInstance()
+        val status_month = status_endCal.get(Calendar.MONTH)
+        val status_day = status_endCal.get(Calendar.DAY_OF_MONTH) + 1
+        val status_hour = cal.get(Calendar.HOUR_OF_DAY) //16시
+        val status_minute = cal.get(Calendar.MINUTE) // 49분
+        val status_count = ((status_hour-9)*6) + ((status_minute/10)+1)
+        val status_timeFormat = SimpleDateFormat("MM/dd")
     }
 
 }

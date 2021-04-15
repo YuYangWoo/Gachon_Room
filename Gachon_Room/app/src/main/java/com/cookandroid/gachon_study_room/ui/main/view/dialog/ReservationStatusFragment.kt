@@ -1,9 +1,13 @@
 package com.cookandroid.gachon_study_room.ui.main.view.dialog
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
@@ -13,17 +17,20 @@ import com.cookandroid.gachon_study_room.ui.base.BaseBottomSheet
 import com.cookandroid.gachon_study_room.ui.base.BaseDialog
 import com.cookandroid.gachon_study_room.ui.base.BaseDialogFragment
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReservationStatusFragment : BaseFragment<ReservationStatusBinding>(R.layout.reservation_status) {
+class ReservationStatusFragment : BottomSheetDialogFragment() {
+private lateinit var binding: ReservationStatusBinding
     var color = ArrayList<Int>()
-    override fun init() {
-        super.init()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.reservation_status , container, false)
         txtSet()
         setRecyclerStatus()
+        return binding.root
     }
-
     private fun txtSet() {
         endCal.set(Calendar.MONTH, month)
         endCal.set(Calendar.DAY_OF_MONTH, day)
@@ -68,6 +75,5 @@ class ReservationStatusFragment : BaseFragment<ReservationStatusBinding>(R.layou
         val minute = cal.get(Calendar.MINUTE) // 49분
         val count = ((hour-9)*6) + ((minute/10)+1)
         val timeFormat = SimpleDateFormat("MM/dd")
-
     }
 }
