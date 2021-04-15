@@ -30,7 +30,7 @@ class SeatStatusAdapter(private var context: Context) : RecyclerView.Adapter<Sea
 
     inner class StatusViewHolder(private val binding: HolderStatusBinding) : RecyclerView.ViewHolder(binding.root) {
         var params = binding.txtBar.layoutParams
-        var timeParams = binding.txtTime.layoutParams
+//        var timeParams = binding.txtTime.layoutParams
         fun onBind(img: Int, pos: Int) {
             when (img) {
                 0 -> {
@@ -48,10 +48,10 @@ class SeatStatusAdapter(private var context: Context) : RecyclerView.Adapter<Sea
                 params.width = 10
                 binding.txtBar.layoutParams = params
                 binding.txtBar.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
-                timeParams.width = 30
-                binding.txtTime.textSize = 16F
-                binding.txtTime.layoutParams = timeParams
-                binding.txtTime.text = "12"
+//                timeParams.width = 30
+//                binding.txtTime.textSize = 16F
+//                binding.txtTime.layoutParams = timeParams
+//                binding.txtTime.text = "12"
 
             }
         }
