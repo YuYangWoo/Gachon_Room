@@ -21,28 +21,38 @@ class SeatStatusAdapter(private var context: Context) : RecyclerView.Adapter<Sea
     }
 
     override fun onBindViewHolder(holder: StatusViewHolder, position: Int) {
-//        Log.d("test", position.toString())
      holder.onBind(data[position], position)
     }
 
     override fun getItemCount(): Int {
-        Log.d("test", data.size.toString())
         return data.size
     }
 
     inner class StatusViewHolder(private val binding: HolderStatusBinding) : RecyclerView.ViewHolder(binding.root) {
+        var params = binding.txtBar.layoutParams
+        var timeParams = binding.txtTime.layoutParams
         fun onBind(img: Int, pos: Int) {
-            if(img == 0) {
-                binding.seatStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+            when (img) {
+                0 -> {
+                    binding.seatStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+                }
+                1 -> {
+                    binding.seatStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.mainColor))
+                }
+                else -> {
+                    params.width = 0
+                    binding.txtBar.layoutParams = params
+                }
             }
-            else {
-                binding.seatStatus.setBackgroundColor(ContextCompat.getColor(context, R.color.mainColor))
-            }
-            if((pos % 18) == 0) {
-                var params = binding.txtTime.layoutParams
+            if((pos % 18) == 0 && pos != 0 && pos !=90) {
                 params.width = 10
-                binding.txtTime.layoutParams = params
-                binding.txtTime.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+                binding.txtBar.layoutParams = params
+                binding.txtBar.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+                timeParams.width = 30
+                binding.txtTime.textSize = 16F
+                binding.txtTime.layoutParams = timeParams
+                binding.txtTime.text = "12"
+
             }
         }
     }
