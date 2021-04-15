@@ -77,7 +77,7 @@ class ReservationFragment :
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
-                seatView(rooms.rooms[i].seat, rooms, i)
+                drawSeatView(rooms.rooms[i].seat, rooms, i)
             }
         }
         statusDataSet()
@@ -123,7 +123,7 @@ class ReservationFragment :
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
                             if (name == rooms.rooms[i].roomName) {
-                                seatView(rooms.rooms[i].seat, rooms, i)
+                                drawSeatView(rooms.rooms[i].seat, rooms, i)
                             }
                         }
                         // ok 버트 누르고 나오는 시간.
@@ -181,7 +181,7 @@ class ReservationFragment :
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
                             if (name == rooms.rooms[i].roomName) {
-                                seatView(rooms.rooms[i].seat, rooms, i)
+                                drawSeatView(rooms.rooms[i].seat, rooms, i)
                             }
                             endOurHour = hour
                             endOurMinute = endMinute
@@ -228,7 +228,7 @@ class ReservationFragment :
 
     }
 
-    private fun seatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
+    private fun drawSeatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -280,6 +280,7 @@ class ReservationFragment :
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     // 좌석의 번호에 따른 reserved 크기를 구해 예약된 시간과 비교
+                    // roomData.rooms[index]까지가 2층, 스터디룸 등
                     for (z in 0 until roomData.rooms[index].reserved[seats[i][j]].size) {
                         // 예약하려는 시작시간이 예약된 종료시간보다 작고 예약하려는 종료시간이 예약된 시간 시작시간보다 크면 reserved confirmed면 booked
                         if (startTime < roomData.rooms[index].reserved[seats[i][j]][z].end && endTime > roomData.rooms[index].reserved[seats[i][j]][z].begin) {
@@ -443,8 +444,8 @@ class ReservationFragment :
         status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
         binding.layoutReservationStatus.txtStartDate.text = status_timeFormat.format(status_cal.time) + "\n09:00"
         binding.layoutReservationStatus.txtEndDate.text = status_timeFormat.format(status_endCal.time) + "\n00:00"
-        for(i in 0 until 90) {
-            if(i <= status_count) {
+        for(i in 0 until 90) { // 90개 status_count
+            if(i < status_count) {
                 color.add(0)
             }
             else {
@@ -452,6 +453,10 @@ class ReservationFragment :
             }
         }
         color.add(0,-1)
+    }
+
+    private fun overLapTime() {
+       // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
     }
 
     companion object {
