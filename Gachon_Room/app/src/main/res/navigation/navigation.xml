@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_mainFragment_to_qrCodeFragment"
             app:destination="@id/qrCodeFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_reservationStatusFragment"
-            app:destination="@id/reservationStatusFragment" />
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
@@ -47,9 +44,6 @@
         <action
             android:id="@+id/action_reservationFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_reservationFragment_to_reservationStatusFragment"
-            app:destination="@id/reservationStatusFragment" />
     </fragment>
 
     <fragment
@@ -66,8 +60,4 @@
 
     <action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
 
-    <fragment
-        android:id="@+id/reservationStatusFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.main.view.dialog.ReservationStatusFragment"
-        android:label="ReservationStatusFragment" />
 </navigation>

@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.graphics.Color
-import android.graphics.Insets.add
 import android.text.format.DateFormat
 import android.util.Log
 import android.util.TypedValue
@@ -13,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,12 +25,10 @@ import com.cookandroid.gachon_study_room.ui.adapter.SeatStatusAdapter
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
-import com.cookandroid.gachon_study_room.ui.main.view.dialog.ReservationStatusFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.TimePickerDialogFixedNougatSpinner
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -84,7 +80,7 @@ class ReservationFragment :
                 seatView(rooms.rooms[i].seat, rooms, i)
             }
         }
-        txtSet()
+        statusDataSet()
         setRecyclerStatus()
         timeSet()
         btnStart()
@@ -410,7 +406,7 @@ class ReservationFragment :
                         }
                     }
                     dialog.dismiss()
-                    findNavController().navigate(ReservationFragmentDirections.actionReservationFragmentToMainFragment())
+                    findNavController().popBackStack()
                 }
                 Resource.Status.ERROR -> {
                     toast(requireContext(), resource.message + "\n" + resources.getString(R.string.connect_fail))
@@ -442,7 +438,7 @@ class ReservationFragment :
         }
     }
 
-    private fun txtSet() {
+    private fun statusDataSet() {
         status_endCal.set(Calendar.MONTH, status_month)
         status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
         binding.layoutReservationStatus.txtStartDate.text = status_timeFormat.format(status_cal.time) + "\n09:00"
