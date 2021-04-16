@@ -461,7 +461,21 @@ class ReservationFragment :
 
     private fun overLapTime() {
        // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
-       Log.d(TAG, seatTime[89][0].begin.toString())
+        var timeTable = SeatTime()
+
+        for(init in seatTime.indices) {
+            timeTable.startTime.add(arrayListOf())
+            timeTable.endTime.add(arrayListOf())
+        }
+        for(i in seatTime.indices) {
+            for(j in seatTime[i].indices) {
+                Log.d(TAG, "$i = ${seatTime[i][j].begin.toString()}")
+                timeTable.startTime[i].add(seatTime[i][j].begin)
+                timeTable.endTime[i].add(seatTime[i][j].end)
+            }
+        }
+        Log.d(TAG, timeTable.startTime.toString())
+
     }
 
     companion object {
