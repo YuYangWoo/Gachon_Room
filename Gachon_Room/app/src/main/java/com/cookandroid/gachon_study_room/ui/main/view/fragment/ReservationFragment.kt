@@ -83,13 +83,13 @@ class ReservationFragment :
                 drawSeatView(rooms.rooms[i].seat, rooms, i)
             }
         }
-        statusDataSet()
-        setRecyclerStatus()
+
         timeSet()
         btnStart()
         btnEnd()
         btnConfirm()
         overLapTime()
+        setRecyclerStatus()
     }
 
     private fun btnStart() {
@@ -466,17 +466,21 @@ class ReservationFragment :
         var timeTable = SeatTime()
         var cDate = Date()
         for(init in seatTime.indices) {
+            timeTable.seatStatus.add(arrayListOf())
             timeTable.startTime.add(arrayListOf())
             timeTable.endTime.add(arrayListOf())
             timeTable.unStart.add(arrayListOf())
             timeTable.unEnd.add(arrayListOf())
         }
-        Log.d(TAG, "timeTable" + timeTable.unStart.toString())
+
+
+      Log.d(TAG, timeTable.seatStatus.toString())
         for(i in seatTime.indices) {
             for(j in seatTime[i].indices) {
-                Log.d(TAG, i.toString())
+                // Long타입 시간 add
                 timeTable.startTime[i].add(seatTime[i][j].begin)
                 timeTable.endTime[i].add(seatTime[i][j].end)
+                // seatStatus 값 추가
                 cDate.time = seatTime[i][j].begin
 //                Log.d(TAG, "시작시간은 심플타임 ${     cHour.format(cDate)} ${cMinute.format(cDate)}}")
                 timeTable.unStart[i].add(((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(cDate).toInt() / 10) + 1))
@@ -485,8 +489,81 @@ class ReservationFragment :
 
             }
         }
-        Log.d(TAG, timeTable.toString())
+        // 좌석 상황 배열 -1로 90개 초기화
+        for(i in timeTable.unStart.indices) { // 좌석의 개수
+            for(j in 0 until 90) { // 90개 status_count
+                timeTable.seatStatus[i].add(-1)
+            }
+        }
 
+        Log.d(TAG, timeTable.unStart.toString())
+        for(i in timeTable.unStart.indices) { // 좌석의 개수
+            var cnt = 0
+            for(j in 0 until 90) { // 좌석당 시간
+                if(j < status_count) {  // 현재 시간까지 0 30
+                    timeTable.seatStatus[i][j] = 0
+                } // 35부터 나오겠지.
+//                else { // 현재시간 보다 클 경우
+//                    if(timeTable.unStart[i].isNotEmpty()) {
+//                        if(j >= timeTable.unStart[i][cnt] && j <= timeTable.unEnd[i][cnt]) { // unStart의 개수만큼
+//                            timeTable.seatStatus[i][j] = 0
+//                        }
+//                    }
+//                    else {
+//                        timeTable.seatStatus[i][j] = 1
+//                    }
+//                }
+            }
+        }
+
+
+        for(i in timeTable.unStart.indices) { // 좌석의 개수
+            var cnt = 0
+            var tmp = 0
+            for (j in status_count..90) {
+                if(timeTable.unStart[i].isNotEmpty()) {
+                    // 끝나면 cnt가 ++
+                    if (j >= timeTable.unStart[i][cnt] && j <= timeTable.unEnd[i][cnt]) {
+                        timeTable.seatStatus[i][j] = 0
+                    }
+                }
+
+            }
+        }
+
+        // 현재시간까지는 비활성화
+//        for(i in timeTable.seatStatus.indices) {
+//            for(j in 0..status_count) { // 현재시간 까지는 비활성화 후
+//                timeTable.seatStatus[i].add(0)
+//            }
+//
+//        }
+
+        Log.d(TAG, timeTable.toString())
+        Log.d(TAG, "길이" + timeTable.unStart.indices.toString())
+//        for(i in timeTable.unStart.indices) { // 0~92
+//            for(j in timeTable.unStart.indices) { // 예약 코드가 있고 없고 0~ 92
+//                if(j < status_count) { //ex 27 //0 // 현재시간은 채워놓고
+//                    timeTable.seatStatus[i].add(0)
+//                }
+//                else {
+//                    for(z in timeTable.unStart[i].indices) {
+//                        if(j >= timeTable.unStart[i][z] && j <= timeTable.unEnd[i][z]) {
+//                            timeTable.seatStatus[i].add(0)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        // 예약내역 unStart[i][j]~ unend[i][j] 까지 회색으로
+//        for(i in timeTable.unStart.indices) {
+//            for(j in timeTable.unStart[i].indices) {
+//
+//            }
+//        }
+//        Log.d(TAG, timeTable.seatStatus.toString())
+//        Log.d(TAG, "타임테이블$timeTable")
+        statusDataSet()
     }
 
     companion object {

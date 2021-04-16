@@ -42,22 +42,13 @@
                     android:layout_height="match_parent"
                     >
 
-<!--                    <androidx.recyclerview.widget.RecyclerView-->
-<!--                        android:id="@+id/recyclerAvailable"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:layout_constraintBottom_toTopOf="@+id/scroolView"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintHeight_percent="0.15"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"></androidx.recyclerview.widget.RecyclerView>-->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cstLyCardTop"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHeight_percent="0.15"
+                        app:layout_constraintHeight_percent="0.12"
                         app:layout_constraintStart_toStartOf="parent"
                         android:weightSum="1"
                         app:layout_constraintTop_toTopOf="parent">
@@ -68,7 +59,7 @@
                             android:layout_height="0dp"
                             android:src="@drawable/ic_seats_book"
                             app:layout_constraintEnd_toStartOf="@+id/reserved"
-                            app:layout_constraintHeight_percent="0.65"
+                            app:layout_constraintHeight_percent="0.60"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.33" />
@@ -76,12 +67,12 @@
                         <TextView
                             android:id="@+id/unAvailableSeat"
                             android:layout_width="wrap_content"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
                             android:text="사용가능"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toStartOf="@+id/reserved"
-                            app:layout_constraintHeight_percent="0.35"
+                            app:layout_constraintHeight_percent="0.4"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/available" />
 
@@ -91,7 +82,7 @@
                             android:layout_height="0dp"
                             android:src="@drawable/ic_seats_reserved"
                             app:layout_constraintEnd_toStartOf="@+id/using"
-                            app:layout_constraintHeight_percent="0.65"
+                            app:layout_constraintHeight_percent="0.6"
                             app:layout_constraintStart_toEndOf="@id/available"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.33" />
@@ -99,12 +90,12 @@
                         <TextView
                             android:id="@+id/txtReserved"
                             android:layout_width="wrap_content"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
                             android:text="예약중"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toStartOf="@+id/using"
-                            app:layout_constraintHeight_percent="0.35"
+                            app:layout_constraintHeight_percent="0.4"
                             app:layout_constraintStart_toEndOf="@+id/available"
                             app:layout_constraintTop_toBottomOf="@id/reserved" />
 
@@ -115,7 +106,7 @@
                             android:layout_marginEnd="4dp"
                             android:src="@drawable/ic_seats_booked"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHeight_percent="0.65"
+                            app:layout_constraintHeight_percent="0.6"
                             app:layout_constraintStart_toEndOf="@id/reserved"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintWidth_percent="0.33" />
@@ -123,12 +114,12 @@
                         <TextView
                             android:id="@+id/txtUsing"
                             android:layout_width="wrap_content"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
                             android:text="확정됨"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHeight_percent="0.35"
+                            app:layout_constraintHeight_percent="0.4"
                             app:layout_constraintStart_toEndOf="@id/reserved"
                             app:layout_constraintTop_toBottomOf="@id/using" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -138,7 +129,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHeight_percent="0.85"
+                        app:layout_constraintHeight_percent="0.88"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/cstLyCardTop">
 
