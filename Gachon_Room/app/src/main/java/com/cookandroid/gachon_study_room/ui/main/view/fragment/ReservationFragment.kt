@@ -461,20 +461,31 @@ class ReservationFragment :
 
     private fun overLapTime() {
        // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
+        var cHour = SimpleDateFormat("HH")
+        var cMinute = SimpleDateFormat("mm")
         var timeTable = SeatTime()
-
+        var cDate = Date()
         for(init in seatTime.indices) {
             timeTable.startTime.add(arrayListOf())
             timeTable.endTime.add(arrayListOf())
+            timeTable.unStart.add(arrayListOf())
+            timeTable.unEnd.add(arrayListOf())
         }
+        Log.d(TAG, "timeTable" + timeTable.unStart.toString())
         for(i in seatTime.indices) {
             for(j in seatTime[i].indices) {
-                Log.d(TAG, "$i = ${seatTime[i][j].begin.toString()}")
+                Log.d(TAG, i.toString())
                 timeTable.startTime[i].add(seatTime[i][j].begin)
                 timeTable.endTime[i].add(seatTime[i][j].end)
+                cDate.time = seatTime[i][j].begin
+//                Log.d(TAG, "시작시간은 심플타임 ${     cHour.format(cDate)} ${cMinute.format(cDate)}}")
+                timeTable.unStart[i].add(((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(cDate).toInt() / 10) + 1))
+                cDate.time = seatTime[i][j].end
+                timeTable.unEnd[i].add(((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(cDate).toInt() / 10) + 1))
+
             }
         }
-        Log.d(TAG, timeTable.startTime.toString())
+        Log.d(TAG, timeTable.toString())
 
     }
 
