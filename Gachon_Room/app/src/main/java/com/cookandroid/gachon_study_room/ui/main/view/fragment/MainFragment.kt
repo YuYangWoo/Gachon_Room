@@ -45,6 +45,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             binding.root.findNavController().navigate(MainFragmentDirections.actionMainFragmentToQrCodeFragment())
         }
 
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToStatusFragment())
+        }
     }
 
 }
