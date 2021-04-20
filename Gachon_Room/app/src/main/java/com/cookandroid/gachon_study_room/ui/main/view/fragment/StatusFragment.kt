@@ -2,6 +2,7 @@ package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.databinding.ReservationStatus2Binding
 import com.cookandroid.gachon_study_room.ui.adapter.SeatStatus2Adapter
@@ -38,7 +39,6 @@ class StatusFragment : BaseFragment<ReservationStatus2Binding>(R.layout.reservat
                 color.add(1)
             }
         }
-        color.add(0,-1)
     }
 
 }

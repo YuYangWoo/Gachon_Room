@@ -50,6 +50,7 @@ object TimeRequest {
         var minute = cal.get(Calendar.MINUTE) + interval
         return GregorianCalendar(year, month, day, hour, minute).timeInMillis
     }
+
     fun endTimeLong(): Time {
         var cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
@@ -63,4 +64,10 @@ object TimeRequest {
         return time
     }
 
+    fun statusTodayTime(): Int {
+        var cal = Calendar.getInstance()
+        var hour = cal.get(Calendar.HOUR_OF_DAY)
+        cal.set(Calendar.HOUR_OF_DAY, hour)
+        return  SimpleDateFormat("HH").format(cal.time).toInt()
+    }
 }
