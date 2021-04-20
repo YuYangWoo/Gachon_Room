@@ -7,19 +7,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <android.widget.Button
-            android:id="@+id/seatStatus"
-            android:layout_width="10dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/timeBar"
-            android:layout_width="0dp"
-            android:layout_height="15dp"
+            android:layout_width="15dp"
+            android:layout_height="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/seatStatus"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

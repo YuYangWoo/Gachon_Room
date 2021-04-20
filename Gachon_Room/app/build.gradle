@@ -94,4 +94,6 @@ dependencies {
     // include koin-android-scope & koin-android
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-android-viewmodel:$koin_version"
+    // Kepp Position
+    implementation "androidx.recyclerview:recyclerview:1.2.0-alpha03"
 }
