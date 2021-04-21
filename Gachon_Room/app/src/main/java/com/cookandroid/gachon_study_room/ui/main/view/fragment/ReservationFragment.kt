@@ -386,18 +386,20 @@ class ReservationFragment :
             // 타임바 구현
             if (i % 6 == 0) {
                 val timeBar = Button(requireContext())
+                timeBar.tag = TIME_BAR
+                setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-                var linearTxt = LinearLayout(requireContext())
-                // 세로 리니어레이아웃을 만들어서 타임바와 텍스트를 넣고 table에 넣어준다.
-                linearTxt.orientation = LinearLayout.VERTICAL
 
+                // 시간 textView 설정
                 var timeTxt = TextView(requireContext())
                 timeTxt.layoutParams = txtParams
                 timeTxt.textSize = 10F
                 timeTxt.text = time++.toString()
-                timeBar.tag = TIME_BAR
-                setTimeBar(timeBar)
+
+                // 세로 리니어레이아웃을 만들어서 타임바와 텍스트를 넣고 table에 넣어준다.
+                var linearTxt = LinearLayout(requireContext())
+                linearTxt.orientation = LinearLayout.VERTICAL
                 linearTxt.addView(timeBar)
                 linearTxt.addView(timeTxt)
                 linearTxt.gravity = Gravity.CENTER
