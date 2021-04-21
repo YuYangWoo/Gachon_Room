@@ -69,7 +69,7 @@ class ReservationFragment :
     private var color = ArrayList<Int>()
     private lateinit var persistentBottomSheetBehavior: BottomSheetBehavior<*>
     private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
-    private var time = TimeRequest.statusTodayTime()
+    private var time = TimeRequest.statusTodayTime() + 1
 
     override fun init() {
         super.init()
@@ -374,40 +374,44 @@ class ReservationFragment :
         table = LinearLayout(requireContext())
         table.orientation = LinearLayout.HORIZONTAL
         binding.scrollBar.addView(table)
-        var layoutParams = LinearLayout.LayoutParams(30, 40)
+        var layoutParams = LinearLayout.LayoutParams(30, 50)
 
         for (i in 1..144) {
             val status = Button(requireContext())
-            val timeBar = Button(requireContext())
             status.tag = AVAILABLE
-
             status.layoutParams = layoutParams
             table.addView(status)
             setBackgroundColor(status)
 
             // 타임바 구현
             if (i % 6 == 0) {
+                val timeBar = Button(requireContext())
+                // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
                 var linearTxt = LinearLayout(requireContext())
                 // 세로 리니어레이아웃을 만들어서 타임바와 텍스트를 넣고 table에 넣어준다.
                 linearTxt.orientation = LinearLayout.VERTICAL
+
                 var timeTxt = TextView(requireContext())
                 timeTxt.layoutParams = txtParams
                 timeTxt.textSize = 10F
                 timeTxt.text = time++.toString()
-//                timeBar.id = time++
                 timeBar.tag = TIME_BAR
                 setTimeBar(timeBar)
                 linearTxt.addView(timeBar)
                 linearTxt.addView(timeTxt)
                 linearTxt.gravity = Gravity.CENTER
                 table.addView(linearTxt)
+                if(time == 24) {
+                    time = 0
+                }
             }
 
         }
     }
 
     private fun setTimeBar(timeBar: View) {
+        //타임바 크기
         var layoutParams = LinearLayout.LayoutParams(10, 50)
         when (timeBar.tag) {
             TIME_BAR -> {
