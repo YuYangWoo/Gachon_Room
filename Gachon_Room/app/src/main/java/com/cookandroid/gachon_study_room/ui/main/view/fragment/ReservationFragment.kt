@@ -69,10 +69,9 @@ class ReservationFragment :
     var input = HashMap<String, Any>()
     private var reservation: Reserve = Reserve()
     private var color = ArrayList<Int>()
-
-    //    private lateinit var persistentBottomSheetBehavior: BottomSheetBehavior<*>
     private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
     private var time = TimeRequest.statusTodayTime() + 1
+    private var statusTime = GregorianCalendar(year, month, day, time-1, 0)
 
     override fun init() {
         super.init()
@@ -81,8 +80,6 @@ class ReservationFragment :
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
-//        persistentBottomSheetBehavior =
-//            BottomSheetBehavior.from(binding.layoutReservationStatus.bottomSheetPersistent)
 
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
@@ -99,6 +96,7 @@ class ReservationFragment :
 //        setRecyclerStatus()
     }
 
+    // 10분이 600000
     private fun btnStart() {
         binding.txtStart.text = TimeRequest.time()
         binding.cardViewStart.setOnClickListener {
@@ -377,19 +375,25 @@ class ReservationFragment :
         }
     }
 
+    // 10분이 1800000
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
         binding.scrollBar.addView(timeTable)
         var layoutParams = LinearLayout.LayoutParams(30, 50)
-
         for (i in 1..144) {
             val status = Button(requireContext())
             status.tag = AVAILABLE
+            status.text = statusTime.timeInMillis.toString()
             status.layoutParams = layoutParams
             timeTable.addView(status)
-            setBackgroundColor(status)
+            for(j in seatData[position].indices) {
+                if(status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() <= seatData[position][j].end) {
+                    status.tag = UNAVAILABLE
+                }
 
+            }
+            setBackgroundColor(status)
             // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
                 val timeBar = Button(requireContext())
@@ -418,7 +422,7 @@ class ReservationFragment :
                     time = 0
                 }
             }
-
+            statusTime.timeInMillis += 600000
         }
     }
 
@@ -436,12 +440,14 @@ class ReservationFragment :
     private fun setBackgroundColor(status: View) {
         when (status.tag) {
             UNAVAILABLE -> {
-                //            view.setBackgroundResource(R.drawable.status_list_edge)
                 status.setBackgroundResource(R.drawable.status_list_edge)
 
             }
             AVAILABLE -> {
                 status.setBackgroundResource(R.drawable.status_list_edge_available)
+            }
+            else -> {
+
             }
         }
     }
