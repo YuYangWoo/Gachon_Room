@@ -10,8 +10,10 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -65,8 +67,9 @@ class ReservationFragment :
     var input = HashMap<String, Any>()
     private var reservation: Reserve = Reserve()
     private var color = ArrayList<Int>()
-    private lateinit var persistentBottomSheetBehavior : BottomSheetBehavior<*>
+    private lateinit var persistentBottomSheetBehavior: BottomSheetBehavior<*>
     private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
+    private var time = TimeRequest.statusTodayTime()
 
     override fun init() {
         super.init()
@@ -75,12 +78,14 @@ class ReservationFragment :
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
-        persistentBottomSheetBehavior = BottomSheetBehavior.from(binding.layoutReservationStatus.bottomSheetPersistent)
+        persistentBottomSheetBehavior =
+            BottomSheetBehavior.from(binding.layoutReservationStatus.bottomSheetPersistent)
 
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
                 drawSeatView(rooms.rooms[i].seat, rooms, i)
+                drawStatusBar(rooms.rooms[i].reserved)
             }
         }
 
@@ -140,15 +145,20 @@ class ReservationFragment :
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
-              TimePickerDialogFixedNougatSpinner(requireContext(), timeSetListener, startOurHour, startOurMinute, DateFormat.is24HourFormat(requireContext())).show()
-                }
-            else {
+                TimePickerDialogFixedNougatSpinner(
+                    requireContext(),
+                    timeSetListener,
+                    startOurHour,
+                    startOurMinute,
+                    DateFormat.is24HourFormat(requireContext())
+                ).show()
+            } else {
                 CustomTimePickerDialog(
-                        requireContext(),
-                        timeSetListener,
-                        startOurHour,
-                        startOurMinute,
-                        DateFormat.is24HourFormat(requireContext())
+                    requireContext(),
+                    timeSetListener,
+                    startOurHour,
+                    startOurMinute,
+                    DateFormat.is24HourFormat(requireContext())
                 ).show()
             }
         }
@@ -196,15 +206,20 @@ class ReservationFragment :
             }
 
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
-                TimePickerDialogFixedNougatSpinner(requireContext(), timeSetListener, endOurHour, endOurMinute, DateFormat.is24HourFormat(requireContext())).show()
-            }
-            else {
+                TimePickerDialogFixedNougatSpinner(
+                    requireContext(),
+                    timeSetListener,
+                    endOurHour,
+                    endOurMinute,
+                    DateFormat.is24HourFormat(requireContext())
+                ).show()
+            } else {
                 CustomTimePickerDialog(
-                        requireContext(),
-                        timeSetListener,
-                        endOurHour,
-                        endOurMinute,
-                        DateFormat.is24HourFormat(requireContext())
+                    requireContext(),
+                    timeSetListener,
+                    endOurHour,
+                    endOurMinute,
+                    DateFormat.is24HourFormat(requireContext())
                 ).show()
             }
         }
@@ -234,8 +249,8 @@ class ReservationFragment :
     private fun drawSeatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
         layoutSeat.removeAllViews()
         layout.removeAllViews()
@@ -257,12 +272,10 @@ class ReservationFragment :
 
                 } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
-                    var layoutParams: LinearLayout.LayoutParams =
-                        LinearLayout.LayoutParams(seatSize, seatSize)
+                    var layoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
                     view.layoutParams = layoutParams
                     view.setBackgroundColor(Color.TRANSPARENT)
-
                     table.addView(view)
                 } else if (seats[i][j] == DOOR) {
                     val view = TextView(requireContext())
@@ -357,6 +370,66 @@ class ReservationFragment :
         }
     }
 
+    private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>) {
+        table = LinearLayout(requireContext())
+        table.orientation = LinearLayout.HORIZONTAL
+        binding.scrollBar.addView(table)
+        var layoutParams = LinearLayout.LayoutParams(30, 40)
+
+        for (i in 1..144) {
+            val status = Button(requireContext())
+            val timeBar = Button(requireContext())
+            status.tag = AVAILABLE
+
+            status.layoutParams = layoutParams
+            table.addView(status)
+            setBackgroundColor(status)
+
+            // 타임바 구현
+            if (i % 6 == 0) {
+                var txtParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                var linearTxt = LinearLayout(requireContext())
+                // 세로 리니어레이아웃을 만들어서 타임바와 텍스트를 넣고 table에 넣어준다.
+                linearTxt.orientation = LinearLayout.VERTICAL
+                var timeTxt = TextView(requireContext())
+                timeTxt.layoutParams = txtParams
+                timeTxt.textSize = 10F
+                timeTxt.text = time++.toString()
+//                timeBar.id = time++
+                timeBar.tag = TIME_BAR
+                setTimeBar(timeBar)
+                linearTxt.addView(timeBar)
+                linearTxt.addView(timeTxt)
+                linearTxt.gravity = Gravity.CENTER
+                table.addView(linearTxt)
+            }
+
+        }
+    }
+
+    private fun setTimeBar(timeBar: View) {
+        var layoutParams = LinearLayout.LayoutParams(10, 50)
+        when (timeBar.tag) {
+            TIME_BAR -> {
+                timeBar.layoutParams = layoutParams
+                timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
+        }
+    }
+
+    private fun setBackgroundColor(status: View) {
+        when (status.tag) {
+            UNAVAILABLE -> {
+                //            view.setBackgroundResource(R.drawable.status_list_edge)
+                status.setBackgroundResource(R.drawable.status_list_edge)
+
+            }
+            AVAILABLE -> {
+                status.setBackgroundResource(R.drawable.status_list_edge_available)
+            }
+        }
+    }
+
     private fun btnConfirm() {
         binding.btnConfirm.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
@@ -396,32 +469,39 @@ class ReservationFragment :
 
     private fun initViewModel() {
         dataSet()
-        model.callReserve(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
-            when (resource.status) {
-                Resource.Status.SUCCESS -> {
-                    reservation = resource.data!!
-                    Log.d(TAG, reservation.toString())
-                    when (reservation.result) {
-                        true -> {
-                            MySharedPreferences.setReservation(requireContext(), reservation.reservation)
-                            toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
+        model.callReserve(input)
+            .observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
+                when (resource.status) {
+                    Resource.Status.SUCCESS -> {
+                        reservation = resource.data!!
+                        Log.d(TAG, reservation.toString())
+                        when (reservation.result) {
+                            true -> {
+                                MySharedPreferences.setReservation(
+                                    requireContext(),
+                                    reservation.reservation
+                                )
+                                toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
+                            }
+                            false -> {
+                                toast(requireContext(), reservation.response)
+                            }
                         }
-                        false -> {
-                            toast(requireContext(), reservation.response)
-                        }
+                        dialog.dismiss()
+                        findNavController().popBackStack()
                     }
-                    dialog.dismiss()
-                    findNavController().popBackStack()
+                    Resource.Status.ERROR -> {
+                        toast(
+                            requireContext(),
+                            resource.message + "\n" + resources.getString(R.string.connect_fail)
+                        )
+                        dialog.dismiss()
+                    }
+                    Resource.Status.LOADING -> {
+                        dialog.show()
+                    }
                 }
-                Resource.Status.ERROR -> {
-                    toast(requireContext(), resource.message + "\n" + resources.getString(R.string.connect_fail))
-                    dialog.dismiss()
-                }
-                Resource.Status.LOADING -> {
-                    dialog.show()
-                }
-            }
-        })
+            })
     }
 
     private fun setRecyclerStatus() {
@@ -446,26 +526,27 @@ class ReservationFragment :
     private fun statusDataSet() {
         status_endCal.set(Calendar.MONTH, status_month)
         status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
-        binding.layoutReservationStatus.txtStartDate.text = status_timeFormat.format(status_cal.time) + "\n09:00"
-        binding.layoutReservationStatus.txtEndDate.text = status_timeFormat.format(status_endCal.time) + "\n00:00"
-        for(i in 0 until 90) { // 90개 status_count
-            if(i < status_count) {
+        binding.layoutReservationStatus.txtStartDate.text =
+            status_timeFormat.format(status_cal.time) + "\n09:00"
+        binding.layoutReservationStatus.txtEndDate.text =
+            status_timeFormat.format(status_endCal.time) + "\n00:00"
+        for (i in 0 until 90) { // 90개 status_count
+            if (i < status_count) {
                 color.add(0)
-            }
-            else {
+            } else {
                 color.add(1)
             }
         }
-        color.add(0,-1)
+        color.add(0, -1)
     }
 
     private fun overLapTime() {
-       // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
+        // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
         var cHour = SimpleDateFormat("HH")
         var cMinute = SimpleDateFormat("mm")
         var timeTable = SeatTime()
         var cDate = Date()
-        for(init in seatTime.indices) {
+        for (init in seatTime.indices) {
             timeTable.seatStatus.add(arrayListOf())
             timeTable.startTime.add(arrayListOf())
             timeTable.endTime.add(arrayListOf())
@@ -474,33 +555,41 @@ class ReservationFragment :
         }
 
 
-      Log.d(TAG, timeTable.seatStatus.toString())
-        for(i in seatTime.indices) {
-            for(j in seatTime[i].indices) {
+        Log.d(TAG, timeTable.seatStatus.toString())
+        for (i in seatTime.indices) {
+            for (j in seatTime[i].indices) {
                 // Long타입 시간 add
                 timeTable.startTime[i].add(seatTime[i][j].begin)
                 timeTable.endTime[i].add(seatTime[i][j].end)
                 // seatStatus 값 추가
                 cDate.time = seatTime[i][j].begin
 //                Log.d(TAG, "시작시간은 심플타임 ${     cHour.format(cDate)} ${cMinute.format(cDate)}}")
-                timeTable.unStart[i].add(((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(cDate).toInt() / 10) + 1))
+                timeTable.unStart[i].add(
+                    ((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(
+                        cDate
+                    ).toInt() / 10) + 1)
+                )
                 cDate.time = seatTime[i][j].end
-                timeTable.unEnd[i].add(((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(cDate).toInt() / 10) + 1))
+                timeTable.unEnd[i].add(
+                    ((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(
+                        cDate
+                    ).toInt() / 10) + 1)
+                )
 
             }
         }
         // 좌석 상황 배열 -1로 90개 초기화
-        for(i in timeTable.unStart.indices) { // 좌석의 개수
-            for(j in 0 until 90) { // 90개 status_count
+        for (i in timeTable.unStart.indices) { // 좌석의 개수
+            for (j in 0 until 90) { // 90개 status_count
                 timeTable.seatStatus[i].add(-1)
             }
         }
 
         Log.d(TAG, timeTable.unStart.toString())
-        for(i in timeTable.unStart.indices) { // 좌석의 개수
+        for (i in timeTable.unStart.indices) { // 좌석의 개수
             var cnt = 0
-            for(j in 0 until 90) { // 좌석당 시간
-                if(j < status_count) {  // 현재 시간까지 0 30
+            for (j in 0 until 90) { // 좌석당 시간
+                if (j < status_count) {  // 현재 시간까지 0 30
                     timeTable.seatStatus[i][j] = 0
                 } // 35부터 나오겠지.
 //                else { // 현재시간 보다 클 경우
@@ -517,11 +606,11 @@ class ReservationFragment :
         }
 
 
-        for(i in timeTable.unStart.indices) { // 좌석의 개수
+        for (i in timeTable.unStart.indices) { // 좌석의 개수
             var cnt = 0
             var tmp = 0
             for (j in status_count..90) {
-                if(timeTable.unStart[i].isNotEmpty()) {
+                if (timeTable.unStart[i].isNotEmpty()) {
                     // 끝나면 cnt가 ++
                     if (j >= timeTable.unStart[i][cnt] && j <= timeTable.unEnd[i][cnt]) {
                         timeTable.seatStatus[i][j] = 0
@@ -574,6 +663,9 @@ class ReservationFragment :
         const val STATUS_AVAILABLE = 1
         const val STATUS_BOOKED = 2
         const val STATUS_RESERVED = 3
+        const val UNAVAILABLE = 0
+        const val AVAILABLE = 1
+        const val TIME_BAR = 2
         var seatGaping = 10
         var count = 0
         val cal = Calendar.getInstance()
@@ -595,6 +687,5 @@ class ReservationFragment :
     }
 
 }
-
 
 
