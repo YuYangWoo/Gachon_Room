@@ -48,6 +48,8 @@ class ReservationFragment :
     private var rooms: RoomsData = RoomsData()
     private lateinit var name: String
     private lateinit var table: LinearLayout
+    private lateinit var timeTable: LinearLayout
+    private lateinit var linearTxt: LinearLayout
     var selectedIds = ""
     private val TAG = "RESERVATION"
     private var startTime = 0L
@@ -67,7 +69,8 @@ class ReservationFragment :
     var input = HashMap<String, Any>()
     private var reservation: Reserve = Reserve()
     private var color = ArrayList<Int>()
-    private lateinit var persistentBottomSheetBehavior: BottomSheetBehavior<*>
+
+    //    private lateinit var persistentBottomSheetBehavior: BottomSheetBehavior<*>
     private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
     private var time = TimeRequest.statusTodayTime() + 1
 
@@ -78,14 +81,13 @@ class ReservationFragment :
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
-        persistentBottomSheetBehavior =
-            BottomSheetBehavior.from(binding.layoutReservationStatus.bottomSheetPersistent)
+//        persistentBottomSheetBehavior =
+//            BottomSheetBehavior.from(binding.layoutReservationStatus.bottomSheetPersistent)
 
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
                 drawSeatView(rooms.rooms[i].seat, rooms, i)
-                drawStatusBar(rooms.rooms[i].reserved)
             }
         }
 
@@ -94,7 +96,7 @@ class ReservationFragment :
         btnEnd()
         btnConfirm()
         overLapTime()
-        setRecyclerStatus()
+//        setRecyclerStatus()
     }
 
     private fun btnStart() {
@@ -345,22 +347,27 @@ class ReservationFragment :
         if (view.tag as Int == STATUS_AVAILABLE) {
             // 다시 눌렀을 시
             if (selectedIds.contains(view.id.toString() + ",")) {
-                persistentBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 selectedIds = selectedIds.replace(view.id.toString() + ",", "")
                 view.setBackgroundResource(R.drawable.ic_seats_book)
                 Log.d("TAG", selectedIds)
-            } else { // 선택했을시
+                binding.scrollBar.removeAllViews()
+                binding.scrollBar.visibility = View.GONE // 상황바 없애기
                 // 하나만 선택가능
-                if (selectedIds == "") {
-                    persistentBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else { // 좌석 선택했을시
+                if (selectedIds == "") { // 한개 선택했을 시
+                    // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
+                    binding.scrollBar.visibility = View.VISIBLE
+                    for (i in 0 until rooms.rooms.size) {
+                        if (name == rooms.rooms[i].roomName) {
+                            drawStatusBar(rooms.rooms[i].reserved, view.id)
+                        }
+                    }
                     selectedIds = selectedIds + view.id + ","
                     seatId = view.id
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
                 } else { // 2개이상 선택했을 시
-                    persistentBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                     toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
                 }
-                Log.d("TAG", selectedIds)
 
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
@@ -370,26 +377,29 @@ class ReservationFragment :
         }
     }
 
-    private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>) {
-        table = LinearLayout(requireContext())
-        table.orientation = LinearLayout.HORIZONTAL
-        binding.scrollBar.addView(table)
+    private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
+        timeTable = LinearLayout(requireContext())
+        timeTable.orientation = LinearLayout.HORIZONTAL
+        binding.scrollBar.addView(timeTable)
         var layoutParams = LinearLayout.LayoutParams(30, 50)
 
         for (i in 1..144) {
             val status = Button(requireContext())
             status.tag = AVAILABLE
             status.layoutParams = layoutParams
-            table.addView(status)
+            timeTable.addView(status)
             setBackgroundColor(status)
 
-            // 타임바 구현
+            // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
                 val timeBar = Button(requireContext())
                 timeBar.tag = TIME_BAR
                 setTimeBar(timeBar)
                 // 시간 크기
-                var txtParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                var txtParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
 
                 // 시간 textView 설정
                 var timeTxt = TextView(requireContext())
@@ -398,13 +408,13 @@ class ReservationFragment :
                 timeTxt.text = time++.toString()
 
                 // 세로 리니어레이아웃을 만들어서 타임바와 텍스트를 넣고 table에 넣어준다.
-                var linearTxt = LinearLayout(requireContext())
+                linearTxt = LinearLayout(requireContext())
                 linearTxt.orientation = LinearLayout.VERTICAL
                 linearTxt.addView(timeBar)
                 linearTxt.addView(timeTxt)
                 linearTxt.gravity = Gravity.CENTER
-                table.addView(linearTxt)
-                if(time == 24) {
+                timeTable.addView(linearTxt)
+                if (time == 24) {
                     time = 0
                 }
             }
@@ -510,41 +520,41 @@ class ReservationFragment :
             })
     }
 
-    private fun setRecyclerStatus() {
-        with(binding.layoutReservationStatus.recyclerStatus) {
-            adapter = SeatStatusAdapter(context).apply {
-                data = color
-                notifyDataSetChanged()
-            }
-            layoutManager = object : GridLayoutManager(context, color.size) {
-                override fun canScrollHorizontally(): Boolean {
-                    return false
-                }
+//    private fun setRecyclerStatus() {
+//        with(binding.layoutReservationStatus.recyclerStatus) {
+//            adapter = SeatStatusAdapter(context).apply {
+//                data = color
+//                notifyDataSetChanged()
+//            }
+//            layoutManager = object : GridLayoutManager(context, color.size) {
+//                override fun canScrollHorizontally(): Boolean {
+//                    return false
+//                }
+//
+//                override fun canScrollVertically(): Boolean {
+//                    return false
+//                }
+//            }
+//            setHasFixedSize(true)
+//        }
+//    }
 
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
-            setHasFixedSize(true)
-        }
-    }
-
-    private fun statusDataSet() {
-        status_endCal.set(Calendar.MONTH, status_month)
-        status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
-        binding.layoutReservationStatus.txtStartDate.text =
-            status_timeFormat.format(status_cal.time) + "\n09:00"
-        binding.layoutReservationStatus.txtEndDate.text =
-            status_timeFormat.format(status_endCal.time) + "\n00:00"
-        for (i in 0 until 90) { // 90개 status_count
-            if (i < status_count) {
-                color.add(0)
-            } else {
-                color.add(1)
-            }
-        }
-        color.add(0, -1)
-    }
+//    private fun statusDataSet() {
+//        status_endCal.set(Calendar.MONTH, status_month)
+//        status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
+//        binding.layoutReservationStatus.txtStartDate.text =
+//            status_timeFormat.format(status_cal.time) + "\n09:00"
+//        binding.layoutReservationStatus.txtEndDate.text =
+//            status_timeFormat.format(status_endCal.time) + "\n00:00"
+//        for (i in 0 until 90) { // 90개 status_count
+//            if (i < status_count) {
+//                color.add(0)
+//            } else {
+//                color.add(1)
+//            }
+//        }
+//        color.add(0, -1)
+//    }
 
     private fun overLapTime() {
         // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
@@ -658,7 +668,7 @@ class ReservationFragment :
 //        }
 //        Log.d(TAG, timeTable.seatStatus.toString())
 //        Log.d(TAG, "타임테이블$timeTable")
-        statusDataSet()
+//        statusDataSet()
     }
 
     companion object {

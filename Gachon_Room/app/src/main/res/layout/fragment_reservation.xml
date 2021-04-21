@@ -220,6 +220,7 @@
                     android:id="@+id/scrollBar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:visibility="gone"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="10dp"
@@ -344,7 +345,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/cardViewStart" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-        <include layout="@layout/reservation_status"
-            android:id="@+id/layout_reservation_status"/>
+<!--        <include layout="@layout/reservation_status"-->
+<!--            android:id="@+id/layout_reservation_status"/>-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
