@@ -16,23 +16,19 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Reserve
-import com.cookandroid.gachon_study_room.data.model.SeatTime
 import com.cookandroid.gachon_study_room.data.model.room.Room
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
-import com.cookandroid.gachon_study_room.ui.adapter.SeatStatusAdapter
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.TimePickerDialogFixedNougatSpinner
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -68,11 +64,9 @@ class ReservationFragment :
     }
     var input = HashMap<String, Any>()
     private var reservation: Reserve = Reserve()
-    private var color = ArrayList<Int>()
     private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
     private var time = TimeRequest.statusTodayTime() + 1
-    private var statusTime = GregorianCalendar(year, month, day, time-1, 0)
-
+    private var selectedSeat: View? = null
     override fun init() {
         super.init()
         layout = binding.layoutSeat
@@ -80,24 +74,27 @@ class ReservationFragment :
         name = args.name
         startTime = TimeRequest.timeLong().time
         endTime = TimeRequest.endTimeLong().time
-
+        Log.d(TAG, selectedSeat.toString())
         // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
                 drawSeatView(rooms.rooms[i].seat, rooms, i)
             }
         }
-
+//        Log.d(TAG, selectedSeat.toString())
         timeSet()
         btnStart()
         btnEnd()
         btnConfirm()
-        overLapTime()
-//        setRecyclerStatus()
     }
 
     // 10분이 600000
+    /*
+    좌석 클릭 후 시간을 바꾸면 좌석 reser됨. 왜냐면 시간을 바꾸면 좌석을 다시그리기때문에
+
+     */
     private fun btnStart() {
+
         binding.txtStart.text = TimeRequest.time()
         binding.cardViewStart.setOnClickListener {
             // 아래 hour, minute가 선택된 시간 분
@@ -141,7 +138,10 @@ class ReservationFragment :
                     }
 
                 }
-
+                Log.d(TAG, selectedSeat.toString())
+                if(selectedSeat != null) {
+                    selectedSeat!!.setBackgroundResource(R.drawable.ic_seats_selected)
+                }
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
@@ -162,10 +162,12 @@ class ReservationFragment :
                 ).show()
             }
         }
+
     }
 
 
     private fun btnEnd() {
+
         binding.txtEnd.text = TimeRequest.endTime()
         binding.cardViewEnd.setOnClickListener {
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
@@ -203,6 +205,9 @@ class ReservationFragment :
                     }
 
                 }
+                if(selectedSeat != null) {
+                    selectedSeat!!.setBackgroundResource(R.drawable.ic_seats_selected)
+                }
             }
 
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
@@ -223,6 +228,7 @@ class ReservationFragment :
                 ).show()
             }
         }
+
     }
 
     // 정각에 대응하는 timeSet과 년,월,일,요일 Set
@@ -363,20 +369,37 @@ class ReservationFragment :
                     selectedIds = selectedIds + view.id + ","
                     seatId = view.id
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
+                    selectedSeat = view
                 } else { // 2개이상 선택했을 시
                     toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
                 }
 
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
+            binding.scrollBar.visibility = View.VISIBLE
+            for (i in 0 until rooms.rooms.size) {
+                if (name == rooms.rooms[i].roomName) {
+                    drawStatusBar(rooms.rooms[i].reserved, view.id)
+                }
+            }
             toast(requireContext(), "Seat " + view.id + " is Booked")
         } else if (view.tag as Int == STATUS_RESERVED) {
+            binding.scrollBar.visibility = View.VISIBLE
+            for (i in 0 until rooms.rooms.size) {
+                if (name == rooms.rooms[i].roomName) {
+                    drawStatusBar(rooms.rooms[i].reserved, view.id)
+                }
+            }
             toast(requireContext(), "Seat " + view.id + " is Reserved")
         }
     }
 
     // 10분이 1800000
+    // TODO 한 번 누르고 다시 누르면 안됨.
+    // 시간 설정 조금 miss
+    // 예약되고 확정되도 시간은 볼 수 있어야함.
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
+        var statusTime = GregorianCalendar(year, month, day, time-1, 0)
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
         binding.scrollBar.addView(timeTable)
@@ -388,7 +411,7 @@ class ReservationFragment :
             status.layoutParams = layoutParams
             timeTable.addView(status)
             for(j in seatData[position].indices) {
-                if(status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() <= seatData[position][j].end) {
+                if(status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() < seatData[position][j].end) {
                     status.tag = UNAVAILABLE
                 }
 
@@ -524,157 +547,6 @@ class ReservationFragment :
                     }
                 }
             })
-    }
-
-//    private fun setRecyclerStatus() {
-//        with(binding.layoutReservationStatus.recyclerStatus) {
-//            adapter = SeatStatusAdapter(context).apply {
-//                data = color
-//                notifyDataSetChanged()
-//            }
-//            layoutManager = object : GridLayoutManager(context, color.size) {
-//                override fun canScrollHorizontally(): Boolean {
-//                    return false
-//                }
-//
-//                override fun canScrollVertically(): Boolean {
-//                    return false
-//                }
-//            }
-//            setHasFixedSize(true)
-//        }
-//    }
-
-//    private fun statusDataSet() {
-//        status_endCal.set(Calendar.MONTH, status_month)
-//        status_endCal.set(Calendar.DAY_OF_MONTH, status_day)
-//        binding.layoutReservationStatus.txtStartDate.text =
-//            status_timeFormat.format(status_cal.time) + "\n09:00"
-//        binding.layoutReservationStatus.txtEndDate.text =
-//            status_timeFormat.format(status_endCal.time) + "\n00:00"
-//        for (i in 0 until 90) { // 90개 status_count
-//            if (i < status_count) {
-//                color.add(0)
-//            } else {
-//                color.add(1)
-//            }
-//        }
-//        color.add(0, -1)
-//    }
-
-    private fun overLapTime() {
-        // 좌석 시작시간과 끝나는시간의 data class를 만들어서 자동으로 담기게끔하자
-        var cHour = SimpleDateFormat("HH")
-        var cMinute = SimpleDateFormat("mm")
-        var timeTable = SeatTime()
-        var cDate = Date()
-        for (init in seatTime.indices) {
-            timeTable.seatStatus.add(arrayListOf())
-            timeTable.startTime.add(arrayListOf())
-            timeTable.endTime.add(arrayListOf())
-            timeTable.unStart.add(arrayListOf())
-            timeTable.unEnd.add(arrayListOf())
-        }
-
-
-        Log.d(TAG, timeTable.seatStatus.toString())
-        for (i in seatTime.indices) {
-            for (j in seatTime[i].indices) {
-                // Long타입 시간 add
-                timeTable.startTime[i].add(seatTime[i][j].begin)
-                timeTable.endTime[i].add(seatTime[i][j].end)
-                // seatStatus 값 추가
-                cDate.time = seatTime[i][j].begin
-//                Log.d(TAG, "시작시간은 심플타임 ${     cHour.format(cDate)} ${cMinute.format(cDate)}}")
-                timeTable.unStart[i].add(
-                    ((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(
-                        cDate
-                    ).toInt() / 10) + 1)
-                )
-                cDate.time = seatTime[i][j].end
-                timeTable.unEnd[i].add(
-                    ((cHour.format(cDate).toInt() - 9) * 6) + ((cMinute.format(
-                        cDate
-                    ).toInt() / 10) + 1)
-                )
-
-            }
-        }
-        // 좌석 상황 배열 -1로 90개 초기화
-        for (i in timeTable.unStart.indices) { // 좌석의 개수
-            for (j in 0 until 90) { // 90개 status_count
-                timeTable.seatStatus[i].add(-1)
-            }
-        }
-
-        Log.d(TAG, timeTable.unStart.toString())
-        for (i in timeTable.unStart.indices) { // 좌석의 개수
-            var cnt = 0
-            for (j in 0 until 90) { // 좌석당 시간
-                if (j < status_count) {  // 현재 시간까지 0 30
-                    timeTable.seatStatus[i][j] = 0
-                } // 35부터 나오겠지.
-//                else { // 현재시간 보다 클 경우
-//                    if(timeTable.unStart[i].isNotEmpty()) {
-//                        if(j >= timeTable.unStart[i][cnt] && j <= timeTable.unEnd[i][cnt]) { // unStart의 개수만큼
-//                            timeTable.seatStatus[i][j] = 0
-//                        }
-//                    }
-//                    else {
-//                        timeTable.seatStatus[i][j] = 1
-//                    }
-//                }
-            }
-        }
-
-
-        for (i in timeTable.unStart.indices) { // 좌석의 개수
-            var cnt = 0
-            var tmp = 0
-            for (j in status_count..90) {
-                if (timeTable.unStart[i].isNotEmpty()) {
-                    // 끝나면 cnt가 ++
-                    if (j >= timeTable.unStart[i][cnt] && j <= timeTable.unEnd[i][cnt]) {
-                        timeTable.seatStatus[i][j] = 0
-                    }
-                }
-
-            }
-        }
-
-        // 현재시간까지는 비활성화
-//        for(i in timeTable.seatStatus.indices) {
-//            for(j in 0..status_count) { // 현재시간 까지는 비활성화 후
-//                timeTable.seatStatus[i].add(0)
-//            }
-//
-//        }
-
-        Log.d(TAG, timeTable.toString())
-        Log.d(TAG, "길이" + timeTable.unStart.indices.toString())
-//        for(i in timeTable.unStart.indices) { // 0~92
-//            for(j in timeTable.unStart.indices) { // 예약 코드가 있고 없고 0~ 92
-//                if(j < status_count) { //ex 27 //0 // 현재시간은 채워놓고
-//                    timeTable.seatStatus[i].add(0)
-//                }
-//                else {
-//                    for(z in timeTable.unStart[i].indices) {
-//                        if(j >= timeTable.unStart[i][z] && j <= timeTable.unEnd[i][z]) {
-//                            timeTable.seatStatus[i].add(0)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-        // 예약내역 unStart[i][j]~ unend[i][j] 까지 회색으로
-//        for(i in timeTable.unStart.indices) {
-//            for(j in timeTable.unStart[i].indices) {
-//
-//            }
-//        }
-//        Log.d(TAG, timeTable.seatStatus.toString())
-//        Log.d(TAG, "타임테이블$timeTable")
-//        statusDataSet()
     }
 
     companion object {

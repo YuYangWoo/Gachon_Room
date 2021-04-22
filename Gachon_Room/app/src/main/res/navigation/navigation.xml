@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_mainFragment_to_qrCodeFragment"
             app:destination="@id/qrCodeFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_statusFragment"
-            app:destination="@id/statusFragment" />
     </fragment>
     <fragment
         android:id="@+id/optionFragment"
@@ -62,9 +59,5 @@
     </fragment>
 
     <action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
-    <fragment
-        android:id="@+id/statusFragment"
-        android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.StatusFragment"
-        android:label="StatusFragment" />
 
 </navigation>
