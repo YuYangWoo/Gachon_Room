@@ -136,7 +136,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
                     input["reservationId"] = mySeatData.reservations[0].reservationId
                     input["college"] = MySharedPreferences.getInformation(requireContext()).college
-                    input["roomName"] = mySeatData.reservations[0].roomName
+                    input["roomName"] = mySeatData.reservations[0].roomName //a
                     input["id"] = MySharedPreferences.getUserId(requireContext())
                     input["password"] = MySharedPreferences.getUserPass(requireContext())
 

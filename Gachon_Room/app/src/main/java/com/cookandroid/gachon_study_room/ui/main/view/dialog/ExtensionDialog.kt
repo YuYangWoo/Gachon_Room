@@ -1,13 +1,10 @@
 package com.cookandroid.gachon_study_room.ui.main.view.dialog
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.MySeat
@@ -21,13 +18,13 @@ import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragme
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import java.lang.reflect.Field
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension) {
 
-    private val builder by lazy { AlertDialog.Builder(requireContext()) }
+class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension), TimePicker.OnTimeChangedListener{
     private val model: MainViewModel by sharedViewModel()
     private var input = HashMap<String, Any>()
     private val TAG = "EXTENSION"
@@ -44,19 +41,24 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         super.init()
          mySeatData = model.mySeatData
          roomsData()
+        setTimePickerInterval(binding.timePicker)
     }
 
     private fun roomsData() {
         var input = HashMap<String, Any>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
         model.callRooms(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
-            when(resource.status) {
+            when (resource.status) {
                 Resource.Status.SUCCESS -> {
-                    when(resource.data!!.result) {
+                    when (resource.data!!.result) {
                         true -> {
                             dialog.dismiss()
                             roomsData = resource.data
-                            drawStatusBar(roomsData.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, mySeatData.reservations[0].seat)
+                            drawStatusBar(
+                                roomsData.rooms[MySharedPreferences.getRoomPosition(
+                                    requireContext()
+                                )].reserved, mySeatData.reservations[0].seat
+                            )
                         }
                         false -> {
                             toast(requireContext(), resource.data!!.response)
@@ -78,7 +80,13 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     }
 
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
-        var statusTime = GregorianCalendar(ReservationFragment.year, ReservationFragment.month, ReservationFragment.day, time - 1, 0)
+        var statusTime = GregorianCalendar(
+            ReservationFragment.year,
+            ReservationFragment.month,
+            ReservationFragment.day,
+            time - 1,
+            0
+        )
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
         binding.scrollBar.addView(timeTable)
@@ -98,13 +106,16 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             setBackgroundColor(status)
             // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
+                if((time) == 24) {
+                    time=0
+                }
                 val timeBar = Button(requireContext())
                 timeBar.tag = ReservationFragment.TIME_BAR
                 setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 )
 
                 // 시간 textView 설정
@@ -168,32 +179,68 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     }
 
     private fun initViewModel() {
-        model.callExtend(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
-            when(resource.status) {
-                Resource.Status.SUCCESS -> {
-                    Log.d(TAG, "연결성공" + resource.data.toString())
-                    when(resource.data!!.result) {
-                        true -> {
-                            toast(requireContext(), "연장성공")
+        model.callExtend(input).observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { resource ->
+                when (resource.status) {
+                    Resource.Status.SUCCESS -> {
+                        Log.d(TAG, "연결성공" + resource.data.toString())
+                        when (resource.data!!.result) {
+                            true -> {
+                                toast(requireContext(), "연장성공")
+                            }
+                            false -> {
+                                toast(requireContext(), resource.data!!.response)
+                            }
                         }
-                        false -> {
-                            toast(requireContext(), resource.data!!.response)
-                        }
+                        dialog.dismiss()
+                        dismiss()
                     }
-                    dialog.dismiss()
-                    dismiss()
-                }
-                Resource.Status.LOADING -> {
-                    dialog.show()
-                }
-                Resource.Status.ERROR -> {
-                    dialog.dismiss()
-                    toast(
+                    Resource.Status.LOADING -> {
+                        dialog.show()
+                    }
+                    Resource.Status.ERROR -> {
+                        dialog.dismiss()
+                        toast(
                             requireContext(),
                             resource.message + "\n" + resources.getString(R.string.connect_fail)
-                    )
+                        )
+                    }
+                }
+            })
+    }
+
+    @SuppressLint("NewApi")
+    private fun setTimePickerInterval(timePicker: TimePicker) {
+        try {
+            val classForid = Class.forName("com.android.internal.R\$id")
+            // Field timePickerField = classForid.getField("timePicker");
+            val field: Field = classForid.getField("minute")
+            var minutePicker = timePicker.findViewById(field.getInt(null)) as NumberPicker
+            minutePicker.minValue = 0
+            minutePicker.maxValue = 5
+            var displayedValues = ArrayList<String>()
+            run {
+                var i = 0
+                while (i < 60) {
+                    displayedValues.add(String.format("%02d", i))
+                    i += TIME_PICKER_INTERVAL
                 }
             }
-        })
+            var i = 0
+            while (i < 60) {
+                displayedValues.add(String.format("%02d", i))
+                i += TIME_PICKER_INTERVAL
+            }
+            minutePicker.displayedValues = displayedValues.toArray(arrayOfNulls<String>(0))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    override fun onTimeChanged(p0: TimePicker?, p1: Int, p2: Int) {
+
+    }
+    companion object {
+        const val TIME_PICKER_INTERVAL = 10
     }
 }

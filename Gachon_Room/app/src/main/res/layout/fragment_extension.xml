@@ -77,6 +77,15 @@
         android:text="사용불가"
         app:layout_constraintBottom_toTopOf="@+id/scrollBar"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
 </layout>

@@ -255,7 +255,7 @@ class ReservationFragment :
         layoutSeat.orientation = LinearLayout.VERTICAL
         layoutSeat.layoutParams = params
         layoutSeat.setPadding(seatGaping, seatGaping, seatGaping, seatGaping)
-
+        layoutSeat.gravity = Gravity.CENTER
         layout.addView(layoutSeat)
         seatTime = rooms.rooms[index].reserved as ArrayList<ArrayList<Room.Reservation>>
         var seats = room
@@ -267,7 +267,12 @@ class ReservationFragment :
                     table.orientation = LinearLayout.HORIZONTAL
                     layoutSeat.addView(table)
                 } else if (seats[i][j] == WALL) {
-
+                    val view = TextView(requireContext())
+                    var layoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
+                    layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
+                    view.layoutParams = layoutParams
+                    view.setBackgroundColor(Color.TRANSPARENT)
+                    table.addView(view)
                 } else if (seats[i][j] == EMPTY) {
                     val view = TextView(requireContext())
                     var layoutParams = LinearLayout.LayoutParams(seatSize, seatSize)
