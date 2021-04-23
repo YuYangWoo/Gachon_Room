@@ -340,6 +340,7 @@ class ReservationFragment :
 
     }
 
+    // 보일러 플레이트 코드 없애주기.
     private fun click(view: View) {
         if (view.tag as Int == STATUS_AVAILABLE) {
             // 다시 눌렀을 시
@@ -365,48 +366,34 @@ class ReservationFragment :
 
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
-
-            if (selectedIds.contains(view.id.toString() + ",")) {
-                selectedIds = selectedIds.replace(view.id.toString() + ",", "")
-                Log.d("TAG", selectedIds)
-                binding.scrollBar.removeAllViews()
-                binding.scrollBar.visibility = View.GONE // 상황바 없애기
-                // 하나만 선택가능
-            } else { // 좌석 선택했을시
-                if (selectedIds == "") { // 한개 선택했을 시
-                    // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
-                    binding.scrollBar.visibility = View.VISIBLE
-                    drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
-                    selectedIds = selectedIds + view.id + ","
-                } else { // 2개이상 선택했을 시
-                    toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
-                }
-
-            }
+            reservedSeatStatusBar(view)
             toast(requireContext(), "Seat " + view.id + " is Booked")
 
         } else if (view.tag as Int == STATUS_RESERVED) {
-            if (selectedIds.contains(view.id.toString() + ",")) {
-                selectedIds = selectedIds.replace(view.id.toString() + ",", "")
-                Log.d("TAG", selectedIds)
-                binding.scrollBar.removeAllViews()
-                binding.scrollBar.visibility = View.GONE // 상황바 없애기
-                // 하나만 선택가능
-            } else { // 좌석 선택했을시
-                if (selectedIds == "") { // 한개 선택했을 시
-                    // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
-                    binding.scrollBar.visibility = View.VISIBLE
-                    drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
-                    selectedIds = selectedIds + view.id + ","
-                } else { // 2개이상 선택했을 시
-                    toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
-                }
-
-            }
+            reservedSeatStatusBar(view)
             toast(requireContext(), "Seat " + view.id + " is Reserved")
         }
     }
 
+    private fun reservedSeatStatusBar(view: View) {
+        if (selectedIds.contains(view.id.toString() + ",")) {
+            selectedIds = selectedIds.replace(view.id.toString() + ",", "")
+            Log.d("TAG", selectedIds)
+            binding.scrollBar.removeAllViews()
+            binding.scrollBar.visibility = View.GONE // 상황바 없애기
+            // 하나만 선택가능
+        } else { // 좌석 선택했을시
+            if (selectedIds == "") { // 한개 선택했을 시
+                // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
+                binding.scrollBar.visibility = View.VISIBLE
+                drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
+                selectedIds = selectedIds + view.id + ","
+            } else { // 2개이상 선택했을 시
+                toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
+            }
+
+        }
+    }
     // 10분이 1800000
     // 한 번 누르고 다시 누르면 안됨. - 해결
     // 시간 설정 조금 miss - 해결
