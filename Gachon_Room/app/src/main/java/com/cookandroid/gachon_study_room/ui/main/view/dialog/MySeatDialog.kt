@@ -19,7 +19,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my_seat) {
-    private var mySeatData = MySeat()
+ var mySeatData = MySeat()
     private val dialog by lazy {
         ProgressDialog(requireContext())
     }
@@ -45,6 +45,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                         when (resource.data!!.result) {
                             true -> {
                                 mySeatData = resource.data!!
+                                model.mySeatData = resource.data!!
                                 mySeat()
                             }
                             false -> {
@@ -123,8 +124,8 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
     private fun extendSeat() {
     binding.btnExtend.setOnClickListener {
-//        findNavController().navigate(MySeatDialogDirections.actionMySeatDialogToReservationStatusView())
         ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
+//        findNavController().navigate(MySeatDialogDirections.actionMySeatDialogToExtensionDialog())
     }
     }
 

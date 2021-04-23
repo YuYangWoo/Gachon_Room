@@ -36,7 +36,7 @@ import kotlin.collections.ArrayList
 
 
 class ReservationFragment :
-    BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
+        BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
     private val args: ReservationFragmentArgs by navArgs()
     private lateinit var layout: ViewGroup
     private var seatViewList = ArrayList<TextView>()
@@ -80,6 +80,8 @@ class ReservationFragment :
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
                 drawSeatView(rooms.rooms[i].seat, rooms, i)
+                MySharedPreferences.setRoomPosition(requireContext(), i)
+                Log.d(TAG, "방의 pos는 $i 입니다.")
             }
         }
 //        Log.d(TAG, selectedSeat.toString())
@@ -127,11 +129,9 @@ class ReservationFragment :
                     }
 
                     startTime < endTime -> {
-                        for (i in 0 until rooms.rooms.size) {
-                            if (name == rooms.rooms[i].roomName) {
-                                drawSeatView(rooms.rooms[i].seat, rooms, i)
-                            }
-                        }
+
+                        drawSeatView(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].seat, rooms, MySharedPreferences.getRoomPosition(requireContext()))
+
                         // ok 버트 누르고 나오는 시간.
                         startOurHour = hour
                         startOurMinute = startMinute
@@ -143,19 +143,19 @@ class ReservationFragment :
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
                 TimePickerDialogFixedNougatSpinner(
-                    requireContext(),
-                    timeSetListener,
-                    startOurHour,
-                    startOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
+                        requireContext(),
+                        timeSetListener,
+                        startOurHour,
+                        startOurMinute,
+                        DateFormat.is24HourFormat(requireContext())
                 ).show()
             } else {
                 CustomTimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    startOurHour,
-                    startOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
+                        requireContext(),
+                        timeSetListener,
+                        startOurHour,
+                        startOurMinute,
+                        DateFormat.is24HourFormat(requireContext())
                 ).show()
             }
         }
@@ -191,14 +191,10 @@ class ReservationFragment :
                     }
 
                     startTime < endTime -> {
-                        for (i in 0 until rooms.rooms.size) {
-                            if (name == rooms.rooms[i].roomName) {
-                                drawSeatView(rooms.rooms[i].seat, rooms, i)
-                            }
-                            endOurHour = hour
-                            endOurMinute = endMinute
-                            binding.txtEnd.text = txtEndTime
-                        }
+                        drawSeatView(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].seat, rooms, MySharedPreferences.getRoomPosition(requireContext()))
+                        endOurHour = hour
+                        endOurMinute = endMinute
+                        binding.txtEnd.text = txtEndTime
                     }
 
                 }
@@ -206,19 +202,19 @@ class ReservationFragment :
 
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
                 TimePickerDialogFixedNougatSpinner(
-                    requireContext(),
-                    timeSetListener,
-                    endOurHour,
-                    endOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
+                        requireContext(),
+                        timeSetListener,
+                        endOurHour,
+                        endOurMinute,
+                        DateFormat.is24HourFormat(requireContext())
                 ).show()
             } else {
                 CustomTimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    endOurHour,
-                    endOurMinute,
-                    DateFormat.is24HourFormat(requireContext())
+                        requireContext(),
+                        timeSetListener,
+                        endOurHour,
+                        endOurMinute,
+                        DateFormat.is24HourFormat(requireContext())
                 ).show()
             }
         }
@@ -249,8 +245,8 @@ class ReservationFragment :
     private fun drawSeatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
         )
         layoutSeat.removeAllViews()
         layout.removeAllViews()
@@ -280,7 +276,7 @@ class ReservationFragment :
                 } else if (seats[i][j] == DOOR) {
                     val view = TextView(requireContext())
                     var layoutParams: LinearLayout.LayoutParams =
-                        LinearLayout.LayoutParams(seatSize, seatSize)
+                            LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     view.layoutParams = layoutParams
@@ -292,7 +288,7 @@ class ReservationFragment :
                 } else {
                     val view = TextView(requireContext())
                     var layoutParams: LinearLayout.LayoutParams =
-                        LinearLayout.LayoutParams(seatSize, seatSize)
+                            LinearLayout.LayoutParams(seatSize, seatSize)
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping)
 
                     // 좌석의 번호에 따른 reserved 크기를 구해 예약된 시간과 비교
@@ -330,7 +326,7 @@ class ReservationFragment :
                     view.text = seats[i][j].toString()
                     view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
                     // 만약 선택됬었던 경우
-                    if(view.id == selectedSeat) {
+                    if (view.id == selectedSeat) {
                         view.setBackgroundResource(R.drawable.ic_seats_selected)
                     }
                     table.addView(view)
@@ -392,11 +388,11 @@ class ReservationFragment :
     }
 
     // 10분이 1800000
-    // TODO 한 번 누르고 다시 누르면 안됨.
-    // 시간 설정 조금 miss
+    // 한 번 누르고 다시 누르면 안됨. - 해결
+    // 시간 설정 조금 miss - 해결
     // 예약되고 확정되도 시간은 볼 수 있어야함.
-    private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
-        var statusTime = GregorianCalendar(year, month, day, time-1, 0)
+    fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
+        var statusTime = GregorianCalendar(year, month, day, time - 1, 0)
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
         binding.scrollBar.addView(timeTable)
@@ -407,8 +403,8 @@ class ReservationFragment :
             status.text = statusTime.timeInMillis.toString()
             status.layoutParams = layoutParams
             timeTable.addView(status)
-            for(j in seatData[position].indices) {
-                if(status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() < seatData[position][j].end) {
+            for (j in seatData[position].indices) {
+                if (status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() < seatData[position][j].end) {
                     status.tag = UNAVAILABLE
                 }
 
@@ -421,8 +417,8 @@ class ReservationFragment :
                 setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
                 )
 
                 // 시간 textView 설정
@@ -454,6 +450,9 @@ class ReservationFragment :
                 timeBar.layoutParams = layoutParams
                 timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
             }
+            else -> {
+
+            }
         }
     }
 
@@ -483,13 +482,13 @@ class ReservationFragment :
                 toast(requireContext(), "좌석을 선택해주세요.")
             } else {
                 builder.setTitle("예약메시지")
-                    .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                        initViewModel()
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                        Log.d("TAG", "취소")
-                    })
+                        .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
+                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                            initViewModel()
+                        })
+                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                            Log.d("TAG", "취소")
+                        })
                 builder.create()
                 builder.show()
             }
@@ -498,9 +497,9 @@ class ReservationFragment :
 
     private fun dataSet() {
         input["studentId"] =
-            MySharedPreferences.getInformation(requireContext()).studentId
+                MySharedPreferences.getInformation(requireContext()).studentId
         input["college"] =
-            MySharedPreferences.getInformation(requireContext()).college
+                MySharedPreferences.getInformation(requireContext()).college
         input["roomName"] = name
         input["seat"] = seatId
         input["begin"] = startTime
@@ -512,38 +511,38 @@ class ReservationFragment :
     private fun initViewModel() {
         dataSet()
         model.callReserve(input)
-            .observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
-                when (resource.status) {
-                    Resource.Status.SUCCESS -> {
-                        reservation = resource.data!!
-                        Log.d(TAG, reservation.toString())
-                        when (reservation.result) {
-                            true -> {
-                                MySharedPreferences.setReservation(
-                                    requireContext(),
-                                    reservation.reservation
-                                )
-                                toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
+                .observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
+                    when (resource.status) {
+                        Resource.Status.SUCCESS -> {
+                            reservation = resource.data!!
+                            Log.d(TAG, reservation.toString())
+                            when (reservation.result) {
+                                true -> {
+                                    MySharedPreferences.setReservation(
+                                            requireContext(),
+                                            reservation.reservation
+                                    )
+                                    toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
+                                }
+                                false -> {
+                                    toast(requireContext(), reservation.response)
+                                }
                             }
-                            false -> {
-                                toast(requireContext(), reservation.response)
-                            }
+                            dialog.dismiss()
+                            findNavController().popBackStack()
                         }
-                        dialog.dismiss()
-                        findNavController().popBackStack()
+                        Resource.Status.ERROR -> {
+                            toast(
+                                    requireContext(),
+                                    resource.message + "\n" + resources.getString(R.string.connect_fail)
+                            )
+                            dialog.dismiss()
+                        }
+                        Resource.Status.LOADING -> {
+                            dialog.show()
+                        }
                     }
-                    Resource.Status.ERROR -> {
-                        toast(
-                            requireContext(),
-                            resource.message + "\n" + resources.getString(R.string.connect_fail)
-                        )
-                        dialog.dismiss()
-                    }
-                    Resource.Status.LOADING -> {
-                        dialog.show()
-                    }
-                }
-            })
+                })
     }
 
     companion object {
@@ -557,24 +556,16 @@ class ReservationFragment :
         const val UNAVAILABLE = 0
         const val AVAILABLE = 1
         const val TIME_BAR = 2
-        var seatGaping = 10
-        var count = 0
+
+        const val seatGaping = 10
+        const val count = 0
         val cal = Calendar.getInstance()
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
-        var day = cal.get(Calendar.DAY_OF_MONTH)
-        var interval = 10 - (cal.get(Calendar.MINUTE) % 10)
-        var simple = SimpleDateFormat("HH시 mm분")
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val interval = 10 - (cal.get(Calendar.MINUTE) % 10)
+        val simple = SimpleDateFormat("HH시 mm분")
 
-        // status
-        val status_cal = Calendar.getInstance()
-        val status_endCal = Calendar.getInstance()
-        val status_month = status_endCal.get(Calendar.MONTH)
-        val status_day = status_endCal.get(Calendar.DAY_OF_MONTH) + 1
-        val status_hour = cal.get(Calendar.HOUR_OF_DAY) //16시
-        val status_minute = cal.get(Calendar.MINUTE) // 49분
-        val status_count = ((status_hour - 9) * 6) + ((status_minute / 10) + 1)
-        val status_timeFormat = SimpleDateFormat("MM/dd")
     }
 
 }

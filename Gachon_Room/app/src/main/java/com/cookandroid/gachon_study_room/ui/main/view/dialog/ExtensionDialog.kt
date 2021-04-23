@@ -3,15 +3,27 @@ package com.cookandroid.gachon_study_room.ui.main.view.dialog
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.cookandroid.gachon_study_room.R
+import com.cookandroid.gachon_study_room.data.model.MySeat
+import com.cookandroid.gachon_study_room.data.model.room.Room
+import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
+import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.databinding.FragmentExtensionBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseDialogFragment
 import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import java.util.Observer
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension) {
 
@@ -22,72 +34,121 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private val dialog by lazy {
         ProgressDialog(requireContext())
     }
+    private lateinit var timeTable: LinearLayout
+    private lateinit var linearTxt: LinearLayout
+    private var time = TimeRequest.statusTodayTime() + 1
+    private var roomsData = Room.Reservation()
+    private var mySeatData = MySeat()
+
     override fun init() {
         super.init()
-        btnClick()
+         mySeatData = model.mySeatData
+        roomsData()
     }
 
-    private fun btnClick() {
-        binding.btn30.setOnClickListener {
-            dataSet(1800000L)
-            builder.setTitle("연장")
-                    .setMessage("${binding.btn30.text.toString()} 연장하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                        initViewModel()
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                        Log.d("TAG", "취소")
-                    })
-            builder.create()
-            builder.show()
-        }
-        binding.btn60.setOnClickListener {
-            dataSet(3600000L)
+    private fun roomsData() {
+        var input = HashMap<String, Any>()
+        input["college"] = MySharedPreferences.getInformation(requireContext()).college
+        model.callRooms(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
+            when(resource.status) {
+                Resource.Status.SUCCESS -> {
+                    when(resource.data!!.result) {
+                        true -> {
 
-            builder.setTitle("연장")
-                    .setMessage("${binding.btn60.text.toString()} 연장하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                        initViewModel()
+                        }
+                        false -> {
+                            toast(requireContext(), resource.data!!.response)
+                        }
+                    }
+                }
+                Resource.Status.LOADING -> {
 
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                        Log.d("TAG", "취소")
-                    })
-            builder.create()
-            builder.show()
-        }
-        binding.btn90.setOnClickListener {
-            dataSet(5400000L)
+                }
+                Resource.Status.ERROR -> {
 
-            builder.setTitle("연장")
-                    .setMessage("${binding.btn90.text.toString()} 연장하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                        initViewModel()
-
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                        Log.d("TAG", "취소")
-                    })
-            builder.create()
-            builder.show()
-        }
-        binding.btn120.setOnClickListener {
-            dataSet(7200000L)
-
-            builder.setTitle("연장")
-                    .setMessage("${binding.btn120.text} 연장하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
-                        initViewModel()
-
-                    })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
-                        Log.d("TAG", "취소")
-                    })
-            builder.create()
-            builder.show()
-        }
-
+                }
+            }
+        })
     }
+//    private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
+//        var statusTime = GregorianCalendar(ReservationFragment.year, ReservationFragment.month, ReservationFragment.day, time - 1, 0)
+//        timeTable = LinearLayout(requireContext())
+//        timeTable.orientation = LinearLayout.HORIZONTAL
+//        binding.scrollBar.addView(timeTable)
+//        var layoutParams = LinearLayout.LayoutParams(30, 50)
+//        for (i in 1..144) {
+//            val status = Button(requireContext())
+//            status.tag = ReservationFragment.AVAILABLE
+//            status.text = statusTime.timeInMillis.toString()
+//            status.layoutParams = layoutParams
+//            timeTable.addView(status)
+//            for (j in seatData[position].indices) {
+//                if (status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() < seatData[position][j].end) {
+//                    status.tag = ReservationFragment.UNAVAILABLE
+//                }
+//
+//            }
+//            setBackgroundColor(status)
+//            // 타임바, 시간 텍스트 구현
+//            if (i % 6 == 0) {
+//                val timeBar = Button(requireContext())
+//                timeBar.tag = ReservationFragment.TIME_BAR
+//                setTimeBar(timeBar)
+//                // 시간 크기
+//                var txtParams = LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.WRAP_CONTENT,
+//                        LinearLayout.LayoutParams.WRAP_CONTENT
+//                )
+//
+//                // 시간 textView 설정
+//                var timeTxt = TextView(requireContext())
+//                timeTxt.layoutParams = txtParams
+//                timeTxt.textSize = 10F
+//                timeTxt.text = time++.toString()
+//
+//                // 세로 리니어레이아웃을 만들어서 타임바와 텍스트를 넣고 table에 넣어준다.
+//                linearTxt = LinearLayout(requireContext())
+//                linearTxt.orientation = LinearLayout.VERTICAL
+//                linearTxt.addView(timeBar)
+//                linearTxt.addView(timeTxt)
+//                linearTxt.gravity = Gravity.CENTER
+//                timeTable.addView(linearTxt)
+//                if (time == 24) {
+//                    time = 0
+//                }
+//            }
+//            statusTime.timeInMillis += 600000
+//        }
+//    }
+//
+//    private fun setTimeBar(timeBar: View) {
+//        //타임바 크기
+//        var layoutParams = LinearLayout.LayoutParams(10, 50)
+//        when (timeBar.tag) {
+//            ReservationFragment.TIME_BAR -> {
+//                timeBar.layoutParams = layoutParams
+//                timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
+//            }
+//            else -> {
+//
+//            }
+//        }
+//    }
+//
+//    private fun setBackgroundColor(status: View) {
+//        when (status.tag) {
+//            ReservationFragment.UNAVAILABLE -> {
+//                status.setBackgroundResource(R.drawable.status_list_edge)
+//
+//            }
+//            ReservationFragment.AVAILABLE -> {
+//                status.setBackgroundResource(R.drawable.status_list_edge_available)
+//            }
+//            else -> {
+//
+//            }
+//        }
+//    }
 
     private fun dataSet(extendedTime: Long) {
         input["id"] = MySharedPreferences.getUserId(requireContext())

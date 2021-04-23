@@ -24,7 +24,11 @@
     <dialog
         android:id="@+id/mySeatDialog"
         android:name="com.cookandroid.gachon_study_room.ui.main.view.dialog.MySeatDialog"
-        android:label="MySeatDialog" />
+        android:label="MySeatDialog" >
+        <action
+            android:id="@+id/action_mySeatDialog_to_extensionDialog"
+            app:destination="@id/extensionDialog" />
+    </dialog>
     <fragment
         android:id="@+id/qrCodeFragment"
         android:name="com.cookandroid.gachon_study_room.ui.main.view.fragment.QrCodeFragment"
@@ -59,5 +63,9 @@
     </fragment>
 
     <action android:id="@+id/action_global_reservationFragment" app:destination="@id/reservationFragment"/>
+    <fragment
+        android:id="@+id/extensionDialog"
+        android:name="com.cookandroid.gachon_study_room.ui.main.view.dialog.ExtensionDialog"
+        android:label="ExtensionDialog" />
 
 </navigation>

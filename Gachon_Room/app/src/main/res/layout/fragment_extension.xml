@@ -15,55 +15,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.widget.Button
-        android:id="@+id/btn30"
+    <HorizontalScrollView
+        android:id="@+id/scrollBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:text="30분"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.widget.Button
-        android:id="@+id/btn60"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="60분"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="82dp" />
-
-    <android.widget.Button
-        android:id="@+id/btn90"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="90분"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="278dp" />
-
-    <android.widget.Button
-        android:id="@+id/btn120"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="120분"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="16dp"
-        tools:layout_editor_absoluteY="312dp" />
-
+        android:fillViewport="true"
+        android:visibility="visible" />
 </LinearLayout>
 </FrameLayout>
 </layout>

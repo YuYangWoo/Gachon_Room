@@ -11,6 +11,19 @@ object MySharedPreferences {
     private var student: Information.Account = Information.Account()
     private var reservation = Room.Reservation()
 
+    // 방정보 위치
+    fun setRoomPosition(context: Context, input: Int) {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor : SharedPreferences.Editor = prefs.edit()
+        editor.putInt("MY_ROOM_POS", input)
+        editor.commit()
+    }
+
+    fun getRoomPosition(context: Context): Int {
+        val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        return prefs.getInt("MY_ROOM_POS", 0)
+    }
+
     // 사용자 Token
     fun setToken(context: Context, input: String) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
@@ -37,7 +50,6 @@ object MySharedPreferences {
             putBoolean("MY_CONFIRMED", reservationData.confirmed)
             putBoolean("MY_EXTENDED", reservationData.extended)
             putString("MY_RESERVATION_ID", reservationData.reservationId)
-
         }
         editor.commit()
     }

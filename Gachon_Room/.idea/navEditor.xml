@@ -13,6 +13,18 @@
                       <LayoutPositions />
                     </value>
                   </entry>
+                  <entry key="extensionDialog">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="127" />
+                            <option name="y" value="155" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="mainFragment">
                     <value>
                       <LayoutPositions>
@@ -118,18 +130,6 @@
                               </value>
                             </entry>
                           </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="statusFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-4" />
-                            <option name="y" value="491" />
-                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
