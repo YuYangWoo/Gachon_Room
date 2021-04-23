@@ -354,11 +354,7 @@ class ReservationFragment :
                 if (selectedIds == "") { // 한개 선택했을 시
                     // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
                     binding.scrollBar.visibility = View.VISIBLE
-                    for (i in 0 until rooms.rooms.size) {
-                        if (name == rooms.rooms[i].roomName) {
-                            drawStatusBar(rooms.rooms[i].reserved, view.id)
-                        }
-                    }
+                            drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
                     selectedIds = selectedIds + view.id + ","
                     seatId = view.id
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
@@ -369,19 +365,43 @@ class ReservationFragment :
 
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
-            binding.scrollBar.visibility = View.VISIBLE
-            for (i in 0 until rooms.rooms.size) {
-                if (name == rooms.rooms[i].roomName) {
-                    drawStatusBar(rooms.rooms[i].reserved, view.id)
+
+            if (selectedIds.contains(view.id.toString() + ",")) {
+                selectedIds = selectedIds.replace(view.id.toString() + ",", "")
+                Log.d("TAG", selectedIds)
+                binding.scrollBar.removeAllViews()
+                binding.scrollBar.visibility = View.GONE // 상황바 없애기
+                // 하나만 선택가능
+            } else { // 좌석 선택했을시
+                if (selectedIds == "") { // 한개 선택했을 시
+                    // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
+                    binding.scrollBar.visibility = View.VISIBLE
+                    drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
+                    selectedIds = selectedIds + view.id + ","
+                } else { // 2개이상 선택했을 시
+                    toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
                 }
+
             }
             toast(requireContext(), "Seat " + view.id + " is Booked")
+
         } else if (view.tag as Int == STATUS_RESERVED) {
-            binding.scrollBar.visibility = View.VISIBLE
-            for (i in 0 until rooms.rooms.size) {
-                if (name == rooms.rooms[i].roomName) {
-                    drawStatusBar(rooms.rooms[i].reserved, view.id)
+            if (selectedIds.contains(view.id.toString() + ",")) {
+                selectedIds = selectedIds.replace(view.id.toString() + ",", "")
+                Log.d("TAG", selectedIds)
+                binding.scrollBar.removeAllViews()
+                binding.scrollBar.visibility = View.GONE // 상황바 없애기
+                // 하나만 선택가능
+            } else { // 좌석 선택했을시
+                if (selectedIds == "") { // 한개 선택했을 시
+                    // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
+                    binding.scrollBar.visibility = View.VISIBLE
+                    drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
+                    selectedIds = selectedIds + view.id + ","
+                } else { // 2개이상 선택했을 시
+                    toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
                 }
+
             }
             toast(requireContext(), "Seat " + view.id + " is Reserved")
         }
