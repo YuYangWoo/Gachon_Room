@@ -66,7 +66,8 @@ class ReservationFragment :
     private var reservation: Reserve = Reserve()
     private var seatTime = ArrayList<ArrayList<Room.Reservation>>()
     private var time = TimeRequest.statusTodayTime() + 1
-    private var selectedSeat: View? = null
+    private var selectedSeat: Int = 0
+
     override fun init() {
         super.init()
         layout = binding.layoutSeat
@@ -138,10 +139,6 @@ class ReservationFragment :
                     }
 
                 }
-                Log.d(TAG, selectedSeat.toString())
-                if(selectedSeat != null) {
-                    selectedSeat!!.setBackgroundResource(R.drawable.ic_seats_selected)
-                }
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
             if (android.os.Build.VERSION.SDK_INT == android.os.Build.VERSION_CODES.N) {
@@ -204,9 +201,6 @@ class ReservationFragment :
                         }
                     }
 
-                }
-                if(selectedSeat != null) {
-                    selectedSeat!!.setBackgroundResource(R.drawable.ic_seats_selected)
                 }
             }
 
@@ -335,7 +329,10 @@ class ReservationFragment :
                     view.setTextColor(Color.BLACK)
                     view.text = seats[i][j].toString()
                     view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-
+                    // 만약 선택됬었던 경우
+                    if(view.id == selectedSeat) {
+                        view.setBackgroundResource(R.drawable.ic_seats_selected)
+                    }
                     table.addView(view)
                     seatViewList.add(view)
                     view.setOnClickListener { click(view) }
@@ -369,7 +366,7 @@ class ReservationFragment :
                     selectedIds = selectedIds + view.id + ","
                     seatId = view.id
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
-                    selectedSeat = view
+                    selectedSeat = view.id
                 } else { // 2개이상 선택했을 시
                     toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
                 }
