@@ -80,11 +80,9 @@ class ReservationFragment :
         for (i in 0 until rooms.rooms.size) {
             if (name == rooms.rooms[i].roomName) {
                 drawSeatView(rooms.rooms[i].seat, rooms, i)
-                MySharedPreferences.setRoomPosition(requireContext(), i)
                 Log.d(TAG, "방의 pos는 $i 입니다.")
             }
         }
-//        Log.d(TAG, selectedSeat.toString())
         timeSet()
         btnStart()
         btnEnd()
@@ -94,7 +92,6 @@ class ReservationFragment :
     // 10분이 600000
     /*
     좌석 클릭 후 시간을 바꾸면 좌석 reser됨. 왜냐면 시간을 바꾸면 좌석을 다시그리기때문에
-
      */
     private fun btnStart() {
 
@@ -116,7 +113,6 @@ class ReservationFragment :
                 var date = Date()
                 date.time = time.timeInMillis
                 Log.d(TAG, "시작시간은$startTime 심플타임 ${simple.format(date)}")
-//                Log.d(TAG, GregorianCalendar(0, 0, 0, 2, 0).timeInMillis.toString())
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
 
@@ -129,8 +125,11 @@ class ReservationFragment :
                     }
 
                     startTime < endTime -> {
-
-                        drawSeatView(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].seat, rooms, MySharedPreferences.getRoomPosition(requireContext()))
+                        for (i in 0 until rooms.rooms.size) {
+                            if (name == rooms.rooms[i].roomName) {
+                                drawSeatView(rooms.rooms[i].seat, rooms, i)
+                            }
+                        }
 
                         // ok 버트 누르고 나오는 시간.
                         startOurHour = hour
@@ -181,7 +180,6 @@ class ReservationFragment :
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
 
                 when {
-
                     endTime < TimeRequest.todayTime() -> {
                         toast(requireContext(), "종료 시각은 현재 시각 이후부터 설정할 수 있습니다.")
                     }
@@ -191,7 +189,11 @@ class ReservationFragment :
                     }
 
                     startTime < endTime -> {
-                        drawSeatView(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].seat, rooms, MySharedPreferences.getRoomPosition(requireContext()))
+                        for (i in 0 until rooms.rooms.size) {
+                            if (name == rooms.rooms[i].roomName) {
+                                drawSeatView(rooms.rooms[i].seat, rooms, i)
+                            }
+                        }
                         endOurHour = hour
                         endOurMinute = endMinute
                         binding.txtEnd.text = txtEndTime
@@ -355,7 +357,11 @@ class ReservationFragment :
                 if (selectedIds == "") { // 한개 선택했을 시
                     // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
                     binding.scrollBar.visibility = View.VISIBLE
-                            drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
+                    for (i in 0 until rooms.rooms.size) {
+                        if (name == rooms.rooms[i].roomName) {
+                            drawStatusBar(rooms.rooms[i].reserved, view.id)
+                        }
+                    }
                     selectedIds = selectedIds + view.id + ","
                     seatId = view.id
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
@@ -386,7 +392,11 @@ class ReservationFragment :
             if (selectedIds == "") { // 한개 선택했을 시
                 // 방이름과 매치한 후에 상황바 그려준다. 상황바 보이기
                 binding.scrollBar.visibility = View.VISIBLE
-                drawStatusBar(rooms.rooms[MySharedPreferences.getRoomPosition(requireContext())].reserved, view.id)
+                for (i in 0 until rooms.rooms.size) {
+                    if (name == rooms.rooms[i].roomName) {
+                        drawStatusBar(rooms.rooms[i].reserved, view.id)
+                    }
+                }
                 selectedIds = selectedIds + view.id + ","
             } else { // 2개이상 선택했을 시
                 toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
@@ -398,7 +408,7 @@ class ReservationFragment :
     // 한 번 누르고 다시 누르면 안됨. - 해결
     // 시간 설정 조금 miss - 해결
     // 예약되고 확정되도 시간은 볼 수 있어야함.
-    fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
+    private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
         var statusTime = GregorianCalendar(year, month, day, time - 1, 0)
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
@@ -419,6 +429,9 @@ class ReservationFragment :
             setBackgroundColor(status)
             // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
+                 if((time) == 24) {
+                    time=0
+                }
                 val timeBar = Button(requireContext())
                 timeBar.tag = TIME_BAR
                 setTimeBar(timeBar)
@@ -444,6 +457,8 @@ class ReservationFragment :
                 if (time == 24) {
                     time = 0
                 }
+
+
             }
             statusTime.timeInMillis += 600000
         }
@@ -529,6 +544,12 @@ class ReservationFragment :
                                             requireContext(),
                                             reservation.reservation
                                     )
+                                    for (i in 0 until rooms.rooms.size) {
+                                        if (name == rooms.rooms[i].roomName) {
+                                            MySharedPreferences.setRoomPosition(requireContext(), i)
+                                            Log.d(TAG, "방의 pos는 $i 입니다.")
+                                        }
+                                    }
                                     toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
                                 }
                                 false -> {
