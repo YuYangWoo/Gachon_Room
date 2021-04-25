@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import android.widget.TimePicker.OnTimeChangedListener
 import androidx.core.content.ContextCompat
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.MySeat
@@ -24,7 +25,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension), TimePicker.OnTimeChangedListener{
+class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension){
     private val model: MainViewModel by sharedViewModel()
     private var input = HashMap<String, Any>()
     private val TAG = "EXTENSION"
@@ -42,8 +43,22 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
          mySeatData = model.mySeatData
          roomsData()
         setTimePickerInterval(binding.timePicker)
-    }
 
+        binding.timePicker.setOnTimeChangedListener(OnTimeChangedListener { timePicker, hour, min ->
+            var hourr: Int = 0
+                var minutee: Int = 0
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    hourr = binding.timePicker.hour
+                    minutee = binding.timePicker.minute
+                } else {
+                    hourr = binding.timePicker.currentHour
+                    minutee = binding.timePicker.currentMinute
+                }
+            Log.d(TAG, "전 $hourr$minutee")
+            Log.d(TAG, "람다함수 $hour $min")
+    })
+
+    }
     private fun roomsData() {
         var input = HashMap<String, Any>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
@@ -55,9 +70,9 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                             dialog.dismiss()
                             roomsData = resource.data
                             drawStatusBar(
-                                roomsData.rooms[MySharedPreferences.getRoomPosition(
-                                    requireContext()
-                                )].reserved, mySeatData.reservations[0].seat
+                                    roomsData.rooms[MySharedPreferences.getRoomPosition(
+                                            requireContext()
+                                    )].reserved, mySeatData.reservations[0].seat
                             )
                         }
                         false -> {
@@ -71,8 +86,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 Resource.Status.ERROR -> {
                     dialog.dismiss()
                     toast(
-                        requireContext(),
-                        resource.message + "\n" + resources.getString(R.string.connect_fail)
+                            requireContext(),
+                            resource.message + "\n" + resources.getString(R.string.connect_fail)
                     )
                 }
             }
@@ -81,11 +96,11 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
         var statusTime = GregorianCalendar(
-            ReservationFragment.year,
-            ReservationFragment.month,
-            ReservationFragment.day,
-            time - 1,
-            0
+                ReservationFragment.year,
+                ReservationFragment.month,
+                ReservationFragment.day,
+                time - 1,
+                0
         )
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
@@ -114,8 +129,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
                 )
 
                 // 시간 textView 설정
@@ -180,34 +195,34 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     private fun initViewModel() {
         model.callExtend(input).observe(
-            viewLifecycleOwner,
-            androidx.lifecycle.Observer { resource ->
-                when (resource.status) {
-                    Resource.Status.SUCCESS -> {
-                        Log.d(TAG, "연결성공" + resource.data.toString())
-                        when (resource.data!!.result) {
-                            true -> {
-                                toast(requireContext(), "연장성공")
+                viewLifecycleOwner,
+                androidx.lifecycle.Observer { resource ->
+                    when (resource.status) {
+                        Resource.Status.SUCCESS -> {
+                            Log.d(TAG, "연결성공" + resource.data.toString())
+                            when (resource.data!!.result) {
+                                true -> {
+                                    toast(requireContext(), "연장성공")
+                                }
+                                false -> {
+                                    toast(requireContext(), resource.data!!.response)
+                                }
                             }
-                            false -> {
-                                toast(requireContext(), resource.data!!.response)
-                            }
+                            dialog.dismiss()
+                            dismiss()
                         }
-                        dialog.dismiss()
-                        dismiss()
+                        Resource.Status.LOADING -> {
+                            dialog.show()
+                        }
+                        Resource.Status.ERROR -> {
+                            dialog.dismiss()
+                            toast(
+                                    requireContext(),
+                                    resource.message + "\n" + resources.getString(R.string.connect_fail)
+                            )
+                        }
                     }
-                    Resource.Status.LOADING -> {
-                        dialog.show()
-                    }
-                    Resource.Status.ERROR -> {
-                        dialog.dismiss()
-                        toast(
-                            requireContext(),
-                            resource.message + "\n" + resources.getString(R.string.connect_fail)
-                        )
-                    }
-                }
-            })
+                })
     }
 
     @SuppressLint("NewApi")
@@ -237,10 +252,9 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             e.printStackTrace()
         }
     }
-    override fun onTimeChanged(p0: TimePicker?, p1: Int, p2: Int) {
 
-    }
     companion object {
         const val TIME_PICKER_INTERVAL = 10
     }
+
 }
