@@ -6,6 +6,7 @@ import com.cookandroid.gachon_study_room.ui.main.viewmodel.LoginViewModel
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import org.koin.java.KoinJavaComponent.inject
 
 val appModule = module {
     single { LoginRepository() }

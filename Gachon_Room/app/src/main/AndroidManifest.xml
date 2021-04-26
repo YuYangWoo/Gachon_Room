@@ -32,7 +32,6 @@
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".ui.main.view.activity.QRCodeActivity"/>
     </application>
 
 </manifest>

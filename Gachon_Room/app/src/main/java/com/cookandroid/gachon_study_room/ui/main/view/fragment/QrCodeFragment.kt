@@ -1,16 +1,11 @@
 package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
-import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Confirm
 import com.cookandroid.gachon_study_room.databinding.FragmentQrBinding
-import com.cookandroid.gachon_study_room.data.api.RetrofitBuilder
-import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.main.view.activity.CaptureActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
@@ -19,11 +14,7 @@ import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.HashMap
-import java.util.Observer
 
 
 class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {

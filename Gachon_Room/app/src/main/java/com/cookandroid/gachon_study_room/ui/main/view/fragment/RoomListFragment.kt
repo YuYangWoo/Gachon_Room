@@ -1,11 +1,9 @@
 package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
 import android.util.Log
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.api.RetrofitBuilder
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.FragmentRoomListBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
@@ -15,7 +13,6 @@ import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragment_room_list) {
     private val dialog by lazy {

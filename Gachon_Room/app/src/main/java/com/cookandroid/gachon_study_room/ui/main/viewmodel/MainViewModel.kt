@@ -10,14 +10,11 @@ import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.repository.MainRepository
 import com.cookandroid.gachon_study_room.util.Resource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 //    private val _roomList = MutableLiveData<Resource<RoomsData>>()
 //    val roomList = _roomList
-
     fun callRooms(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
         try {
