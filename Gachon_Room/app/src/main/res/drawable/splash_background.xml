@@ -2,12 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/background_splash" />
     <item
-        android:width="145dp"
+        android:width="195dp"
         android:height="45dp"
         android:drawable="@drawable/logo_white"
         android:gravity="center"/>
 </layer-list>
-<!--<bitmap-->
-<!--android:src="@drawable/logo_white"-->
-<!--android:gravity="center"-->
-<!--android:width="24dp"-->
