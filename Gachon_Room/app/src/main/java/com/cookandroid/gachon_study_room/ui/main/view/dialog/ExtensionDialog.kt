@@ -20,12 +20,13 @@ import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.lang.reflect.Field
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension){
+class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fragment_extension) {
     private val model: MainViewModel by sharedViewModel()
     private var input = HashMap<String, Any>()
     private val TAG = "EXTENSION"
@@ -37,28 +38,54 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private var time = TimeRequest.statusTodayTime() + 1
     private var roomsData = RoomsData()
     private var mySeatData = MySeat()
+    private var date = Date()
+    private var timeDate = Date()
 
     override fun init() {
         super.init()
-         mySeatData = model.mySeatData
-         roomsData()
+        mySeatData = model.mySeatData
+        txtSet()
+        roomsData()
         setTimePickerInterval(binding.timePicker)
+        timePickerClick()
+    }
 
+    private fun txtSet() {
+
+        date.time = mySeatData.reservations[0].begin
+        var start = simple.format(date)
+        date.time = mySeatData.reservations[0].end
+        var end = simple.format(date)
+        binding.txtCurrent.text =  "기존 종료시간:$end"
+        // 타임피커 초기시간
+        timeDate.time = mySeatData.reservations[0].end
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            binding.timePicker.hour = hourFormat.format(timeDate).toInt()
+            binding.timePicker.minute = minuteFormat.format(timeDate).toInt()
+        } else {
+            binding.timePicker.currentHour = hourFormat.format(timeDate).toInt()
+            binding.timePicker.currentMinute =minuteFormat.format(timeDate).toInt()
+        }
+    }
+
+    private fun timePickerClick() {
         binding.timePicker.setOnTimeChangedListener(OnTimeChangedListener { timePicker, hour, min ->
             var hourr: Int = 0
-                var minutee: Int = 0
+            var minutee: Int = 0
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    hourr = binding.timePicker.hour
-                    minutee = binding.timePicker.minute
-                } else {
-                    hourr = binding.timePicker.currentHour
-                    minutee = binding.timePicker.currentMinute
-                }
+                hourr = binding.timePicker.hour
+                minutee = binding.timePicker.minute
+                binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
+            } else {
+                hourr = binding.timePicker.currentHour
+                minutee = binding.timePicker.currentMinute
+                binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
+            }
             Log.d(TAG, "전 $hourr$minutee")
             Log.d(TAG, "람다함수 $hour $min")
-    })
-
+        })
     }
+
     private fun roomsData() {
         var input = HashMap<String, Any>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
@@ -121,8 +148,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             setBackgroundColor(status)
             // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
-                if((time) == 24) {
-                    time=0
+                if ((time) == 24) {
+                    time = 0
                 }
                 val timeBar = Button(requireContext())
                 timeBar.tag = ReservationFragment.TIME_BAR
@@ -152,6 +179,12 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             }
             statusTime.timeInMillis += 600000
         }
+
+        // 예약 시간 설정
+
+
+
+
     }
 
     private fun setTimeBar(timeBar: View) {
@@ -255,6 +288,10 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     companion object {
         const val TIME_PICKER_INTERVAL = 10
+        var simple = SimpleDateFormat("HH시 mm분")
+        var calendar = Calendar.getInstance()
+        var hourFormat = SimpleDateFormat("HH")
+        var minuteFormat = SimpleDateFormat("mm")
     }
 
 }

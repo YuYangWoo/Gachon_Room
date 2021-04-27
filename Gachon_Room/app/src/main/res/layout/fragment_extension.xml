@@ -7,6 +7,9 @@
         name="extension"
         type="com.cookandroid.gachon_study_room.ui.main.view.dialog.ExtensionDialog" />
 </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 <FrameLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -72,7 +75,7 @@
         android:id="@+id/txtUnAvailableSeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="21dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
         android:text="사용불가"
         app:layout_constraintBottom_toTopOf="@+id/scrollBar"
@@ -86,6 +89,70 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollBar" />
+
+    <TextView
+        android:id="@+id/txtCurrent"
+        style="@style/BaseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/txtEnd"
+        style="@style/BaseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCurrent" />
+
+    <TextView
+        android:id="@+id/txtConfirm"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="확인"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/txtCancel"
+        android:layout_width="50sp"
+        android:layout_height="30sp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="취소"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtConfirm" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="1dp"
+        android:text="※ 최대 연장 시간 2시간 / 종료시간 입력"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_picker" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
+    </ScrollView>
 </layout>
