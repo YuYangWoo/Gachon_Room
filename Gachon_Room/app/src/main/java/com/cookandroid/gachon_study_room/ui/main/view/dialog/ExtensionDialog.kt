@@ -118,13 +118,16 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         timeDate.time = mySeatData.reservations[0].end
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             binding.timePicker.hour = hourFormat.format(timeDate).toInt()
-            binding.timePicker.minute = minuteFormat.format(timeDate).toInt()
+            binding.timePicker.minute = (minuteFormat.format(timeDate).toInt())/10 // 10분 인터벌을 줄때 maxValue가 0~5이므로 /10을 해줘야 초기 타임피커 값이 잡힘.
+            Log.d(TAG, hourFormat.format(timeDate)+"dd"+ minuteFormat.format(timeDate))
+            Log.d(TAG, binding.timePicker.minute.toString())
         } else {
             binding.timePicker.currentHour = hourFormat.format(timeDate).toInt()
             binding.timePicker.currentMinute =minuteFormat.format(timeDate).toInt()
         }
     }
 
+    // 50분대일 때 예외설정 필요.
     private fun timePickerClick() {
         binding.timePicker.setOnTimeChangedListener(OnTimeChangedListener { timePicker, hour, min ->
 
@@ -233,7 +236,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                     time = 0
                 }
             }
-            statusTime.timeInMillis += 600000
+            statusTime.timeInMillis += 600000 // 10분
         }
     }
 
