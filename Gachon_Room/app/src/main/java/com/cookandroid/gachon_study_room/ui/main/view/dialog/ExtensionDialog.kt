@@ -1,6 +1,9 @@
 package com.cookandroid.gachon_study_room.ui.main.view.dialog
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -15,9 +18,15 @@ import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.databinding.FragmentExtensionBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseDialogFragment
+import com.cookandroid.gachon_study_room.ui.main.view.activity.CaptureActivity
 import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment
+import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.day
+import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.month
+import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.year
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.lang.reflect.Field
 import java.text.SimpleDateFormat
@@ -40,23 +49,71 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private var mySeatData = MySeat()
     private var date = Date()
     private var timeDate = Date()
+    var hourr: Int = 0
+    var minutee: Int = 0
 
     override fun init() {
         super.init()
         mySeatData = model.mySeatData
         txtSet()
+        btnClick()
         roomsData()
         setTimePickerInterval(binding.timePicker)
         timePickerClick()
     }
 
-    private fun txtSet() {
+    private fun btnClick() {
+        binding.txtConfirm.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("예약메시지")
+                    .setMessage("예약시간:  예약하시겠습니까?")
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                        // QR스캔
+                        scanQRCode()
+                    })
+                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                        Log.d("TAG", "취소")
+                    })
+            builder.create()
+            builder.show()
+        }
 
-        date.time = mySeatData.reservations[0].begin
-        var start = simple.format(date)
+        binding.txtCancel.setOnClickListener {
+          dismiss()
+        }
+    }
+
+    private fun scanQRCode() {
+        val integrator = IntentIntegrator.forSupportFragment(this).apply {
+            captureActivity = CaptureActivity::class.java // 가로 세로
+            setOrientationLocked(false)
+            setPrompt("Scan QR code")
+            setBeepEnabled(false) // 소리 on off
+            setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        }
+        integrator.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents == null) {
+                toast(requireContext(), "Cancelled")
+            } else { // 스캔 되었을 때
+                Log.d(TAG, result.contents)
+                MySharedPreferences.setToken(requireContext(), result.contents)
+                initViewModel()
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    private fun txtSet() {
         date.time = mySeatData.reservations[0].end
         var end = simple.format(date)
         binding.txtCurrent.text =  "기존 종료시간:$end"
+
         // 타임피커 초기시간
         timeDate.time = mySeatData.reservations[0].end
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -70,8 +127,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     private fun timePickerClick() {
         binding.timePicker.setOnTimeChangedListener(OnTimeChangedListener { timePicker, hour, min ->
-            var hourr: Int = 0
-            var minutee: Int = 0
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 hourr = binding.timePicker.hour
                 minutee = binding.timePicker.minute
@@ -179,12 +235,6 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             }
             statusTime.timeInMillis += 600000
         }
-
-        // 예약 시간 설정
-
-
-
-
     }
 
     private fun setTimeBar(timeBar: View) {
@@ -216,17 +266,24 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         }
     }
 
-    private fun dataSet(extendedTime: Long) {
+    private fun dataSet() {
         input["id"] = MySharedPreferences.getUserId(requireContext())
         input["password"] = MySharedPreferences.getUserPass(requireContext())
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
         input["roomName"] = MySharedPreferences.getReservation(requireContext()).roomName
         input["reservationId"] = MySharedPreferences.getReservation(requireContext()).reservationId
         input["token"] = MySharedPreferences.getToken(requireContext())
-        input["extendedTime"] = MySharedPreferences.getReservation(requireContext()).end + extendedTime
+        input["extendedTime"] =  GregorianCalendar(
+                year,
+                month,
+                day,
+                hourr,
+                minutee*10
+        ).timeInMillis
     }
 
     private fun initViewModel() {
+        dataSet()
         model.callExtend(input).observe(
                 viewLifecycleOwner,
                 androidx.lifecycle.Observer { resource ->
