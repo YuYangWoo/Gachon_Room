@@ -230,15 +230,15 @@ class ReservationFragment :
         binding.txtCurrentTime.text = dateFormet.format(today)
 
         var calc = Calendar.getInstance()
-        if (calc.get(Calendar.MINUTE) + interval == 60) {
+        if (calc.get(Calendar.MINUTE) + interval == 60) { // 여기는 시간 조절할 때 else 숫자보다 1이 커야함 ex) 4시간 뒤를 보여줄거다 if는 5 else는 4
             startOurHour = calc.get(Calendar.HOUR_OF_DAY) + 1
-            endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 4
+            endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 5
             startOurMinute = 0
             endOurMinute = 0
-        } else {
+        } else { // 종료시간 버튼 눌렀을 때의 시간 control
             startOurHour = calc.get(Calendar.HOUR_OF_DAY)
             startOurMinute = calc.get(Calendar.MINUTE) + interval
-            endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 3
+            endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 4
             endOurMinute = calc.get(Calendar.MINUTE) + interval
         }
 
@@ -596,9 +596,10 @@ class ReservationFragment :
         val year = cal.get(Calendar.YEAR)
         val month = cal.get(Calendar.MONTH)
         val day = cal.get(Calendar.DAY_OF_MONTH)
+        val hour = cal.get(Calendar.HOUR_OF_DAY)
+        val minute = cal.get(Calendar.MINUTE)
         val interval = 10 - (cal.get(Calendar.MINUTE) % 10)
         val simple = SimpleDateFormat("HH시 mm분")
-
     }
 
 }
