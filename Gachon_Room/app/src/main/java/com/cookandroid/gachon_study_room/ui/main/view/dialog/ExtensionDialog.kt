@@ -65,8 +65,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private fun btnClick() {
         binding.txtConfirm.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("예약메시지")
-                    .setMessage("예약시간:  예약하시겠습니까?")
+            builder.setTitle("연장확인")
+                    .setMessage("${hourr}시 ${minutee*10}분 까지 연장하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
                         // QR스캔
                         scanQRCode()

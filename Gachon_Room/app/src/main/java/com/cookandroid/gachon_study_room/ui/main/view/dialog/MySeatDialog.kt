@@ -2,8 +2,11 @@ package com.cookandroid.gachon_study_room.ui.main.view.dialog
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.cookandroid.gachon_study_room.R
@@ -29,7 +32,6 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
     override fun init() {
         super.init()
-        initViewModel()
         cancelSeat()
         extendSeat()
     }
@@ -90,22 +92,20 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
             if (mySeatData.reservations[0].confirmed) {
                 binding.txtStatus.visibility = View.VISIBLE
-                binding.txtStatus.text = binding.txtStatus.text.toString() + " " + "확정됨"
+                binding.txtStatus.text = "좌석 상태 : 확정됨"
             } else {
                 binding.txtStatus.visibility = View.VISIBLE
-                binding.txtStatus.text = binding.txtStatus.text.toString() + " " + "예약됨"
+                binding.txtStatus.text = "좌석 상태 : 예약됨"
             }
             // 0인덱스 삽입한 것은 수정해야함.
-            binding.txtSeatNumber.text =
-                binding.txtSeatNumber.text.toString() + " " + mySeatData.reservations[0].seat + "번"
-            binding.txtLocation.text =
-                binding.txtLocation.text.toString() + " " + mySeatData.reservations[0].college + " " + mySeatData.reservations[0].roomName
+            binding.txtSeatNumber.text = "자리 번호 : ${mySeatData.reservations[0].seat}번"
+            binding.txtLocation.text = "장소 : ${mySeatData.reservations[0].college} ${mySeatData.reservations[0].roomName}"
             var date = Date()
             date.time = mySeatData.reservations[0].begin
             var start = simple.format(date)
             date.time = mySeatData.reservations[0].end
             var end = simple.format(date)
-            binding.txtTime.text = binding.txtTime.text.toString() + " " + "$start ~ $end"
+            binding.txtTime.text = "예약시간 : $start ~ $end"
         }
         // 예약을 하지 않았다면
         else {
@@ -184,6 +184,22 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             builder.create()
             builder.show()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onpause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initViewModel()
+        Log.d(TAG, "onResume")
     }
 
     companion object {
