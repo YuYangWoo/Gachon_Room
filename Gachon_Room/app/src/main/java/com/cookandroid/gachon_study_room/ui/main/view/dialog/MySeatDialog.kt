@@ -124,7 +124,15 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
     private fun extendSeat() {
     binding.btnExtend.setOnClickListener {
-        ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
+        when(mySeatData.reservations[0].confirmed) {
+            true -> {
+                ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
+
+            }
+            false -> {
+                toast(requireContext(), "먼저 좌석 확정을 해주세요")
+            }
+        }
 //        findNavController().navigate(MySeatDialogDirections.actionMySeatDialogToExtensionDialog())
     }
     }
