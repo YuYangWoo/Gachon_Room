@@ -435,7 +435,7 @@ class ReservationFragment :
             // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
                  if((time) == 24) {
-                    time=0
+                    time = 0
                 }
                 val timeBar = Button(requireContext())
                 timeBar.tag = TIME_BAR

@@ -51,7 +51,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private var timeDate = Date()
     var hourr: Int = 0
     var minutee: Int = 0
-
+    private var isPossible = false
     override fun init() {
         super.init()
         mySeatData = model.mySeatData
@@ -64,7 +64,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     private fun btnClick() {
         binding.txtConfirm.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
+            if(isPossible) {
+                    val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("연장확인")
                     .setMessage("${hourr}시 ${minutee*10}분 까지 연장하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
@@ -76,6 +77,10 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                     })
             builder.create()
             builder.show()
+            }
+       else {
+           toast(requireContext(), "연장은 최대 2시간 할 수 있습니다.")
+            }
         }
 
         binding.txtCancel.setOnClickListener {
@@ -130,18 +135,32 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     // 50분대일 때 예외설정 필요.
     private fun timePickerClick() {
         binding.timePicker.setOnTimeChangedListener(OnTimeChangedListener { timePicker, hour, min ->
+            // 연장하는 시간과 기존 시간을 뺀다. >=7200000일 경우 가능하다.
+            // 1시까지 연장. 22시40분 7200000보다 커진다. 왜냐하면 2시간 이상 연장 하기 때문에. 그럼 이건 안되야하는것.
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 hourr = binding.timePicker.hour
                 minutee = binding.timePicker.minute
-                binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
+
+                if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 7200000L) {
+                    toast(requireContext(), "최대연장 시간은 2시간입니다.")
+                }
+                else {
+                    binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
+                    isPossible = true
+                }
+
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
-                binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
+                if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 7200000L) {
+                    toast(requireContext(), "최대연장 시간은 2시간입니다.")
+                }
+                else {
+                    binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
+                    isPossible = true
+                }
             }
-            Log.d(TAG, "전 $hourr$minutee")
-            Log.d(TAG, "람다함수 $hour $min")
         })
     }
 
