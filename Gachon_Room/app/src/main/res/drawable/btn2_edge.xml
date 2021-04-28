@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--모형 지정 ex)직사각형 타원 등 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--배경색 -->
+    <gradient
+        android:angle="270"
+        android:type="linear"
+        android:startColor="#C8E5F3"
+        android:centerColor="#9CC6E4"
+        android:endColor="#8BABD6"/>
+
+</shape>
