@@ -129,7 +129,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             Log.d(TAG, binding.timePicker.minute.toString())
         } else {
             binding.timePicker.currentHour = hourFormat.format(timeDate).toInt()
-            binding.timePicker.currentMinute =minuteFormat.format(timeDate).toInt()
+            binding.timePicker.currentMinute =minuteFormat.format(timeDate).toInt()/10
         }
     }
 
@@ -145,6 +145,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
                 if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 7200000L) {
                     toast(requireContext(), "최대연장 시간은 2시간입니다.")
+                    isPossible = false
                 }
                 else {
                     binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
@@ -156,6 +157,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 minutee = binding.timePicker.currentMinute
                 if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 7200000L) {
                     toast(requireContext(), "최대연장 시간은 2시간입니다.")
+                    isPossible = false
                 }
                 else {
                     binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
