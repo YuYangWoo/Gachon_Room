@@ -30,6 +30,17 @@
         <item name ="android:textSize">20sp</item>
     </style>
 
+    <!--버튼 텍스트 정의!-->
+    <style name="BtnText">
+        <item name="android:shadowColor">#666666</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">4</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name ="android:textSize">30dp</item>
+    </style>
+
     <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
 

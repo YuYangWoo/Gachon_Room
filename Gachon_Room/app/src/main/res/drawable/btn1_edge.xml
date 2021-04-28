@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--모형 지정 ex)직사각형 타원 등 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--배경색 -->
+    <gradient
+        android:angle="270"
+        android:type="linear"
+        android:startColor="#AEDEF5"
+        android:centerColor="#86ADDC"
+        android:endColor="#6592C2"/>
+    <!--꼭지점 휘는 각도-->
+    <corners
+        android:topLeftRadius="18dp"
+        android:topRightRadius="18dp"/>
+</shape>
