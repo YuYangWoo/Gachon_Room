@@ -52,6 +52,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     var hourr: Int = 0
     var minutee: Int = 0
     private var isPossible = false
+
     override fun init() {
         super.init()
         mySeatData = model.mySeatData
