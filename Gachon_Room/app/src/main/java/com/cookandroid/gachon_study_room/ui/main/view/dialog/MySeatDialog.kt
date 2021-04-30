@@ -41,6 +41,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
         extendSeat()
     }
 
+    // My Seat 정보 API 통신
     private fun initViewModel() {
         input["id"] = MySharedPreferences.getUserId(requireContext())
         input["password"] = MySharedPreferences.getUserPass(requireContext())
@@ -102,7 +103,6 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 binding.txtStatus.visibility = View.VISIBLE
                 binding.txtStatus.text = "좌석 상태 : 예약됨"
             }
-            // 0인덱스 삽입한 것은 수정해야함.
             binding.txtSeatNumber.text = "자리 번호 : ${mySeatData.reservations[0].seat}번"
             binding.txtLocation.text = "장소 : ${mySeatData.reservations[0].college} ${mySeatData.reservations[0].roomName}"
             var date = Date()
@@ -127,29 +127,32 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
         }
     }
 
+    // 예약한 시간의 반 이상이 지났을 시 연장 버튼 클릭 가능
     private fun extendSeat() {
         binding.btnExtend.setOnClickListener {
-            when (mySeatData.reservations[0].confirmed) {
-                true -> {
-                    // 현재시간이  (end+begin)/2 == 3시부터 가능.
-                    Log.d(TAG, "$year $month $day $hour $minute")
-                    if((mySeatData.reservations[0].begin + mySeatData.reservations[0].end)/2 <= GregorianCalendar(year, month, day, hour, minute).timeInMillis)
-                    {
-                        ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
+                                    ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
 
-                    }
-                    else {
-                        toast(requireContext(), "연장은 예약시간 반 이상이 지나야 할 수 있습니다.")
-                    }
-                }
-                false -> {
-                    toast(requireContext(), "먼저 좌석 확정을 해주세요")
-                }
-            }
-//        findNavController().navigate(MySeatDialogDirections.actionMySeatDialogToExtensionDialog())
+//            when (mySeatData.reservations[0].confirmed) {
+//                true -> {
+//                    // 현재시간이  (end+begin)/2 == 3시부터 가능.
+//                    Log.d(TAG, "$year $month $day $hour $minute")
+//                    if((mySeatData.reservations[0].begin + mySeatData.reservations[0].end)/2 <= GregorianCalendar(year, month, day, hour, minute).timeInMillis)
+//                    {
+//                        ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
+//
+//                    }
+//                    else {
+//                        toast(requireContext(), "연장은 예약시간 반 이상이 지나야 할 수 있습니다.")
+//                    }
+//                }
+//                false -> {
+//                    toast(requireContext(), "먼저 좌석 확정을 해주세요")
+//                }
+//            }
         }
     }
 
+    // 반납 버튼 이벤트
     private fun cancelSeat() {
         binding.btnBack.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
@@ -197,16 +200,6 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             builder.create()
             builder.show()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onpause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
     }
 
     override fun onResume() {

@@ -21,6 +21,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
     private val viewModel: MainViewModel by sharedViewModel()
     private var TAG = "RoomListFragment"
     private var roomsData = RoomsData()
+
     override fun init() {
         super.init()
         initViewModel()
@@ -33,6 +34,7 @@ class RoomListFragment : BaseBottomSheet<FragmentRoomListBinding>(R.layout.fragm
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
 //        input["college"] = "TEST"
 
+        // Rooms API 통신
         viewModel.callRooms(input).observe(viewLifecycleOwner, Observer { resource ->
             Log.d(TAG, resource.data.toString())
             when (resource.status) {

@@ -89,19 +89,14 @@ class ReservationFragment :
         btnConfirm()
     }
 
-    // 10분이 600000
-    /*
-    좌석 클릭 후 시간을 바꾸면 좌석 reser됨. 왜냐면 시간을 바꾸면 좌석을 다시그리기때문에
-     */
+    // 시작시간 버튼 클릭 이벤트
     private fun btnStart() {
-
         binding.txtStart.text = TimeRequest.time()
         binding.cardViewStart.setOnClickListener {
             // 아래 hour, minute가 선택된 시간 분
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
                 var startMinute = minute
-
                 Log.d(TAG, "$hour   $minute")
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, startMinute)
@@ -115,28 +110,23 @@ class ReservationFragment :
                 Log.d(TAG, "시작시간은$startTime 심플타임 ${simple.format(date)}")
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
-
                     startTime < TimeRequest.todayTime() -> {
                         toast(requireContext(), "대여 시각은 현재 시각 이후부터 설정할 수 있습니다.")
                     }
-
                     startTime > endTime -> {
                         toast(requireContext(), "대여 시각은 종료 시각보다 클 수 없습니다.")
                     }
-
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
                             if (name == rooms.rooms[i].roomName) {
                                 drawSeatView(rooms.rooms[i].seat, rooms, i)
                             }
                         }
-
                         // ok 버트 누르고 나오는 시간.
                         startOurHour = hour
                         startOurMinute = startMinute
                         binding.txtStart.text = txtStartTime
                     }
-
                 }
             }
             // 이부분 초기 설정 값으로 넣어주기. 아래 hour minute가 다이얼로그 나타날때 뜨는 시간
@@ -161,9 +151,8 @@ class ReservationFragment :
 
     }
 
-
+    // 종료시간 버튼 클릭
     private fun btnEnd() {
-
         binding.txtEnd.text = TimeRequest.endTime()
         binding.cardViewEnd.setOnClickListener {
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
@@ -183,11 +172,9 @@ class ReservationFragment :
                     endTime < TimeRequest.todayTime() -> {
                         toast(requireContext(), "종료 시각은 현재 시각 이후부터 설정할 수 있습니다.")
                     }
-
                     startTime > endTime -> {
                         toast(requireContext(), "종료 시각은 대여 시각보다 작을 수 없습니다.")
                     }
-
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
                             if (name == rooms.rooms[i].roomName) {
@@ -198,7 +185,6 @@ class ReservationFragment :
                         endOurMinute = endMinute
                         binding.txtEnd.text = txtEndTime
                     }
-
                 }
             }
 
@@ -244,6 +230,7 @@ class ReservationFragment :
 
     }
 
+    // 좌석 그려주기
     private fun drawSeatView(room: ArrayList<Array<Int>>, roomData: RoomsData, index: Int) {
         val layoutSeat = LinearLayout(requireContext())
         val params = LinearLayout.LayoutParams(
@@ -338,7 +325,7 @@ class ReservationFragment :
                     }
                     table.addView(view)
                     seatViewList.add(view)
-                    view.setOnClickListener { click(view) }
+                    view.setOnClickListener { seatclick(view) }
                     check = -1
                 }
 
@@ -347,8 +334,8 @@ class ReservationFragment :
 
     }
 
-    // 보일러 플레이트 코드 없애주기.
-    private fun click(view: View) {
+    // 좌석 클릭 이벤트
+    private fun seatclick(view: View) {
         if (view.tag as Int == STATUS_AVAILABLE) {
             // 다시 눌렀을 시
             if (selectedIds.contains(view.id.toString() + ",")) {
@@ -386,6 +373,7 @@ class ReservationFragment :
         }
     }
 
+    // 예약된 좌석 클릭했을 때 이벤트
     private fun reservedSeatStatusBar(view: View) {
         if (selectedIds.contains(view.id.toString() + ",")) {
             selectedIds = selectedIds.replace(view.id.toString() + ",", "")
@@ -409,10 +397,8 @@ class ReservationFragment :
 
         }
     }
+
     // 10분이 1800000
-    // 한 번 누르고 다시 누르면 안됨. - 해결
-    // 시간 설정 조금 miss - 해결
-    // 예약되고 확정되도 시간은 볼 수 있어야함.
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
         var statusTime = GregorianCalendar(year, month, day, time - 1, 0)
         timeTable = LinearLayout(requireContext())
@@ -462,27 +448,20 @@ class ReservationFragment :
                 if (time == 24) {
                     time = 0
                 }
-
-
             }
             statusTime.timeInMillis += 600000
         }
     }
 
+    // 시간바 색상 Set
     private fun setTimeBar(timeBar: View) {
         //타임바 크기
         var layoutParams = LinearLayout.LayoutParams(10, 50)
-        when (timeBar.tag) {
-            TIME_BAR -> {
-                timeBar.layoutParams = layoutParams
-                timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-            }
-            else -> {
-
-            }
-        }
+        timeBar.layoutParams = layoutParams
+        timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
     }
 
+    // 상황바 색상 Set
     private fun setBackgroundColor(status: View) {
         when (status.tag) {
             UNAVAILABLE -> {
@@ -498,6 +477,7 @@ class ReservationFragment :
         }
     }
 
+    // 예약 확인 버튼 클릭 이벤트
     private fun btnConfirm() {
         binding.btnConfirm.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
@@ -535,6 +515,7 @@ class ReservationFragment :
         input["password"] = MySharedPreferences.getUserPass(requireContext())
     }
 
+    // 예약 API 통신
     private fun initViewModel() {
         dataSet()
         model.callReserve(input)

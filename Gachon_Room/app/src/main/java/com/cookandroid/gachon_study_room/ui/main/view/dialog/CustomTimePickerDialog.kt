@@ -18,6 +18,7 @@ class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: On
             "android"
     ))
     }
+
     override fun updateTime(hourOfDay: Int, minuteOfHour: Int) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             this.timePicker!!.hour = hourOfDay
@@ -43,6 +44,7 @@ class CustomTimePickerDialog(context: Context?, private val mTimeSetListener: On
         }
     }
 
+    // Android N이 아닐 때 10분 간격
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         try {

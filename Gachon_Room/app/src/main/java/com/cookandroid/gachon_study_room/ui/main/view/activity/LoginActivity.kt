@@ -29,7 +29,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         checkBox()
         initViewModel()
     }
-
+    // 자동 로그인
     private fun checkAutoLogin() {
         if (MySharedPreferences.getCheck(this@LoginActivity) &&
             MySharedPreferences.getUserId(this@LoginActivity).isNotBlank() &&
@@ -44,6 +44,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
+    // 로그인 서버 API 통신
     private fun initViewModel() {
         model.loginData.observe(this@LoginActivity, Observer {
             it.let { resource ->
@@ -94,6 +95,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
     }
 
+    // 로그인 체크
     private fun loginApi() {
         if (userData.account.type == "STUDENT" && userData.result) {
             toast(

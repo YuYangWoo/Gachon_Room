@@ -25,12 +25,14 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
     private var TAG = "QRCODE"
     private val model: MainViewModel by sharedViewModel()
     var input = HashMap<String, Any>()
+
     override fun init() {
         super.init()
         scanQRCode()
         btnConfirm()
     }
 
+    // QR Reader
     private fun scanQRCode() {
         val integrator = IntentIntegrator.forSupportFragment(this).apply {
             captureActivity = CaptureActivity::class.java // 가로 세로
@@ -42,6 +44,7 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
         integrator.initiateScan()
     }
 
+    // Stack에서 지우기
     private fun btnConfirm() {
         binding.btnConfirm.setOnClickListener {
             findNavController().popBackStack()
@@ -58,8 +61,8 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
         Log.d(TAG, input.toString())
     }
 
+    // Confirm API 통신
     private fun initViewModel() {
-        // 변수를 observe하는걸로 바꿔야할듯.
         model.callConfirm(input).observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
             when(resource.status) {
                 Resource.Status.SUCCESS -> {
@@ -87,7 +90,8 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
         })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    // QR코드 리드 결과과
+   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents == null) {
@@ -102,4 +106,5 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
 }

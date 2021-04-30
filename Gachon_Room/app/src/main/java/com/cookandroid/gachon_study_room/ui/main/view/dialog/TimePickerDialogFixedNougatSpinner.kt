@@ -23,10 +23,10 @@ class TimePickerDialogFixedNougatSpinner(context: Context?, private val mTimeSet
         fixSpinner(context!!, hourOfDay, minute, is24HourView)
     }
 
-
-    private fun fixSpinner(context: Context, hourOfDay: Int, minute: Int, is24HourView: Boolean) { // fixes the bug in API 24
+    // TimePicker Spinner로 처리
+    private fun fixSpinner(context: Context, hourOfDay: Int, minute: Int, is24HourView: Boolean) {
         try {
-            // Get the theme's android:timePickerMode
+            // timepicker Theme 얻기
             val MODE_SPINNER = 1
             val styleableClass = Class.forName("com.android.internal.R\$styleable")
             val timePickerStyleableField: Field = styleableClass.getField("TimePicker")
@@ -64,7 +64,6 @@ class TimePickerDialogFixedNougatSpinner(context: Context?, private val mTimeSet
 
     }
 
-
     override fun updateTime(hourOfDay: Int, minuteOfHour: Int) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             this.timePicker!!.hour = hourOfDay
@@ -78,7 +77,6 @@ class TimePickerDialogFixedNougatSpinner(context: Context?, private val mTimeSet
     override fun onClick(dialog: DialogInterface, which: Int) {
         when (which) {
             BUTTON_POSITIVE -> {
-                Log.d("test", "확인버튼 누름.")
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     mTimeSetListener?.onTimeSet(this.timePicker, this.timePicker!!.hour, this.timePicker!!.minute * TIME_PICKER_INTERVAL)
                 } else {

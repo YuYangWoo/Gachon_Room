@@ -15,6 +15,8 @@ import java.lang.Exception
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 //    private val _roomList = MutableLiveData<Resource<RoomsData>>()
 //    val roomList = _roomList
+
+    // Rooms API 통신
     fun callRooms(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
         try {
@@ -24,6 +26,8 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
             emit(Resource.error(null, e.message ?: "Error Occurred!"))
         }
     }
+
+    // Reserve API 통신
     var reservation = MutableLiveData<Reserve>()
     fun callReserve(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
@@ -35,6 +39,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    // My Seat API 통신
     var mySeatData = MySeat()
     fun callMySeat(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
@@ -46,6 +51,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    // Cancel API 통신
     fun callCancel(data: HashMap<String, Any>) = liveData {
      emit(Resource.loading(null))
         try {
@@ -56,6 +62,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    // Confirm API 통신
     fun callConfirm(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
         try {
@@ -66,6 +73,7 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         }
     }
 
+    // Extend API 통신
     fun callExtend(data: HashMap<String, Any>) = liveData {
         emit(Resource.loading(null))
         try {

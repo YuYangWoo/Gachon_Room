@@ -229,7 +229,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             setBackgroundColor(status)
             // 타임바, 시간 텍스트 구현
             if (i % 6 == 0) {
-                if ((time) == 24) {
+                if ((time) == 24) { // 오후 23시일 때
                     time = 0
                 }
                 val timeBar = Button(requireContext())
@@ -254,28 +254,22 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 linearTxt.addView(timeTxt)
                 linearTxt.gravity = Gravity.CENTER
                 timeTable.addView(linearTxt)
-                if (time == 24) {
-                    time = 0
+                if (time == 24) { // time++로 24시가 될 때때                    time = 0
                 }
             }
             statusTime.timeInMillis += 600000 // 10분
         }
     }
 
+    // 시간 바 색상
     private fun setTimeBar(timeBar: View) {
-        //타임바 크기
+        // 타임바 크기
         var layoutParams = LinearLayout.LayoutParams(10, 50)
-        when (timeBar.tag) {
-            ReservationFragment.TIME_BAR -> {
-                timeBar.layoutParams = layoutParams
-                timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
-            }
-            else -> {
-
-            }
-        }
+        timeBar.layoutParams = layoutParams
+        timeBar.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.black))
     }
 
+    // 상황바 색상
     private fun setBackgroundColor(status: View) {
         when (status.tag) {
             ReservationFragment.UNAVAILABLE -> {
@@ -291,6 +285,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         }
     }
 
+    // 연장 Request Data Set
     private fun dataSet() {
         input["id"] = MySharedPreferences.getUserId(requireContext())
         input["password"] = MySharedPreferences.getUserPass(requireContext())
@@ -307,6 +302,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         ).timeInMillis
     }
 
+    // Extend API 통신
     private fun initViewModel() {
         dataSet()
         model.callExtend(input).observe(
@@ -340,7 +336,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 })
     }
 
-    @SuppressLint("NewApi")
+    // TimePicker 10분 간격으로 Set
     private fun setTimePickerInterval(timePicker: TimePicker) {
         try {
             val classForid = Class.forName("com.android.internal.R\$id")

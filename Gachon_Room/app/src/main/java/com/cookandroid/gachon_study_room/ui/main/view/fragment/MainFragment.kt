@@ -1,5 +1,6 @@
 package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -8,6 +9,7 @@ import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
+import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {

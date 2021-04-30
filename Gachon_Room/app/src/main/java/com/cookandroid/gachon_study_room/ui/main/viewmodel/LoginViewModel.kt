@@ -19,6 +19,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val loginData: MutableLiveData<Resource<Information>>
         get() = _loginData
 
+    // login API 통신
     fun loginApiCall(data: HashMap<String, Any>) {
         viewModelScope.launch(Dispatchers.IO) {
             _loginData.postValue(Resource.loading(null))
