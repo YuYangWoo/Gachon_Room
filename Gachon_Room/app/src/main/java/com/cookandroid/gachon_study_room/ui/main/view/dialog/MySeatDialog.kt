@@ -121,7 +121,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
     // 예약한 시간의 반 이상이 지났을 시 연장 버튼 클릭 가능
     private fun extendSeat() {
         binding.btnExtend.setOnClickListener {
-                                    ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
+        ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
 
 //            when (mySeatData.reservations[0].confirmed) {
 //                true -> {

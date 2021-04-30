@@ -145,8 +145,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 hourr = binding.timePicker.hour
                 minutee = binding.timePicker.minute
 
-                isPossible = if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 7200000L) {
-                    toast(requireContext(), "최대연장 시간은 2시간입니다.")
+                isPossible = if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 14400000L) {
+                    toast(requireContext(), "최대연장 시간은 4시간입니다.")
                     false
                 } else {
                     true
@@ -156,8 +156,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
-                isPossible = if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 7200000L) {
-                    toast(requireContext(), "최대연장 시간은 2시간입니다.")
+                isPossible = if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 14400000L) {
+                    toast(requireContext(), "최대연장 시간은 4시간입니다.")
                     false
                 } else {
                     true
@@ -236,7 +236,6 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                     time = 0
                 }
                 val timeBar = Button(requireContext())
-                timeBar.tag = ReservationFragment.TIME_BAR
                 setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(
@@ -257,7 +256,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 linearTxt.addView(timeTxt)
                 linearTxt.gravity = Gravity.CENTER
                 timeTable.addView(linearTxt)
-                if (time == 24) { // time++로 24시가 될 때때                    time = 0
+                if (time == 24) { // time++로 24시가 될 때 time = 0
                 }
             }
             statusTime.timeInMillis += 600000 // 10분

@@ -325,7 +325,7 @@ class ReservationFragment :
                     }
                     table.addView(view)
                     seatViewList.add(view)
-                    view.setOnClickListener { seatclick(view) }
+                    view.setOnClickListener { seatClick(view) }
                     check = -1
                 }
 
@@ -335,7 +335,7 @@ class ReservationFragment :
     }
 
     // 좌석 클릭 이벤트
-    private fun seatclick(view: View) {
+    private fun seatClick(view: View) {
         if (view.tag as Int == STATUS_AVAILABLE) {
             // 다시 눌렀을 시
             if (selectedIds.contains(view.id.toString() + ",")) {
@@ -424,7 +424,6 @@ class ReservationFragment :
                     time = 0
                 }
                 val timeBar = Button(requireContext())
-                timeBar.tag = TIME_BAR
                 setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(
