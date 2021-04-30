@@ -1,6 +1,5 @@
 package com.cookandroid.gachon_study_room.ui.main.view.dialog
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -25,7 +24,6 @@ import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragme
 import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.year
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.zxing.integration.android.IntentIntegrator
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.lang.reflect.Field
@@ -63,6 +61,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         timePickerClick()
     }
 
+    // 확인버튼 클릭 이벤트
     private fun btnClick() {
         binding.txtConfirm.setOnClickListener {
             if(isPossible) {
@@ -89,6 +88,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         }
     }
 
+    // QR Reader화면
     private fun scanQRCode() {
         val integrator = IntentIntegrator.forSupportFragment(this).apply {
             captureActivity = CaptureActivity::class.java // 가로 세로
@@ -100,6 +100,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         integrator.initiateScan()
     }
 
+    // QR로 token을 받고 연장 API통신
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
@@ -115,6 +116,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         }
     }
 
+    // 현재 종료시간, 연장 종료시간 TextView
     private fun txtSet() {
         date.time = mySeatData.reservations[0].end
         var end = simple.format(date)
@@ -125,7 +127,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             binding.timePicker.hour = hourFormat.format(timeDate).toInt()
             binding.timePicker.minute = (minuteFormat.format(timeDate).toInt())/10 // 10분 인터벌을 줄때 maxValue가 0~5이므로 /10을 해줘야 초기 타임피커 값이 잡힘.
-            Log.d(TAG, hourFormat.format(timeDate)+"dd"+ minuteFormat.format(timeDate))
+            Log.d(TAG, hourFormat.format(timeDate)+"시"+ minuteFormat.format(timeDate))
             Log.d(TAG, binding.timePicker.minute.toString())
         } else {
             binding.timePicker.currentHour = hourFormat.format(timeDate).toInt()
@@ -133,7 +135,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         }
     }
 
-    // 50분대일 때 예외설정 필요.
+    // TimePicker 시간이 바뀌었을 때 Listener
     private fun timePickerClick() {
         binding.timePicker.setOnTimeChangedListener(OnTimeChangedListener { timePicker, hour, min ->
             // 연장하는 시간과 기존 시간을 뺀다. >=7200000일 경우 가능하다.
@@ -143,30 +145,30 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 hourr = binding.timePicker.hour
                 minutee = binding.timePicker.minute
 
-                if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 7200000L) {
+                isPossible = if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 7200000L) {
                     toast(requireContext(), "최대연장 시간은 2시간입니다.")
-                    isPossible = false
+                    false
+                } else {
+                    true
                 }
-                else {
-                    binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
-                    isPossible = true
-                }
+                binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
 
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
-                if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 7200000L) {
+                isPossible = if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 7200000L) {
                     toast(requireContext(), "최대연장 시간은 2시간입니다.")
-                    isPossible = false
+                    false
+                } else {
+                    true
                 }
-                else {
-                    binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
-                    isPossible = true
-                }
+                binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
+
             }
         })
     }
 
+    // RoomsData API 통신
     private fun roomsData() {
         var input = HashMap<String, Any>()
         input["college"] = MySharedPreferences.getInformation(requireContext()).college
@@ -202,6 +204,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         })
     }
 
+    // 좌석 상황바 구현
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
         var statusTime = GregorianCalendar(
                 ReservationFragment.year,
@@ -367,7 +370,6 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     companion object {
         const val TIME_PICKER_INTERVAL = 10
         var simple = SimpleDateFormat("HH시 mm분")
-        var calendar = Calendar.getInstance()
         var hourFormat = SimpleDateFormat("HH")
         var minuteFormat = SimpleDateFormat("mm")
     }

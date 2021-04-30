@@ -2,23 +2,14 @@ package com.cookandroid.gachon_study_room.ui.main.view.dialog
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.MySeat
 import com.cookandroid.gachon_study_room.databinding.FragmentMySeatBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseBottomSheet
-import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.day
-import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.hour
-import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.minute
-import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.month
-import com.cookandroid.gachon_study_room.ui.main.view.fragment.ReservationFragment.Companion.year
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.sharedViewModel

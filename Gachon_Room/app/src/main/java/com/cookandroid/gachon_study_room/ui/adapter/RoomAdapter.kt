@@ -1,8 +1,6 @@
 package com.cookandroid.gachon_study_room.ui.adapter
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +10,6 @@ import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.room.Room
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.databinding.HolderRoomListBinding
-import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.view.fragment.RoomListFragmentDirections
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
