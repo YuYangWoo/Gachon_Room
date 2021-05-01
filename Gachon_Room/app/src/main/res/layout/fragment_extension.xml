@@ -146,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="1dp"
-        android:text="※ 최대 연장 시간 2시간 / 종료시간 입력"
+        android:text="※ 최대 연장 시간 4시간 / 종료시간 입력"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_picker" />
 
