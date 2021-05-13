@@ -317,7 +317,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                             when (resource.data!!.result) {
                                 true -> {
                                     toast(requireContext(), "연장성공")
-                                    MySharedPreferences.setPriorTime(requireContext(), resource.data!!.reservation.end)
+                                    MySharedPreferences.setPriorTime(requireContext(), mySeatData.reservations[0].end)
                                 }
                                 false -> {
                                     toast(requireContext(), resource.data!!.response)
