@@ -127,18 +127,18 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
     private fun extendSeat() {
         binding.btnExtend.setOnClickListener {
 //        ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
-            // 만약 연장을 한 번도 안했을 경우에는 예약 시작시간과 종료시간을 비교해서 넘으면 가능하게끔한다. 추가로 종료시간 저장
+            // 만약 연장을 한 번도 안했을 경우에는 예약 시작시간과 종료시간을 비교해서 넘으면 가능하게끔한다. 추가로 종료시간 저장(연장 성공시 )
             // 만약 한번 이상일 경우 예전 종료시간 저장 값을 가졍오고 바꿀 종료시간을 빼서 그 반이 넘으면 되게끔한다. 예약할 때 따로 종료시간 저장해야할듯
             if(mySeatData.reservations[0].confirmed && mySeatData.reservations[0].numberOfExtendTime == 0) {
                 // 예약 시작, 종료 비교
                 if((mySeatData.reservations[0].begin + mySeatData.reservations[0].end)/2 <= GregorianCalendar(year, month, day, hour, minute).timeInMillis)
                     {
+
                         ExtensionDialog().show((context as AppCompatActivity).supportFragmentManager, "extend")
                     }
-                else {
+                else { // 확정 되고 첫 연장이여도 시간이 지나지 않았으면 Toast메시지
                     var date = Date()
                     date.time = (mySeatData.reservations[0].begin + mySeatData.reservations[0].end) / 2
-
                     toast(requireContext(), "연장은 ${simple.format(date)}부터 가능합니다. ")
                 }
             }

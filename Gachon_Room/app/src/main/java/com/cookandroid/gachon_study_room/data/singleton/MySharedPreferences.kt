@@ -12,6 +12,19 @@ object MySharedPreferences {
     private var reservation = Room.Reservation()
 
     // 방정보 위치
+    fun setPriorTime(context: Context, input: Long) {
+        val prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putLong("MY_PRIOR", input)
+        editor.commit()
+    }
+
+    fun getPriorTime(context: Context): Long {
+        val prefs = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
+        return prefs.getLong("MY_PRIOR", 0)
+    }
+
+    // 방정보 위치
     fun setRoomPosition(context: Context, input: Int) {
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         val editor : SharedPreferences.Editor = prefs.edit()
