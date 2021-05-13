@@ -1,5 +1,6 @@
 package com.cookandroid.gachon_study_room.data.model.room
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Room(
@@ -24,10 +25,10 @@ data class Room(
             var begin: Long,
             var end: Long,
             var confirmed: Boolean,
-            var extended: Boolean,
+            var numberOfExtendTime: Int,
             var reservationId: String
     ) : Serializable {
-        constructor() : this("", "", "", 0, 0, 0, 0, false, false, "")
+        constructor() : this("", "", "", 0, 0, 0, 0, false, 0, "")
     }
 
 }

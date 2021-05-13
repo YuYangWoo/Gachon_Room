@@ -67,7 +67,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             if(isPossible) {
                     val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("연장확인")
-                    .setMessage("${hourr}시 ${minutee*10}분 까지 연장하시겠습니까?")
+                    .setMessage("${hourr}시 ${minutee * 10}분 까지 연장하시겠습니까?")
                     .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
                         // QR스캔
                         scanQRCode()
@@ -79,7 +79,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             builder.show()
             }
        else {
-           toast(requireContext(), "연장은 최대 2시간 할 수 있습니다.")
+           toast(requireContext(), "연장은 최대 4시간 할 수 있습니다.")
             }
         }
 
@@ -145,6 +145,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 hourr = binding.timePicker.hour
                 minutee = binding.timePicker.minute
 
+                // 4시간에 해당하는 Long값
                 isPossible = if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 14400000L) {
                     toast(requireContext(), "최대연장 시간은 4시간입니다.")
                     false

@@ -48,7 +48,7 @@ object MySharedPreferences {
             putLong("MY_BEGIN", reservationData.begin)
             putLong("MY_END", reservationData.end)
             putBoolean("MY_CONFIRMED", reservationData.confirmed)
-            putBoolean("MY_EXTENDED", reservationData.extended)
+            putInt("MY_EXTENDED", reservationData.numberOfExtendTime)
             putString("MY_RESERVATION_ID", reservationData.reservationId)
         }
         editor.commit()
@@ -65,7 +65,7 @@ object MySharedPreferences {
             begin = prefs.getLong("MY_BEGIN", 0L)
             end = prefs.getLong("MY_END", 0L)
             confirmed = prefs.getBoolean("MY_CONFIRMED", false)
-            extended = prefs.getBoolean("MY_EXTENDED", false)
+            numberOfExtendTime = prefs.getInt("MY_EXTENDED", 0)
             reservationId = prefs.getString("MY_RESERVATION_ID", "").toString()
 
         }
