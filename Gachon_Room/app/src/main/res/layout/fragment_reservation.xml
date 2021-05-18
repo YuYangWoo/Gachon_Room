@@ -68,7 +68,7 @@
                                 android:id="@+id/unAvailableSeat"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="사용가능"
+                                android:text="@string/status_use"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toStartOf="@+id/reserved"
@@ -91,7 +91,7 @@
                                 android:id="@+id/txtReserved"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="예약중"
+                                android:text="@string/status_reserve"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toStartOf="@+id/using"
@@ -115,7 +115,7 @@
                                 android:id="@+id/txtUsing"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="확정됨"
+                                android:text="@string/status_confirm"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
-                    android:text="사용가능"
+                    android:text="@string/status_use"
                     app:layout_constraintEnd_toStartOf="@+id/unAvailable"
                     app:layout_constraintTop_toBottomOf="@id/cardView" />
 
@@ -202,7 +202,7 @@
                     android:layout_height="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@color/gray"
+                    android:background="@color/unusable"
                     app:layout_constraintEnd_toStartOf="@id/txtUnAvailableSeat"
                     app:layout_constraintTop_toBottomOf="@id/cardView" />
 
@@ -212,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="21dp"
-                    android:text="사용불가"
+                    android:text="@string/status_unuseable"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cardView" />
 

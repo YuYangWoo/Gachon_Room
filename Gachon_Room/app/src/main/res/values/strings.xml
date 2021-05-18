@@ -27,4 +27,8 @@
     <string name="seat_result">좌석상태</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
+    <string name="status_use">사용가능</string>
+    <string name="status_reserve">예약중</string>
+    <string name="status_confirm">확정됨</string>
+    <string name="status_unuseable">사용불가</string>
 </resources>

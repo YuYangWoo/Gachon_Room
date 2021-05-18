@@ -67,7 +67,7 @@
         android:layout_height="10dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/gray"
+        android:background="@color/unusable"
         app:layout_constraintBottom_toTopOf="@+id/scrollBar"
         app:layout_constraintEnd_toStartOf="@id/txtUnAvailableSeat" />
 
