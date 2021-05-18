@@ -24,6 +24,6 @@ abstract class BaseFragment<VB: ViewDataBinding>(private val layoutId: Int) : Fr
 
     }
     protected open fun toast(context: Context, msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 }

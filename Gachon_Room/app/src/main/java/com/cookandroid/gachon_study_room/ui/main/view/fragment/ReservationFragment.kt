@@ -40,7 +40,7 @@ class ReservationFragment :
     private val args: ReservationFragmentArgs by navArgs()
     private lateinit var layout: ViewGroup
     private var seatViewList = ArrayList<TextView>()
-    private var seatSize = 100
+    private var seatSize = 80
     private var rooms: RoomsData = RoomsData()
     private lateinit var name: String
     private lateinit var table: LinearLayout
@@ -111,14 +111,14 @@ class ReservationFragment :
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
                     startTime < TimeRequest.todayTime() -> { // 시작시간이 현재 시간보다 작을 때
-                        toast(requireContext(), "대여 시각은 현재 시각 이후부터 설정할 수 있습니다.")
+                        toast(requireContext(), resources.getString(R.string.time_error01))
                     }
                     startTime >= endTime -> { // 시작시간이 종료시간 보다 클 때
                         // 끝나는 시간 계산
                         cal.set(Calendar.HOUR_OF_DAY, hour + 4)
                         txtEndTime = simple.format(cal.time)
                         endOurHour = hour + 4
-                        if(endOurHour >= 24) {
+                        if(endOurHour >= 24) { // 시간이 24보다 커버리면
                             endOurHour -= 24
                             var time = GregorianCalendar(year, month, day + 1, hour + 4, startMinute)
                             endTime = time.timeInMillis
@@ -198,7 +198,7 @@ class ReservationFragment :
 
                 when {
                     endTime < TimeRequest.todayTime() -> {
-                        toast(requireContext(), "종료 시각은 현재 시각 이후부터 설정할 수 있습니다.")
+                        toast(requireContext(), resources.getString(R.string.time_error02))
                     }
                     startTime > endTime -> {
                         toast(requireContext(), "종료 시각은 대여 시각보다 작을 수 없습니다.")
@@ -388,17 +388,17 @@ class ReservationFragment :
                     view.setBackgroundResource(R.drawable.ic_seats_selected)
                     selectedSeat = view.id
                 } else { // 2개이상 선택했을 시
-                    toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
+                    toast(requireContext(), resources.getString(R.string.seat_error01))
                 }
 
             }
         } else if (view.tag as Int == STATUS_BOOKED) {
             reservedSeatStatusBar(view)
-            toast(requireContext(), "Seat " + view.id + " is Booked")
+//            toast(requireContext(), "Seat " + view.id + " is Booked")
 
         } else if (view.tag as Int == STATUS_RESERVED) {
             reservedSeatStatusBar(view)
-            toast(requireContext(), "Seat " + view.id + " is Reserved")
+//            toast(requireContext(), "Seat " + view.id + " is Reserved")
         }
     }
 
@@ -514,14 +514,14 @@ class ReservationFragment :
             date.time = startTime
             endDate.time = endTime
             if (seatId == 0) {
-                toast(requireContext(), "좌석을 선택해주세요.")
+                toast(requireContext(), resources.getString(R.string.seat_confirm))
             } else {
                 builder.setTitle("예약메시지")
                         .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
-                        .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                        .setPositiveButton(resources.getString(R.string.confirm), DialogInterface.OnClickListener { dialogInterface, i ->
                             initViewModel()
                         })
-                        .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                        .setNegativeButton(resources.getString(R.string.cancel), DialogInterface.OnClickListener { dialogInterface, i ->
                             Log.d("TAG", "취소")
                         })
                 builder.create()

@@ -31,4 +31,16 @@
     <string name="status_reserve">예약중</string>
     <string name="status_confirm">확정됨</string>
     <string name="status_unuseable">사용불가</string>
+    <string name="seat_status_reserved">좌석 상태 : 예약됨</string>
+    <string name="seat_status_using">좌석 상태 : 사용중</string>
+    <string name="please_reserve">예약을 진행해주세요.</string>
+    <string name="time_error01">대여 시각은 현재 시각 이후부터 설정할 수 있습니다.</string>
+    <string name="time_error02">종료 시각은 현재 시각 이후부터 설정할 수 있습니다.</string>
+    <string name="time_error03">종료 시각은 대여 시각보다 작을 수 없습니다.</string>
+    <string name="seat_error01">좌석은 하나만 선택 가능합니다.</string>
+    <string name="seat_confirm">좌석을 선택해주세요.</string>
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="hour">시</string>
+    <string name="max_extend">연장은 최대 4시간 할 수 있습니다.</string>
 </resources>

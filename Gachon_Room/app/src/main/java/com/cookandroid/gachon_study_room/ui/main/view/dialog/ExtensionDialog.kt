@@ -68,18 +68,18 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                     val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("연장확인")
                     .setMessage("${hourr}시 ${minutee * 10}분 까지 연장하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                    .setPositiveButton(resources.getString(R.string.confirm), DialogInterface.OnClickListener { dialogInterface, i ->
                         // QR스캔
                         scanQRCode()
                     })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                    .setNegativeButton(resources.getString(R.string.cancel), DialogInterface.OnClickListener { dialogInterface, i ->
                         Log.d("TAG", "취소")
                     })
             builder.create()
             builder.show()
             }
        else {
-           toast(requireContext(), "연장은 최대 4시간 할 수 있습니다.")
+           toast(requireContext(), resources.getString(R.string.max_extend))
             }
         }
 

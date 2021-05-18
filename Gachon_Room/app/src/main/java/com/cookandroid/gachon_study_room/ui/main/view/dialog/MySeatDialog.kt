@@ -43,7 +43,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
         input["id"] = MySharedPreferences.getUserId(requireContext())
         input["password"] = MySharedPreferences.getUserPass(requireContext())
         model.callMySeat(input)
-                .observe(viewLifecycleOwner, androidx.lifecycle.Observer { resource ->
+                .observe(viewLifecycleOwner, { resource ->
                     when (resource.status) {
                         Resource.Status.SUCCESS -> {
                             dialog.dismiss()
@@ -95,19 +95,19 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
             if (mySeatData.reservations[0].confirmed) {
                 binding.txtStatus.visibility = View.VISIBLE
-                binding.txtStatus.text = "좌석 상태 : 확정됨"
+                binding.txtStatus.text = "${resources.getString(R.string.seat_status_using)}"
             } else {
                 binding.txtStatus.visibility = View.VISIBLE
-                binding.txtStatus.text = "좌석 상태 : 예약됨"
+                binding.txtStatus.text = "${resources.getString(R.string.seat_status_reserved)}"
             }
-            binding.txtSeatNumber.text = "자리 번호 : ${mySeatData.reservations[0].seat}번"
-            binding.txtLocation.text = "장소 : ${mySeatData.reservations[0].college} ${mySeatData.reservations[0].roomName}"
+            binding.txtSeatNumber.text = "${resources.getString(R.string.seat_number)} ${mySeatData.reservations[0].seat}번"
+            binding.txtLocation.text = "${resources.getString(R.string.seat_location)} ${mySeatData.reservations[0].college} ${mySeatData.reservations[0].roomName}"
             var date = Date()
             date.time = mySeatData.reservations[0].begin
             var start = simple.format(date)
             date.time = mySeatData.reservations[0].end
             var end = simple.format(date)
-            binding.txtTime.text = "예약시간 : $start ~ $end"
+            binding.txtTime.text = "${resources.getString(R.string.seat_time)}: $start ~ $end"
         }
         // 예약을 하지 않았다면
         else {
@@ -116,7 +116,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 txtSeatNumber.visibility = View.GONE
                 txtLocation.visibility = View.GONE
                 txtSeat.visibility = View.VISIBLE
-                txtSeat.text = "예약을 진행해주세요."
+                txtSeat.text = resources.getString(R.string.please_reserve)
                 txtTime.visibility = View.GONE
                 btnExtend.visibility = View.GONE
                 btnBack.visibility = View.GONE
@@ -166,7 +166,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
         binding.btnBack.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             builder.setTitle("반납확인").setMessage("좌석을 반납하시겠습니까?")
-                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+                    .setPositiveButton(resources.getString(R.string.confirm), DialogInterface.OnClickListener { dialogInterface, i ->
                         input["reservationId"] = mySeatData.reservations[0].reservationId
                         input["college"] = MySharedPreferences.getInformation(requireContext()).college
                         input["roomName"] = mySeatData.reservations[0].roomName //a
@@ -203,7 +203,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                                     }
                                 })
                     })
-                    .setNegativeButton("취소", DialogInterface.OnClickListener { dialogInterface, i ->
+                    .setNegativeButton(resources.getString(R.string.cancel), DialogInterface.OnClickListener { dialogInterface, i ->
                         Log.d("TAG", "취소")
                     })
             builder.create()

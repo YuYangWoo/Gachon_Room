@@ -32,4 +32,16 @@
     <string name="status_reserve">Reserved</string>
     <string name="status_confirm">Using</string>
     <string name="status_unuseable">Unuseable</string>
+    <string name="seat_status_reserved">Seat Status : Reserved</string>
+    <string name="seat_status_using">Seat Status : Using</string>
+    <string name="please_reserve">Make a reservation first</string>
+    <string name="time_error01">The rental time can be set after the current time.</string>
+    <string name="time_error02">The end time can be set after the current time.</string>
+    <string name="time_error03">The end time cannot be less than the rental time.</string>
+    <string name="seat_error01">"Only one seat can be selected "</string>
+    <string name="seat_confirm">Please select a seat.</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="hour">hour</string>
+    <string name="max_extend">You can extend it for up to 4 hours</string>
 </resources>
