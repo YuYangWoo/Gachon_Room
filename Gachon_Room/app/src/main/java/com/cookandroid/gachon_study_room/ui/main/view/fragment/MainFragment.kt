@@ -11,6 +11,7 @@ import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
+import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
@@ -18,12 +19,15 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     private val info: Information.Account by lazy {
         MySharedPreferences.getInformation(requireContext())
     }
-
+    private val dialog by lazy {
+        ProgressDialog(requireContext())
+    }
     override fun init() {
         super.init()
         btnOption()
         btnClick()
         binding.student = info
+
     }
 
     private fun btnOption() {

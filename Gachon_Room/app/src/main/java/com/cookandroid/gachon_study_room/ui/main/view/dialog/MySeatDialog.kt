@@ -33,6 +33,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
 
     override fun init() {
         super.init()
+
         cancelSeat()
         extendSeat()
     }

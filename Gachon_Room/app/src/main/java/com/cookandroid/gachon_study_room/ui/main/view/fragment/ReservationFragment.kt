@@ -110,10 +110,10 @@ class ReservationFragment :
                 Log.d(TAG, "시작시간은$startTime 심플타임 ${simple.format(date)}")
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
-                    startTime < TimeRequest.todayTime() -> {
+                    startTime < TimeRequest.todayTime() -> { // 시작시간이 현재 시간보다 작을 때
                         toast(requireContext(), "대여 시각은 현재 시각 이후부터 설정할 수 있습니다.")
                     }
-                    startTime >= endTime -> {
+                    startTime >= endTime -> { // 시작시간이 종료시간 보다 클 때
                         // 끝나는 시간 계산
                         cal.set(Calendar.HOUR_OF_DAY, hour + 4)
                         txtEndTime = simple.format(cal.time)
