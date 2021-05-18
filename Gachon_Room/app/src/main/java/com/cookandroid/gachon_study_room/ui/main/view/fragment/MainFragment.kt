@@ -15,8 +15,6 @@ import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private val TAG = "MAIN"
-
-    // 뷰모델로바꾸기
     private val info: Information.Account by lazy {
         MySharedPreferences.getInformation(requireContext())
     }

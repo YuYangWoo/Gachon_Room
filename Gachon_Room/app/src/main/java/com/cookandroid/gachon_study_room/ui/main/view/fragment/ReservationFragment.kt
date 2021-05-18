@@ -48,16 +48,16 @@ class ReservationFragment :
     private lateinit var linearTxt: LinearLayout
     var selectedIds = ""
     private val TAG = "RESERVATION"
-    private var startTime = 0L
-    private var endTime = 0L
+    private var startTime = 0L // 실제 사용되는 long값인 시작 값
+    private var endTime = 0L // 실제 사용되는 long값인 끝나는 시간 값
     private var check = -1
-    private var startOurHour = 0
-    private var startOurMinute = 0
-    private var endOurHour = 0
-    private var endOurMinute = 0
+    private var startOurHour = 0 // TimePickerDialog의 초기 값을 설정하는 시간
+    private var startOurMinute = 0 // TimePickerDialog의 초기 값을 설정하는 분
+    private var endOurHour = 0 // TimePickerDialog의 초기 값을 설정하는 시간
+    private var endOurMinute = 0 // TimePickerDialog의 초기 값을 설정하는 분
     private var seatId = 0
-    private var txtStartTime = ""
-    private var txtEndTime = ""
+    private var txtStartTime = "" // Text 시간을 나타내는 시작 시간
+    private var txtEndTime = "" // Text 시간을 나타내는 끝나는 시간
     private val model: MainViewModel by sharedViewModel()
     private val dialog by lazy {
         ProgressDialog(requireContext())
@@ -113,8 +113,25 @@ class ReservationFragment :
                     startTime < TimeRequest.todayTime() -> {
                         toast(requireContext(), "대여 시각은 현재 시각 이후부터 설정할 수 있습니다.")
                     }
-                    startTime > endTime -> {
-                        toast(requireContext(), "대여 시각은 종료 시각보다 클 수 없습니다.")
+                    startTime >= endTime -> {
+                        // 끝나는 시간 계산
+                        cal.set(Calendar.HOUR_OF_DAY, hour + 4)
+                        txtEndTime = simple.format(cal.time)
+                        endOurHour = hour + 4
+                        if(endOurHour >= 24) {
+                            endOurHour -= 24
+                            var time = GregorianCalendar(year, month, day + 1, hour + 4, startMinute)
+                            endTime = time.timeInMillis
+                        }
+                        endOurMinute = startMinute
+                        var time = GregorianCalendar(year, month, day, hour + 4, startMinute)
+                        endTime = time.timeInMillis
+                        binding.txtEnd.text = txtEndTime
+
+                        // 시작 시간 계산
+                        startOurHour = hour
+                        startOurMinute = startMinute
+                        binding.txtStart.text = txtStartTime
                     }
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
@@ -122,7 +139,7 @@ class ReservationFragment :
                                 drawSeatView(rooms.rooms[i].seat, rooms, i)
                             }
                         }
-                        // ok 버트 누르고 나오는 시간.
+                        // ok 버튼 누르고 나오는 시간.
                         startOurHour = hour
                         startOurMinute = startMinute
                         binding.txtStart.text = txtStartTime
@@ -154,9 +171,13 @@ class ReservationFragment :
     // 종료시간 버튼 클릭
     private fun btnEnd() {
         binding.txtEnd.text = TimeRequest.endTime()
+        Log.d(TAG, "끝나는 시간은 $endOurHour $endOurMinute")
         binding.cardViewEnd.setOnClickListener {
+            Log.d(TAG, "끝나는 시간은 $endOurHour $endOurMinute")
+
             var timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker,
                                                                        hour, minute ->
+                Log.d(TAG, "리스너시작")
                 var endMinute = minute
                 cal.set(Calendar.HOUR_OF_DAY, hour)
                 cal.set(Calendar.MINUTE, endMinute)
@@ -216,6 +237,7 @@ class ReservationFragment :
         binding.txtCurrentTime.text = dateFormet.format(today)
 
         var calc = Calendar.getInstance()
+        Log.d(TAG, "캘린더 분은 ${calc.get(Calendar.MINUTE)} interval ${interval}")
         if (calc.get(Calendar.MINUTE) + interval == 60) { // 여기는 시간 조절할 때 else 숫자보다 1이 커야함 ex) 4시간 뒤를 보여줄거다 if는 5 else는 4
             startOurHour = calc.get(Calendar.HOUR_OF_DAY) + 1
             endOurHour = calc.get(Calendar.HOUR_OF_DAY) + 5

@@ -29,7 +29,7 @@
     <string name="id">ID</string>
     <string name="password">PassWord</string>
     <string name="status_use">Useable</string>
-    <string name="status_reserve">Reservation</string>
+    <string name="status_reserve">Reserved</string>
     <string name="status_confirm">Using</string>
     <string name="status_unuseable">Unuseable</string>
 </resources>
