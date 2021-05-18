@@ -16,8 +16,8 @@
     <string name="qr">QR리더</string>
     <string name="my_seat">나의 자리</string>
     <string name="seat_location">장소 :</string>
-    <string name="seat_number">자리 번호:</string>
-    <string name="seat_time">예약 시간:</string>
+    <string name="seat_number">좌석 번호:</string>
+    <string name="seat_time">예약시간:</string>
     <string name="extend">연장</string>
     <string name="return_seat">반납</string>
     <string name="choose_seat">원하는 좌석을 선택해주세요</string>
@@ -43,4 +43,10 @@
     <string name="cancel">취소</string>
     <string name="hour">시</string>
     <string name="max_extend">연장은 최대 4시간 할 수 있습니다.</string>
+    <string name="reserve_message">예약메시지</string>
+    <string name="reserve_message01">예약하시겠습니까?</string>
+    <string name="reserve_message02">좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!</string>
+    <string name="confirm_message">좌석 확정에 성공하였습니다.</string>
+    <string name="confirm_message01">확정성공</string>
+    <string name="confirm_message02">확정실패</string>
 </resources>

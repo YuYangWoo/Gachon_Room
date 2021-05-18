@@ -69,12 +69,12 @@ class QrCodeFragment : BaseFragment<FragmentQrBinding>(R.layout.fragment_qr) {
                     confirmResult = resource.data!!
                     when(confirmResult.result) {
                         true -> {
-                            toast(requireContext(), "좌석 확정에 성공하였습니다.")
-                            binding.txtResult.text = "확정성공"
+                            toast(requireContext(), resources.getString(R.string.confirm_message))
+                            binding.txtResult.text = resources.getString(R.string.confirm_message01)
                         }
                         false -> {
                             toast(requireContext(), confirmResult.response)
-                            binding.txtResult.text = "확정실패"
+                            binding.txtResult.text = resources.getString(R.string.confirm_message02)
                         }
                     }
                     dialog.dismiss()

@@ -201,7 +201,7 @@ class ReservationFragment :
                         toast(requireContext(), resources.getString(R.string.time_error02))
                     }
                     startTime > endTime -> {
-                        toast(requireContext(), "종료 시각은 대여 시각보다 작을 수 없습니다.")
+                        toast(requireContext(), resources.getString(R.string.time_error03))
                     }
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
@@ -421,7 +421,7 @@ class ReservationFragment :
                 }
                 selectedIds = selectedIds + view.id + ","
             } else { // 2개이상 선택했을 시
-                toast(requireContext(), "좌석은 하나만 선택 가능합니다.")
+                toast(requireContext(), resources.getString(R.string.seat_error01))
             }
 
         }
@@ -516,8 +516,8 @@ class ReservationFragment :
             if (seatId == 0) {
                 toast(requireContext(), resources.getString(R.string.seat_confirm))
             } else {
-                builder.setTitle("예약메시지")
-                        .setMessage("예약시간: ${simple.format(date)} ~ ${simple.format(endDate)}\n좌석번호: $seatId 예약하시겠습니까?")
+                builder.setTitle(resources.getString(R.string.reserve_message))
+                        .setMessage("${resources.getString(R.string.seat_time)} ${simple.format(date)} ~ ${simple.format(endDate)}\n${resources.getString(R.string.seat_number)} $seatId ${resources.getString(R.string.reserve_message01)}")
                         .setPositiveButton(resources.getString(R.string.confirm), DialogInterface.OnClickListener { dialogInterface, i ->
                             initViewModel()
                         })
@@ -564,7 +564,7 @@ class ReservationFragment :
                                             Log.d(TAG, "방의 pos는 $i 입니다.")
                                         }
                                     }
-                                    toast(requireContext(), "좌석 예약에 성공하였습니다. 예약시간 10분전에 확정해주세요!")
+                                    toast(requireContext(), resources.getString(R.string.reserve_message02))
                                 }
                                 false -> {
                                     toast(requireContext(), reservation.response)
