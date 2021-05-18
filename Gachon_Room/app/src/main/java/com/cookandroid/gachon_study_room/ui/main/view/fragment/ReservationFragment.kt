@@ -123,15 +123,22 @@ class ReservationFragment :
                             var time = GregorianCalendar(year, month, day + 1, hour + 4, startMinute)
                             endTime = time.timeInMillis
                         }
+                        else {
+                            var time = GregorianCalendar(year, month, day, hour + 4, startMinute)
+                            endTime = time.timeInMillis
+                        }
                         endOurMinute = startMinute
-                        var time = GregorianCalendar(year, month, day, hour + 4, startMinute)
-                        endTime = time.timeInMillis
                         binding.txtEnd.text = txtEndTime
 
                         // 시작 시간 계산
                         startOurHour = hour
                         startOurMinute = startMinute
                         binding.txtStart.text = txtStartTime
+                        for (i in 0 until rooms.rooms.size) {
+                            if (name == rooms.rooms[i].roomName) {
+                                drawSeatView(rooms.rooms[i].seat, rooms, i)
+                            }
+                        }
                     }
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
