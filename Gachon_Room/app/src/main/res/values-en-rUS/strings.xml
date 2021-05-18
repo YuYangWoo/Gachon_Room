@@ -26,4 +26,6 @@
     <string name="end_time">End Time</string>
     <string name="connect_fail">Connection Failed</string>
     <string name="seat_result">Seat Status :</string>
+    <string name="id">ID</string>
+    <string name="password">PassWord</string>
 </resources>

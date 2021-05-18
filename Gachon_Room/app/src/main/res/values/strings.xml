@@ -25,4 +25,6 @@
     <string name="end_time">종료시간</string>
     <string name="connect_fail">연결실패</string>
     <string name="seat_result">좌석상태</string>
+    <string name="id">아이디</string>
+    <string name="password">비밀번호</string>
 </resources>
