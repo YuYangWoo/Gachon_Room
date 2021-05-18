@@ -15,6 +15,7 @@ class ProgressDialog(context: Context) : BaseDialog<DialogLoadingBinding>(contex
         super.init()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setCancelable(false)
         var loadingAnimation = binding.pbLoading.drawable as AnimationDrawable
         loadingAnimation.start()
     }
