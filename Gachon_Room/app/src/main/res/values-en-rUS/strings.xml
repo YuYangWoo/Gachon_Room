@@ -52,4 +52,6 @@
     <string name="confirm_message02">" Confirmed failed"</string>
     <string name="reservation_max">The maximum reservation time is 4 hours.</string>
     <string name="notification">Notification</string>
+    <string name="logout">Logout</string>
+    <string name="qr_refresh">Please refresh QR Code.</string>
 </resources>
