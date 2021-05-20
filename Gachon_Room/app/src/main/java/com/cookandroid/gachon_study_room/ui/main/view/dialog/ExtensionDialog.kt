@@ -147,23 +147,23 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
                 // 4시간에 해당하는 Long값
                 isPossible = if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 14400000L) {
-                    toast(requireContext(), "최대연장 시간은 4시간입니다.")
+                    toast(requireContext(), resources.getString(R.string.max_extend))
                     false
                 } else {
                     true
                 }
-                binding.txtEnd.text =  "연장 종료시간:${hourr}시 ${minutee*10}분"
+                binding.txtEnd.text =  "${resources.getString(R.string.extension_message)}${hourr}시 ${minutee*10}분"
 
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
                 isPossible = if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 14400000L) {
-                    toast(requireContext(), "최대연장 시간은 4시간입니다.")
+                    toast(requireContext(), resources.getString(R.string.max_extend))
                     false
                 } else {
                     true
                 }
-                binding.txtEnd.text ="연장 종료시간:${hourr}시 ${minutee*10}분"
+                binding.txtEnd.text ="${resources.getString(R.string.extension_message)}${hourr}시 ${minutee*10}분"
 
             }
         })
@@ -316,7 +316,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                             Log.d(TAG, "연결성공" + resource.data.toString())
                             when (resource.data!!.result) {
                                 true -> {
-                                    toast(requireContext(), "연장성공")
+                                    toast(requireContext(), "Success extension!!")
                                     MySharedPreferences.setPriorTime(requireContext(), mySeatData.reservations[0].end)
                                 }
                                 false -> {

@@ -54,4 +54,12 @@
     <string name="notification">Notification</string>
     <string name="logout">Logout</string>
     <string name="qr_refresh">Please refresh QR Code.</string>
+    <string name="confirm_first">Confirm your seat firstly</string>
+    <string name="extension_message01">"Extension "</string>
+    <string name="return_message">Return</string>
+    <string name="return_message01">Would you want to return your seat?</string>
+    <string name="return_message02">Success return!!</string>
+    <string name="extension_message">Extension endtime :</string>
+    <string name="seat_status">Current Seat Status</string>
+    <string name="extension_message02">※ Maximum extension time 4 hours / End time input</string>
 </resources>

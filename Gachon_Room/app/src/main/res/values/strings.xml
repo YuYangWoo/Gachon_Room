@@ -53,4 +53,12 @@
     <string name="notification">알림</string>
     <string name="logout">로그아웃</string>
     <string name="qr_refresh">QR코드를 새로고침 해주세요.</string>
+    <string name="confirm_first">먼저 예약을 확정해주세요.</string>
+    <string name="extension_message01">연장은</string>
+    <string name="return_message">반납확인</string>
+    <string name="return_message01">좌석을 반납하시겠습니까?</string>
+    <string name="return_message02">반납성공!!</string>
+    <string name="extension_message">연장 종료시간 :</string>
+    <string name="seat_status">현재좌석 현황</string>
+    <string name="extension_message02">※ 최대 연장 시간 4시간 / 종료시간 입력</string>
 </resources>

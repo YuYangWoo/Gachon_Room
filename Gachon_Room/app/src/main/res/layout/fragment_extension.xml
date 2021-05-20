@@ -35,9 +35,9 @@
         style="@style/BaseText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/seat_status"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:text="현재 좌석"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="5dp"
-        android:text="사용가능"
+        android:text="@string/status_use"
         app:layout_constraintBottom_toTopOf="@+id/scrollBar"
         app:layout_constraintEnd_toStartOf="@+id/unAvailable" />
 
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:text="사용불가"
+        android:text="@string/status_unuseable"
         app:layout_constraintBottom_toTopOf="@+id/scrollBar"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -121,7 +121,7 @@
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
-        android:text="확인"
+        android:text="@string/confirm"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -135,7 +135,7 @@
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:gravity="center"
-        android:text="취소"
+        android:text="@string/cancel"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/txtConfirm" />
@@ -146,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="1dp"
-        android:text="※ 최대 연장 시간 4시간 / 종료시간 입력"
+        android:text="@string/extension_message02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time_picker" />
 
