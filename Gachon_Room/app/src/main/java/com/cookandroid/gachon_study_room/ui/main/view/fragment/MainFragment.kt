@@ -1,6 +1,7 @@
 package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -12,15 +13,13 @@ import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     private val TAG = "MAIN"
     private val info: Information.Account by lazy {
         MySharedPreferences.getInformation(requireContext())
-    }
-    private val dialog by lazy {
-        ProgressDialog(requireContext())
     }
     override fun init() {
         super.init()

@@ -46,8 +46,10 @@
     <string name="max_extend">You can extend it for up to 4 hours</string>
     <string name="reserve_message">Reservation Message</string>
     <string name="reserve_message01">will reserve?</string>
-    <string name="reserve_message02">Your seat reservation was successful. Please confirm 10 minutes before your reservation time!</string>
+    <string name="reserve_message02">Successful! Please confirm 10 minutes before your reservation time!</string>
     <string name="confirm_message">" Seat confirmation was successful."</string>
     <string name="confirm_message01">" Confirmed success"</string>
     <string name="confirm_message02">" Confirmed failed"</string>
+    <string name="reservation_max">The maximum reservation time is 4 hours.</string>
+    <string name="notification">Notification</string>
 </resources>

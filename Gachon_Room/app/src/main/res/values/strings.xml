@@ -49,4 +49,6 @@
     <string name="confirm_message">좌석 확정에 성공하였습니다.</string>
     <string name="confirm_message01">확정성공</string>
     <string name="confirm_message02">확정실패</string>
+    <string name="reservation_max">최대 예약 가능 시간은 4시간 입니다.</string>
+    <string name="notification">알림</string>
 </resources>

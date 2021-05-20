@@ -141,7 +141,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 else { // 확정 되고 첫 연장이여도 시간이 지나지 않았으면 Toast메시지
                     var date = Date()
                     date.time = (mySeatData.reservations[0].begin + mySeatData.reservations[0].end) / 2
-                    toast(requireContext(), "연장은 ${simple.format(date)}부터 가능합니다. ")
+                    snackBar("연장은 ${simple.format(date)}부터 가능합니다. ")
                 }
             } // 연장 횟수가 1회이상일 때
            else if(mySeatData.reservations[0].confirmed && mySeatData.reservations[0].numberOfExtendTime != 0){
@@ -151,11 +151,11 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
                 else { //  시간이 지나지 않았으면 Toast메시지
                     var date = Date()
                     date.time = (MySharedPreferences.getPriorTime(requireContext()) + mySeatData.reservations[0].end) / 2
-                    toast(requireContext(), "연장은 ${simple.format(date)}부터 가능합니다. ")
+                    snackBar("연장은 ${simple.format(date)}부터 가능합니다.")
                 }
             }
             else {
-                toast(requireContext(), "확정 및 시간을 확정해주세요.")
+                snackBar("확정 및 시간을 확정해주세요.")
             }
 
         }

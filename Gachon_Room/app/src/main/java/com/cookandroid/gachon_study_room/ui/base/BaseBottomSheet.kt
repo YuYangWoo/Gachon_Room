@@ -14,6 +14,7 @@ import com.cookandroid.gachon_study_room.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 
 open class BaseBottomSheet<VB: ViewDataBinding>(private val layoutId: Int) : BottomSheetDialogFragment() {
     protected lateinit var binding: VB
@@ -36,4 +37,11 @@ open class BaseBottomSheet<VB: ViewDataBinding>(private val layoutId: Int) : Bot
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
+    protected open fun snackBar(msg: String) {
+        var snackbar = Snackbar.make(requireActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_INDEFINITE)
+        snackbar.setAction("확인", View.OnClickListener {
+            snackbar.dismiss()
+        })
+        snackbar.show()
+    }
 }

@@ -115,7 +115,7 @@ class ReservationFragment :
                 // RoomListFragment 리스트의 이름과 방의 이름과 일치하면 좌석 그려주기
                 when {
                     startTime < TimeRequest.todayTime() -> { // 시작시간이 현재 시간보다 작을 때
-                        toast(requireContext(), resources.getString(R.string.time_error01))
+                        snackBar(resources.getString(R.string.time_error01))
                     }
                     startTime >= endTime -> { // 시작시간이 종료시간 보다 클 때
                         // 끝나는 시간 계산
@@ -202,10 +202,10 @@ class ReservationFragment :
 
                 when {
                     endTime < TimeRequest.todayTime() -> {
-                        toast(requireContext(), resources.getString(R.string.time_error02))
+                        snackBar(resources.getString(R.string.time_error02))
                     }
                     startTime > endTime -> {
-                        toast(requireContext(), resources.getString(R.string.time_error03))
+                        snackBar(resources.getString(R.string.time_error03))
                     }
                     startTime < endTime -> {
                         for (i in 0 until rooms.rooms.size) {
@@ -425,7 +425,7 @@ class ReservationFragment :
                 }
                 selectedIds = selectedIds + view.id + ","
             } else { // 2개이상 선택했을 시
-                toast(requireContext(), resources.getString(R.string.seat_error01))
+                snackBar(resources.getString(R.string.seat_error01))
             }
 
         }
@@ -518,7 +518,7 @@ class ReservationFragment :
             date.time = startTime
             endDate.time = endTime
             if (seatId == 0) {
-                toast(requireContext(), resources.getString(R.string.seat_confirm))
+                snackBar(resources.getString(R.string.seat_confirm))
             } else {
                 builder.setTitle(resources.getString(R.string.reserve_message))
                         .setMessage("${resources.getString(R.string.seat_time)} ${simple.format(date)} ~ ${simple.format(endDate)}\n${resources.getString(R.string.seat_number)} $seatId ${resources.getString(R.string.reserve_message01)}")
@@ -568,10 +568,10 @@ class ReservationFragment :
                                             Log.d(TAG, "방의 pos는 $i 입니다.")
                                         }
                                     }
-                                    toast(requireContext(), resources.getString(R.string.reserve_message02))
+                                    snackBar(resources.getString(R.string.reserve_message02))
                                 }
                                 false -> {
-                                    toast(requireContext(), reservation.response)
+                                    snackBar(reservation.response)
                                 }
                             }
                             dialog.dismiss()
