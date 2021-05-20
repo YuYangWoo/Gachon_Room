@@ -107,7 +107,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
             var start = simple.format(date)
             date.time = mySeatData.reservations[0].end
             var end = simple.format(date)
-            binding.txtTime.text = "${resources.getString(R.string.seat_time)}: $start ~ $end"
+            binding.txtTime.text = "${resources.getString(R.string.seat_time)} $start ~ $end"
         }
         // 예약을 하지 않았다면
         else {

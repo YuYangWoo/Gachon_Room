@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cookandroid.gachon_study_room.R
+import com.cookandroid.gachon_study_room.data.model.Confirm
 import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.model.room.Room
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
@@ -24,6 +25,7 @@ import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.databinding.FragmentReservationBinding
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
+import com.cookandroid.gachon_study_room.ui.main.view.dialog.ConfirmDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.CustomTimePickerDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.TimePickerDialogFixedNougatSpinner
@@ -70,6 +72,8 @@ class ReservationFragment :
 
     override fun init() {
         super.init()
+        ConfirmDialog(requireContext()).show()
+
         layout = binding.layoutSeat
         rooms = args.rooms
         name = args.name
