@@ -5,7 +5,7 @@
     <string name="option_name">Option</string>
     <string name="login">Login</string>
     <string name="auto_login">AutoLogin</string>
-    <string name="confirm_my_seat">Confirm My Seat</string>
+    <string name="confirm_my_seat">My Seat</string>
     <string name="choose_or_reservation">Choose or reservation Seat</string>
     <string name="confirm_seat">Confirm seat</string>
     <string name="confirm_internet">Please confirm internet</string>
@@ -40,9 +40,9 @@
     <string name="time_error03">The end time cannot be less than the rental time.</string>
     <string name="seat_error01">"Only one seat can be selected "</string>
     <string name="seat_confirm">Please select a seat.</string>
-    <string name="confirm">Confirm</string>
+    <string name="confirm">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="hour">hour</string>
+    <string name="hour">o\'clock</string>
     <string name="max_extend">You can extend it for up to 4 hours</string>
     <string name="reserve_message">Reservation Message</string>
     <string name="reserve_message01">will reserve?</string>
@@ -59,7 +59,11 @@
     <string name="return_message">Return</string>
     <string name="return_message01">Would you want to return your seat?</string>
     <string name="return_message02">Success return!!</string>
-    <string name="extension_message">Extension endtime :</string>
+    <string name="extension_message">Extension EndTime :</string>
     <string name="seat_status">Current Seat Status</string>
     <string name="extension_message02">※ Maximum extension time 4 hours / End time input</string>
+    <string name="confirm_extension">Extension</string>
+    <string name="current_end_time">"Original EndTime : "</string>
+    <string name="minute">minute</string>
+    <string name="logout_success">You have been logged out.</string>
 </resources>

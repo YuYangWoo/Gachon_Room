@@ -61,4 +61,8 @@
     <string name="extension_message">연장 종료시간 :</string>
     <string name="seat_status">현재좌석 현황</string>
     <string name="extension_message02">※ 최대 연장 시간 4시간 / 종료시간 입력</string>
+    <string name="confirm_extension">연장확인</string>
+    <string name="current_end_time">기존 종료시간 :</string>
+    <string name="minute">분</string>
+    <string name="logout_success">로그아웃 되셨습니다.</string>
 </resources>

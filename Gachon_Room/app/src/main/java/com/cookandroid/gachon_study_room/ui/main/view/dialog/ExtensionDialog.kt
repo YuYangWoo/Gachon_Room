@@ -66,7 +66,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         binding.txtConfirm.setOnClickListener {
             if(isPossible) {
                     val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("연장확인")
+            builder.setTitle(resources.getString(R.string.confirm_extension))
                     .setMessage("${hourr}시 ${minutee * 10}분 까지 연장하시겠습니까?")
                     .setPositiveButton(resources.getString(R.string.confirm), DialogInterface.OnClickListener { dialogInterface, i ->
                         // QR스캔
@@ -120,7 +120,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private fun txtSet() {
         date.time = mySeatData.reservations[0].end
         var end = simple.format(date)
-        binding.txtCurrent.text =  "기존 종료시간:$end"
+        binding.txtCurrent.text =  "${resources.getString(R.string.current_end_time)}$end"
 
         // 타임피커 초기시간
         timeDate.time = mySeatData.reservations[0].end
@@ -152,8 +152,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 } else {
                     true
                 }
-                binding.txtEnd.text =  "${resources.getString(R.string.extension_message)}${hourr}시 ${minutee*10}분"
-
+                binding.txtEnd.text =  "${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)} ${minutee*10}${resources.getString(R.string.minute)}"
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
@@ -163,7 +162,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 } else {
                     true
                 }
-                binding.txtEnd.text ="${resources.getString(R.string.extension_message)}${hourr}시 ${minutee*10}분"
+                binding.txtEnd.text ="${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)} ${minutee*10}${resources.getString(R.string.minute)}"
 
             }
         })
@@ -277,7 +276,6 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         when (status.tag) {
             ReservationFragment.UNAVAILABLE -> {
                 status.setBackgroundResource(R.drawable.status_list_edge)
-
             }
             ReservationFragment.AVAILABLE -> {
                 status.setBackgroundResource(R.drawable.status_list_edge_available)
@@ -316,7 +314,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                             Log.d(TAG, "연결성공" + resource.data.toString())
                             when (resource.data!!.result) {
                                 true -> {
-                                    toast(requireContext(), "Success extension!!")
+                                    toast(requireContext(), "Success Extension!!")
                                     MySharedPreferences.setPriorTime(requireContext(), mySeatData.reservations[0].end)
                                 }
                                 false -> {

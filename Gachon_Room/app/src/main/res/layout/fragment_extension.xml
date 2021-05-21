@@ -22,22 +22,22 @@
         android:id="@+id/scrollBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:fillViewport="true"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTopic" />
+        app:layout_constraintTop_toBottomOf="@+id/txtAvailableSeat" />
 
     <TextView
         android:id="@+id/txtTopic"
         style="@style/BaseText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/seat_status"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
+        android:text="@string/seat_status"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,41 +45,39 @@
         android:id="@+id/availableSeat"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginBottom="8dp"
         android:background="@color/mainColor"
-        app:layout_constraintBottom_toTopOf="@+id/scrollBar"
-        app:layout_constraintEnd_toStartOf="@+id/txtAvailableSeat" />
+        app:layout_constraintEnd_toStartOf="@+id/txtAvailableSeat"
+        app:layout_constraintTop_toTopOf="@+id/txtAvailableSeat" />
 
     <TextView
         android:id="@+id/txtAvailableSeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="5dp"
         android:text="@string/status_use"
-        app:layout_constraintBottom_toTopOf="@+id/scrollBar"
-        app:layout_constraintEnd_toStartOf="@+id/unAvailable" />
+        app:layout_constraintEnd_toStartOf="@+id/unAvailable"
+        app:layout_constraintTop_toBottomOf="@+id/txtTopic" />
 
     <TextView
         android:id="@+id/unAvailable"
         android:layout_width="10dp"
         android:layout_height="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginBottom="8dp"
         android:background="@color/unusable"
-        app:layout_constraintBottom_toTopOf="@+id/scrollBar"
-        app:layout_constraintEnd_toStartOf="@id/txtUnAvailableSeat" />
+        app:layout_constraintEnd_toStartOf="@id/txtUnAvailableSeat"
+        app:layout_constraintTop_toTopOf="@+id/txtUnAvailableSeat" />
 
     <TextView
         android:id="@+id/txtUnAvailableSeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
         android:text="@string/status_unuseable"
-        app:layout_constraintBottom_toTopOf="@+id/scrollBar"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtAvailableSeat" />
 
     <TimePicker
         android:id="@+id/time_picker"
