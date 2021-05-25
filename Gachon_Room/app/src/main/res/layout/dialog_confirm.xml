@@ -1,41 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-
+<data>
+    <variable
+        name="content"
+        type="com.cookandroid.gachon_study_room.ui.main.view.dialog.ConfirmDialog" />
+</data>
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                style="@style/BaseText"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/notification" />
+                android:orientation="vertical">
 
-            <TextView
+                <TextView
+                    android:id="@+id/txtTitle"
+                    style="@style/BaseText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
 
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:gravity="center"
-                android:text="@string/reservation_max"
-                android:textSize="16dp" />
+                <TextView
+                    android:id="@+id/txtContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:textSize="16dp" />
 
-            <android.widget.Button
-                android:id="@+id/btnClose"
-                style="@style/BaseText"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/mainColor"
-                android:text="@string/confirm"
-                android:textColor="@color/white"
-                android:textSize="16dp" />
-        </LinearLayout>
+                <android.widget.Button
+                    android:id="@+id/btnClose"
+                    style="@style/BaseText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/mainColor"
+                    android:text="@string/confirm"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </ScrollView>
     </FrameLayout>
 </layout>
