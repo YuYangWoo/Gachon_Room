@@ -2,25 +2,19 @@ package com.cookandroid.gachon_study_room.ui.main.view.fragment
 
 import android.content.Intent
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Confirm
 import com.cookandroid.gachon_study_room.data.model.Information
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
-import com.cookandroid.gachon_study_room.data.singleton.TimeRequest
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 import com.cookandroid.gachon_study_room.ui.main.view.activity.CaptureActivity
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
-import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.integration.android.IntentIntegrator
-import org.koin.android.viewmodel.compat.SharedViewModelCompat.sharedViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.util.HashMap
 
@@ -42,7 +36,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         btnOption()
         btnClick()
         binding.student = info
-
     }
 
     private fun btnOption() {

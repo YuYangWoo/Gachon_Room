@@ -64,27 +64,30 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     // 확인버튼 클릭 이벤트
     private fun btnClick() {
         binding.txtConfirm.setOnClickListener {
-            if(isPossible) {
-                    val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle(resources.getString(R.string.confirm_extension))
+            if (isPossible) {
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(resources.getString(R.string.confirm_extension))
                     .setMessage("${hourr}시 ${minutee * 10}분 까지 연장하시겠습니까?")
-                    .setPositiveButton(resources.getString(R.string.confirm), DialogInterface.OnClickListener { dialogInterface, i ->
-                        // QR스캔
-                        scanQRCode()
-                    })
-                    .setNegativeButton(resources.getString(R.string.cancel), DialogInterface.OnClickListener { dialogInterface, i ->
-                        Log.d("TAG", "취소")
-                    })
-            builder.create()
-            builder.show()
-            }
-       else {
-           toast(requireContext(), resources.getString(R.string.max_extend))
+                    .setPositiveButton(
+                        resources.getString(R.string.confirm),
+                        DialogInterface.OnClickListener { dialogInterface, i ->
+                            // QR스캔
+                            scanQRCode()
+                        })
+                    .setNegativeButton(
+                        resources.getString(R.string.cancel),
+                        DialogInterface.OnClickListener { dialogInterface, i ->
+                            Log.d("TAG", "취소")
+                        })
+                builder.create()
+                builder.show()
+            } else {
+                toast(requireContext(), resources.getString(R.string.max_extend))
             }
         }
 
         binding.txtCancel.setOnClickListener {
-          dismiss()
+            dismiss()
         }
     }
 
@@ -120,18 +123,19 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private fun txtSet() {
         date.time = mySeatData.reservations[0].end
         var end = simple.format(date)
-        binding.txtCurrent.text =  "${resources.getString(R.string.current_end_time)}$end"
+        binding.txtCurrent.text = "${resources.getString(R.string.current_end_time)}$end"
 
         // 타임피커 초기시간
         timeDate.time = mySeatData.reservations[0].end
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             binding.timePicker.hour = hourFormat.format(timeDate).toInt()
-            binding.timePicker.minute = (minuteFormat.format(timeDate).toInt())/10 // 10분 인터벌을 줄때 maxValue가 0~5이므로 /10을 해줘야 초기 타임피커 값이 잡힘.
-            Log.d(TAG, hourFormat.format(timeDate)+"시"+ minuteFormat.format(timeDate))
+            binding.timePicker.minute = (minuteFormat.format(timeDate)
+                .toInt()) / 10 // 10분 인터벌을 줄때 maxValue가 0~5이므로 /10을 해줘야 초기 타임피커 값이 잡힘.
+            Log.d(TAG, hourFormat.format(timeDate) + "시" + minuteFormat.format(timeDate))
             Log.d(TAG, binding.timePicker.minute.toString())
         } else {
             binding.timePicker.currentHour = hourFormat.format(timeDate).toInt()
-            binding.timePicker.currentMinute =minuteFormat.format(timeDate).toInt()/10
+            binding.timePicker.currentMinute = minuteFormat.format(timeDate).toInt() / 10
         }
     }
 
@@ -146,23 +150,41 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 minutee = binding.timePicker.minute
 
                 // 4시간에 해당하는 Long값
-                isPossible = if((GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis) - (mySeatData.reservations[0].end) > 14400000L) {
+                isPossible = if ((GregorianCalendar(
+                        year,
+                        month,
+                        day,
+                        hourr,
+                        minutee * 10
+                    ).timeInMillis) - (mySeatData.reservations[0].end) > 14400000L
+                ) {
                     toast(requireContext(), resources.getString(R.string.max_extend))
                     false
                 } else {
                     true
                 }
-                binding.txtEnd.text =  "${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)} ${minutee*10}"
+                binding.txtEnd.text = "${resources.getString(R.string.extension_message)}${hourr}${
+                    resources.getString(R.string.hour)
+                } ${minutee * 10}"
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
-                isPossible = if(GregorianCalendar(year,month,day,hourr,minutee*10).timeInMillis - mySeatData.reservations[0].end > 14400000L) {
+                isPossible = if (GregorianCalendar(
+                        year,
+                        month,
+                        day,
+                        hourr,
+                        minutee * 10
+                    ).timeInMillis - mySeatData.reservations[0].end > 14400000L
+                ) {
                     toast(requireContext(), resources.getString(R.string.max_extend))
                     false
                 } else {
                     true
                 }
-                binding.txtEnd.text ="${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)}${minutee*10}"
+                binding.txtEnd.text = "${resources.getString(R.string.extension_message)}${hourr}${
+                    resources.getString(R.string.hour)
+                }${minutee * 10}"
 
             }
         })
@@ -180,9 +202,9 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                             dialog.dismiss()
                             roomsData = resource.data
                             drawStatusBar(
-                                    roomsData.rooms[MySharedPreferences.getRoomPosition(
-                                            requireContext()
-                                    )].reserved, mySeatData.reservations[0].seat
+                                roomsData.rooms[MySharedPreferences.getRoomPosition(
+                                    requireContext()
+                                )].reserved, mySeatData.reservations[0].seat
                             )
                         }
                         false -> {
@@ -196,8 +218,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 Resource.Status.ERROR -> {
                     dialog.dismiss()
                     toast(
-                            requireContext(),
-                            resource.message + "\n" + resources.getString(R.string.connect_fail)
+                        requireContext(),
+                        resource.message + "\n" + resources.getString(R.string.connect_fail)
                     )
                 }
             }
@@ -207,11 +229,11 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     // 좌석 상황바 구현
     private fun drawStatusBar(seatData: List<ArrayList<Room.Reservation>>, position: Int) {
         var statusTime = GregorianCalendar(
-                ReservationFragment.year,
-                ReservationFragment.month,
-                ReservationFragment.day,
-                time - 1,
-                0
+            ReservationFragment.year,
+            ReservationFragment.month,
+            ReservationFragment.day,
+            time - 1,
+            0
         )
         timeTable = LinearLayout(requireContext())
         timeTable.orientation = LinearLayout.HORIZONTAL
@@ -224,7 +246,10 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
             status.layoutParams = layoutParams
             timeTable.addView(status)
             for (j in seatData[position].indices) {
-                if (status.text.toString().toLong() >= seatData[position][j].begin && status.text.toString().toLong() < seatData[position][j].end) {
+                if (status.text.toString()
+                        .toLong() >= seatData[position][j].begin && status.text.toString()
+                        .toLong() < seatData[position][j].end
+                ) {
                     status.tag = ReservationFragment.UNAVAILABLE
                 }
 
@@ -239,8 +264,8 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 setTimeBar(timeBar)
                 // 시간 크기
                 var txtParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
                 )
 
                 // 시간 textView 설정
@@ -294,12 +319,12 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
         input["roomName"] = MySharedPreferences.getReservation(requireContext()).roomName
         input["reservationId"] = MySharedPreferences.getReservation(requireContext()).reservationId
         input["token"] = MySharedPreferences.getToken(requireContext())
-        input["extendedTime"] =  GregorianCalendar(
-                year,
-                month,
-                day,
-                hourr,
-                minutee*10
+        input["extendedTime"] = GregorianCalendar(
+            year,
+            month,
+            day,
+            hourr,
+            minutee * 10
         ).timeInMillis
     }
 
@@ -307,35 +332,38 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
     private fun initViewModel() {
         dataSet()
         model.callExtend(input).observe(
-                viewLifecycleOwner,
-                androidx.lifecycle.Observer { resource ->
-                    when (resource.status) {
-                        Resource.Status.SUCCESS -> {
-                            Log.d(TAG, "연결성공" + resource.data.toString())
-                            when (resource.data!!.result) {
-                                true -> {
-                                    toast(requireContext(), "Success Extension!!")
-                                    MySharedPreferences.setPriorTime(requireContext(), mySeatData.reservations[0].end)
-                                }
-                                false -> {
-                                    toast(requireContext(), resource.data!!.response)
-                                }
-                            }
-                            dialog.dismiss()
-                            dismiss()
-                        }
-                        Resource.Status.LOADING -> {
-                            dialog.show()
-                        }
-                        Resource.Status.ERROR -> {
-                            dialog.dismiss()
-                            toast(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { resource ->
+                when (resource.status) {
+                    Resource.Status.SUCCESS -> {
+                        Log.d(TAG, "연결성공" + resource.data.toString())
+                        when (resource.data!!.result) {
+                            true -> {
+                                toast(requireContext(), "Success Extension!!")
+                                MySharedPreferences.setPriorTime(
                                     requireContext(),
-                                    resource.message + "\n" + resources.getString(R.string.connect_fail)
-                            )
+                                    mySeatData.reservations[0].end
+                                )
+                            }
+                            false -> {
+                                toast(requireContext(), resource.data!!.response)
+                            }
                         }
+                        dialog.dismiss()
+                        dismiss()
                     }
-                })
+                    Resource.Status.LOADING -> {
+                        dialog.show()
+                    }
+                    Resource.Status.ERROR -> {
+                        dialog.dismiss()
+                        toast(
+                            requireContext(),
+                            resource.message + "\n" + resources.getString(R.string.connect_fail)
+                        )
+                    }
+                }
+            })
     }
 
     // TimePicker 10분 간격으로 Set

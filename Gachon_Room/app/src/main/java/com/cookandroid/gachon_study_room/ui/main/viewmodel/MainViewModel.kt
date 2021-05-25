@@ -1,13 +1,9 @@
 package com.cookandroid.gachon_study_room.ui.main.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.cookandroid.gachon_study_room.data.model.MySeat
 import com.cookandroid.gachon_study_room.data.model.Reserve
-import com.cookandroid.gachon_study_room.data.model.room.RoomsData
 import com.cookandroid.gachon_study_room.data.repository.MainRepository
 import com.cookandroid.gachon_study_room.util.Resource
 import java.lang.Exception

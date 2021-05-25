@@ -11,13 +11,13 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.model.Confirm
 import com.cookandroid.gachon_study_room.data.model.Reserve
 import com.cookandroid.gachon_study_room.data.model.room.Room
 import com.cookandroid.gachon_study_room.data.model.room.RoomsData
@@ -31,11 +31,14 @@ import com.cookandroid.gachon_study_room.ui.main.view.dialog.ProgressDialog
 import com.cookandroid.gachon_study_room.ui.main.view.dialog.TimePickerDialogFixedNougatSpinner
 import com.cookandroid.gachon_study_room.ui.main.viewmodel.MainViewModel
 import com.cookandroid.gachon_study_room.util.Resource
+import com.google.android.material.appbar.MaterialToolbar
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
+import kotlin.collections.List
+import kotlin.collections.indices
+import kotlin.collections.set
 
 class ReservationFragment :
         BaseFragment<FragmentReservationBinding>(R.layout.fragment_reservation) {
@@ -70,10 +73,14 @@ class ReservationFragment :
     private var time = TimeRequest.statusTodayTime() + 1
     private var selectedSeat: Int = 0
 
+    val toolbar by lazy {requireActivity().findViewById<MaterialToolbar>(R.id.toolbar)}
+    val img by lazy {toolbar.findViewById<ImageView>(R.id.toolbar_logo)}
+
     override fun init() {
         super.init()
         ConfirmDialog(requireContext(), resources.getString(R.string.notification), resources.getString(R.string.reservation_max)).show()
 
+        img.visibility = View.GONE
         layout = binding.layoutSeat
         rooms = args.rooms
         name = args.name
@@ -589,6 +596,11 @@ class ReservationFragment :
                         }
                     }
                 })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        img.visibility = View.VISIBLE
     }
 
     companion object {
