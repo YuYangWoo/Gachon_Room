@@ -10,6 +10,7 @@ import com.cookandroid.gachon_study_room.ui.main.view.activity.LoginActivity
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
 
 class OptionFragment :BaseFragment<FragmentOptionBinding>(R.layout.fragment_option) {
+
     override fun init() {
         super.init()
         logout()
