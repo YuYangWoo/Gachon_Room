@@ -63,6 +63,12 @@
     <string name="extension_message02">※ 최대 연장 시간 4시간 / 종료시간 입력</string>
     <string name="confirm_extension">연장확인</string>
     <string name="current_end_time">기존 종료시간 :</string>
-    <string name="minute">분</string>
     <string name="logout_success">로그아웃 되셨습니다.</string>
+    <string name="developers">만든이</string>
+    <string name="college_open_chatting">단과대 오픈채팅</string>
+    <string name="suggestions">개발자 건의사항</string>
+    <string name="opensource_license">오픈소스 라이선스</string>
+    <string name="partnership">제휴문의</string>
+    <string name="app_version">앱 버전 정보</string>
+
 </resources>

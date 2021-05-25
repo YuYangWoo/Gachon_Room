@@ -72,7 +72,7 @@ class ReservationFragment :
 
     override fun init() {
         super.init()
-        ConfirmDialog(requireContext()).show()
+        ConfirmDialog(requireContext(), resources.getString(R.string.notification), resources.getString(R.string.reservation_max)).show()
 
         layout = binding.layoutSeat
         rooms = args.rooms

@@ -218,7 +218,7 @@ class MySeatDialog : BaseBottomSheet<FragmentMySeatBinding>(R.layout.fragment_my
     }
 
     companion object {
-        var simple = SimpleDateFormat("HH시 mm분")
+        var simple = SimpleDateFormat("HH:mm")
         var nowTime = GregorianCalendar(year, month, day, hour, minute).timeInMillis
     }
 }

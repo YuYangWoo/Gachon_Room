@@ -152,7 +152,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 } else {
                     true
                 }
-                binding.txtEnd.text =  "${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)} ${minutee*10}${resources.getString(R.string.minute)}"
+                binding.txtEnd.text =  "${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)} ${minutee*10}"
             } else {
                 hourr = binding.timePicker.currentHour
                 minutee = binding.timePicker.currentMinute
@@ -162,7 +162,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
                 } else {
                     true
                 }
-                binding.txtEnd.text ="${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)} ${minutee*10}${resources.getString(R.string.minute)}"
+                binding.txtEnd.text ="${resources.getString(R.string.extension_message)}${hourr}${resources.getString(R.string.hour)}${minutee*10}"
 
             }
         })
@@ -368,7 +368,7 @@ class ExtensionDialog : BaseDialogFragment<FragmentExtensionBinding>(R.layout.fr
 
     companion object {
         const val TIME_PICKER_INTERVAL = 10
-        var simple = SimpleDateFormat("HH시 mm분")
+        var simple = SimpleDateFormat("HH:mm")
         var hourFormat = SimpleDateFormat("HH")
         var minuteFormat = SimpleDateFormat("mm")
     }
