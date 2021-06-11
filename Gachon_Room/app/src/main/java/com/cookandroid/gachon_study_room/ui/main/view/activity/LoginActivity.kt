@@ -2,9 +2,11 @@ package com.cookandroid.gachon_study_room.ui.main.view.activity
 
 import android.content.Intent
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.Observer
 import com.cookandroid.gachon_study_room.R
-import com.cookandroid.gachon_study_room.data.model.Information
+import com.cookandroid.gachon_study_room.data.model.Account
+import com.cookandroid.gachon_study_room.data.model.LoginRequest
 import com.cookandroid.gachon_study_room.databinding.ActivityLoginBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseActivity
@@ -14,10 +16,10 @@ import com.cookandroid.gachon_study_room.util.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
-    private val TAG = "MAIN"
+    private val TAG = "LOGIN_ACTIVITY"
     private val model: LoginViewModel by viewModel()
-    private var userData = Information()
-    private var input = HashMap<String, Any>()
+    private var userData = Account()
+    private var input = LoginRequest()
     private val dialog by lazy {
         ProgressDialog(this)
     }
@@ -27,8 +29,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         checkAutoLogin()
         btnLogin()
         checkBox()
-        initViewModel()
     }
+
     // 자동 로그인
     private fun checkAutoLogin() {
         if (MySharedPreferences.getCheck(this@LoginActivity) &&
@@ -38,37 +40,38 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             binding.edtId.editText!!.setText(MySharedPreferences.getUserId(this@LoginActivity))
             binding.edtPassword.editText!!.setText(MySharedPreferences.getUserPass(this@LoginActivity))
             binding.checkBox.isChecked = true
-            input["id"] = binding.edtId.editText!!.text.toString()
-            input["password"] = binding.edtPassword.editText!!.text.toString()
-            model.loginApiCall(input)
+            input.id = binding.edtId.editText!!.text.toString()
+            input.password = binding.edtPassword.editText!!.text.toString()
+            initViewModel()
         }
     }
 
     // 로그인 서버 API 통신
     private fun initViewModel() {
-        model.loginData.observe(this@LoginActivity, Observer {
-            it.let { resource ->
-                Log.d(TAG, resource.data.toString())
-                when (resource.status) {
-                    Resource.Status.SUCCESS -> {
-                        userData = resource.data!!
-                        when (userData.result) {
-                            true -> {
-                                loginApi()
-                            }
-                            false -> {
-                                toast(this@LoginActivity, userData.response)
-                            }
+        model.loginApiCall(input).observe(this@LoginActivity, Observer { resource ->
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {
+                    dialog.dismiss()
+                    when (resource.data!!.code()) {
+                        200 -> {
+                            Log.d(TAG, "initViewModel: ${resource.data!!}")
+                            userData = resource.data.body()!!
+                            loginApi()
                         }
-                        dialog.dismiss()
+                        else -> {
+                            toast(this, "에러요")
+                        }
                     }
-                    Resource.Status.ERROR -> {
-                        toast(this@LoginActivity, resource.message + "\n" + resources.getString(R.string.connect_fail))
-                        dialog.dismiss()
-                    }
-                    Resource.Status.LOADING -> {
-                        dialog.show()
-                    }
+                }
+                Resource.Status.LOADING -> {
+                    dialog.show()
+                }
+                Resource.Status.ERROR -> {
+                    toast(
+                        this,
+                        resource.message + "\n" + resources.getString(R.string.connect_fail)
+                    )
+                    dialog.dismiss()
                 }
             }
         })
@@ -89,28 +92,30 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     // 로그인 버튼 클릭
     private fun btnLogin() {
         binding.btnLogin.setOnClickListener {
-            input["id"] = binding.edtId.editText!!.text.toString()
-            input["password"] = binding.edtPassword.editText!!.text.toString()
-            model.loginApiCall(input)
+//            input["id"] = binding.edtId.editText!!.text.toString()
+//            input["password"] = binding.edtPassword.editText!!.text.toString()
+            input.id = binding.edtId.editText!!.text.toString()
+            input.password = binding.edtPassword.editText!!.text.toString()
+            initViewModel()
         }
     }
 
     // 로그인 체크
     private fun loginApi() {
-        if (userData.account.type == "STUDENT" && userData.result) {
+        if (userData.type == "STUDENT") {
             toast(
                 this@LoginActivity,
-                "${userData.account.id}님 ${resources.getString(R.string.confirm_login)}"
+                "${userData.id}님 ${resources.getString(R.string.confirm_login)}"
             )
             MySharedPreferences.setUserId(this@LoginActivity, binding.edtId.editText!!.text.toString())
             MySharedPreferences.setUserPass(this@LoginActivity, binding.edtPassword.editText!!.text.toString())
             MySharedPreferences.setInformation(
                 this@LoginActivity,
-                userData.account.type,
-                userData.account.department,
-                userData.account.studentId,
-                userData.account.studentName,
-                userData.account.college
+                userData.type,
+                userData.department,
+                userData.studentId,
+                userData.studentName,
+                userData.college
             )
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()

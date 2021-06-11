@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.cookandroid.gachon_study_room.R
 import com.cookandroid.gachon_study_room.data.model.Confirm
-import com.cookandroid.gachon_study_room.data.model.Information
+import com.cookandroid.gachon_study_room.data.model.Account
 import com.cookandroid.gachon_study_room.databinding.FragmentMainBinding
 import com.cookandroid.gachon_study_room.data.singleton.MySharedPreferences
 import com.cookandroid.gachon_study_room.ui.base.BaseFragment
@@ -20,8 +20,8 @@ import java.util.HashMap
 
 class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
-    private val TAG = "MAIN"
-    private val info: Information.Account by lazy {
+    private val TAG = "MAIN_FRAGMENT"
+    private val info: Account by lazy {
         MySharedPreferences.getInformation(requireContext())
     }
     private val dialog by lazy {
