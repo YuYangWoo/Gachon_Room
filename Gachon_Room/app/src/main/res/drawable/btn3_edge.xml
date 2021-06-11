@@ -10,6 +10,6 @@
         android:endColor="#86C1E3"/>
     <!--꼭지점 휘는 각도-->
     <corners
-        android:bottomLeftRadius="18dp"
-        android:bottomRightRadius="18dp"/>
+        android:bottomLeftRadius="10dp"
+        android:bottomRightRadius="10dp"/>
 </shape>

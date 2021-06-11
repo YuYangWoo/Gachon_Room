@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="5dp"
                 app:cardCornerRadius="12dp"
@@ -120,16 +120,19 @@
 
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.7"
-            app:layout_constraintTop_toBottomOf="@+id/cstLyTop"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cstLyTop">
 
             <android.widget.Button
                 android:id="@+id/btnMySeat"
+                style="@style/MainBtnText"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
@@ -141,7 +144,6 @@
                 android:gravity="center"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                style="@style/MainBtnText"
                 android:text="@string/confirm_my_seat"
                 app:layout_constraintBottom_toTopOf="@+id/btnReservation"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -152,45 +154,44 @@
 
             <android.widget.Button
                 android:id="@+id/btnReservation"
+                style="@style/MainBtnText"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/btn2_edge"
+                android:drawableRight="@drawable/btn_click"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="@string/choose_or_reservation"
-                style="@style/MainBtnText"
                 app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.25"
                 app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMySeat"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:drawableRight="@drawable/btn_click" />
+                app:layout_constraintTop_toBottomOf="@+id/btnMySeat" />
 
             <android.widget.Button
                 android:id="@+id/btnConfirm"
+                style="@style/MainBtnText"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/btn3_edge"
+                android:drawableRight="@drawable/btn_click"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="@string/confirm_seat"
-                style="@style/MainBtnText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.25"
                 app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnReservation"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:drawableRight="@drawable/btn_click"/>
-
+                app:layout_constraintTop_toBottomOf="@+id/btnReservation" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,6 @@
 
     </data>
 
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -36,7 +34,7 @@
                 android:id="@+id/edtId"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="7dp"
                 android:backgroundTint="@color/moon"
                 android:hint="@string/id"
@@ -50,7 +48,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="#F3F7FC"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +57,7 @@
                 android:id="@+id/edtPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:backgroundTint="@color/moon"
                 android:hint="@string/password"
                 android:inputType="textPersonName|textPassword"
@@ -72,7 +70,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="#F3F7FC"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -83,6 +81,7 @@
                 android:layout_height="48dp"
                 android:text="@string/auto_login"
                 android:textColor="@color/nickel"
+                android:fontFamily="@font/iropke_batang_m"
                 app:layout_constraintBottom_toTopOf="@+id/btnLogin"
                 app:layout_constraintStart_toStartOf="@+id/edtPassword" />
 
@@ -97,7 +96,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintBottom_toTopOf="@+id/guide2"
+                app:layout_constraintBottom_toTopOf="@+id/guide2"
                 app:layout_constraintWidth_percent="0.8" />
 
             <androidx.constraintlayout.widget.Guideline
