@@ -2,13 +2,12 @@ package com.cookandroid.gachon_study_room.data.singleton
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.cookandroid.gachon_study_room.data.model.Information
-import com.cookandroid.gachon_study_room.data.model.Reserve
+import com.cookandroid.gachon_study_room.data.model.Account
 import com.cookandroid.gachon_study_room.data.model.room.Room
 
 object MySharedPreferences {
     private val MY_ACCOUNT : String = "account"
-    private var student: Information.Account = Information.Account()
+    private var student: Account = Account()
     private var reservation = Room.Reservation()
 
     // 방정보 위치
@@ -99,7 +98,7 @@ object MySharedPreferences {
     }
 
     // 사용자 정보 얻기
-    fun getInformation(context: Context): Information.Account{
+    fun getInformation(context: Context): Account{
         val prefs : SharedPreferences = context.getSharedPreferences(MY_ACCOUNT, Context.MODE_PRIVATE)
         with(student) {
             type = prefs.getString("MY_TYPE", "").toString()

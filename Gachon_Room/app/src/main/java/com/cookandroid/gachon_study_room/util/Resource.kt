@@ -1,8 +1,5 @@
 package com.cookandroid.gachon_study_room.util
 
-import androidx.lifecycle.MutableLiveData
-import com.cookandroid.gachon_study_room.data.model.Information
-
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
 
     enum class Status {
