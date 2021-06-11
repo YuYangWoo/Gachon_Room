@@ -19,6 +19,7 @@
         >
 
         <activity android:name=".ui.main.view.activity.MainActivity">
+
         </activity>
         <activity android:name=".ui.main.view.activity.LoginActivity"
             android:theme="@style/SplashTheme">
